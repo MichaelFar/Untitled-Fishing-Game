@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://bdunasxchfrai"]
+
+[ext_resource type="PackedScene" uid="uid://chx6h7xscg3ty" path="res://modelScenes/animated_low_poly_fish.glb" id="1_wtm05"]
+[ext_resource type="Script" path="res://scripts/basic_fish.gd" id="2_wigxq"]
+
+[node name="basic_fish" node_paths=PackedStringArray("animationPlayer", "navAgent") instance=ExtResource("1_wtm05")]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
+script = ExtResource("2_wigxq")
+animationPlayer = NodePath("AnimationPlayer")
+navAgent = NodePath("NavigationAgent3D")
+
+[node name="Armature_7" parent="Sketchfab_model/root/GLTF_SceneRootNode" index="0"]
+transform = Transform3D(0.564628, -5.29574e-11, -2.28592e-09, -2.28593e-09, -0.0261479, -0.564022, -5.29574e-11, 0.564022, -0.0261479, 0, 0.0581963, 0.263674)
+
+[node name="Skeleton3D" parent="Sketchfab_model/root/GLTF_SceneRootNode/Armature_7/GLTF_created_0" index="0"]
+transform = Transform3D(1, -8.9407e-08, 7.45058e-09, 2.98023e-08, 1, 7.45058e-09, 3.72529e-09, 5.58794e-09, 1, -0.218166, 0.274788, -0.0127396)
+bones/2/rotation = Quaternion(1.14807e-06, 0.023162, 0.999732, 2.65988e-08)
+bones/3/rotation = Quaternion(-0.00155279, -1.11695e-13, 3.56639e-09, 0.999999)
+bones/4/rotation = Quaternion(0.127741, -2.20557e-13, -2.9339e-07, 0.991808)
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="." index="2"]
+path_desired_distance = 0.5

@@ -1,0 +1,55 @@
+[gd_scene load_steps=6 format=3 uid="uid://ccnea7702quod"]
+
+[ext_resource type="PackedScene" uid="uid://c8j32kkt60r7k" path="res://modelScenes/bobber.glb" id="1_nv2g1"]
+[ext_resource type="Script" path="res://scripts/bobber.gd" id="2_sf8pp"]
+
+[sub_resource type="Animation" id="Animation_75a3e"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, -0.569082)]
+}
+
+[sub_resource type="Animation" id="Animation_e7cek"]
+resource_name = "bobbing"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6, 1.4, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, -0.569082), Vector3(0.22047, -3.86271e-09, -0.569082), Vector3(-0.219911, 0, -0.568977), Vector3(0, 0, -0.569082)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sy8pn"]
+_data = {
+"RESET": SubResource("Animation_75a3e"),
+"bobbing": SubResource("Animation_e7cek")
+}
+
+[node name="bobber" node_paths=PackedStringArray("animationPlayer") instance=ExtResource("1_nv2g1")]
+transform = Transform3D(0.126359, 0.0808286, 0, -0.0808286, 0.126359, 0, 0, 0, 0.15, 0, 0, 0)
+script = ExtResource("2_sf8pp")
+animationPlayer = NodePath("AnimationPlayer")
+
+[node name="Icosphere_001" parent="." index="1"]
+transform = Transform3D(1, -3.55271e-15, 0, 3.55271e-15, 1, 0, 0, 0, 1, 0, -0.48, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="2"]
+libraries = {
+"": SubResource("AnimationLibrary_sy8pn")
+}
