@@ -73,5 +73,7 @@ libraries = {
 [node name="ResourcePreloader" type="ResourcePreloader" parent="." index="2"]
 resources = [PackedStringArray("bobber"), [ExtResource("3_jt8k4")]]
 
-[node name="Marker3D" type="Marker3D" parent="." index="3"]
+[node name="BobberSpawnPoint" type="Marker3D" parent="." index="3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.543376, 0.336527, 0.0105892)
+
+[node name="BobberDestination" type="Marker3D" parent="." index="4"]

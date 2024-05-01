@@ -18,19 +18,21 @@ var bobberIndex = 0
 
 var destinationPosition = null
 
-var castCharge = 0
+@export var castCharge := 0.0
 
 var depthOutput = 0.0
 
 var lastCastBobber = null
-
-#var castStrength = 0.0
 
 var frame_count = 0
 
 var castAngle = 9.2 #Z angle for casting, used for dynamically interrupting cast for less power (future implementation as of 4/30)
 
 var tween : Tween
+
+var alreadyTweened := false
+
+var distanceOfWater := 0.0 
 enum STATE {
 	MOVING,
 	CASTING
@@ -43,47 +45,56 @@ func _ready():
 	bobberList = bobberResources.get_resource_list()
 	cameraViewPort = get_viewport()
 	camera = cameraViewPort.get_camera_3d()
-	
+	call_deferred("get_water_height")
 func _physics_process(delta):
 	
 	var frame_rate = 1/delta
 	
-	var cast_increment_num = frame_rate / 3.0
+	#var cast_increment_num = 1.0
 	mousePos = cameraViewPort.get_mouse_position()
 	
 	var clamped_mouse = Vector2(mousePos.x, clamp(mousePos.y, 30, 470))
 	
 	match currentState:
 		STATE.MOVING:
-			
-			var depth_input = camera.project_position(clamped_mouse, 8)
-			
+			#print(global_position)
 			if Input.is_action_pressed("cast"):
-				
-				frame_count += 1
-				if(frame_count >= cast_increment_num):
-					if(tween):
-						tween.kill()
-					tween = get_tree().create_tween()
+				var increment_value = distanceOfWater / frame_rate
+				if(!alreadyTweened):
 					
-					tween.tween_property(self, "rotation_degrees:z", castAngle * 3, 1.0)
+					tween = get_tree().create_tween()
 					print("tween created")
-					frame_count = 0
+					tween.tween_property(self, "rotation_degrees:z", castAngle * 3, 1.0)
+					alreadyTweened = true
+					
+				castCharge += increment_value
+				castCharge = clampf(castCharge, 0.0, distanceOfWater)
+				print("rotation_degrees.z is " +str(rotation_degrees.z))
+				print("Cast charge is " +str(castCharge))
+				print("Current rotation is " + str(rotation_degrees))
 				
 			if Input.is_action_just_released("cast"):
+				
 				if(tween):
+					
 					print("Will kill tween " + str(tween))
 					tween.kill()
+					alreadyTweened = false
+				
 				tween = get_tree().create_tween()
 				tween.tween_property(self, "rotation_degrees:z", 0.0, 0.1)
+				var depth_input = camera.project_position(clamped_mouse, 8)
+		
 				depthOutput = screen_point_to_ray(depth_input)
 				depthOutput = clampf(depthOutput, 3.0, 8.0)
+				
 				if(depthOutput):
 					
 					destinationPosition = camera.project_position(clamped_mouse, depthOutput)
+					destinationPosition = Vector3(castCharge, global_position.y, global_position.z)
 					create_bobber_from_anim()
 					currentState = STATE.CASTING
-				
+				castCharge = 0.0
 			var movement_position = camera.project_position(mousePos, 2)
 			
 			global_position.z = movement_position.z
@@ -121,3 +132,6 @@ func screen_point_to_ray(depth_input):
 	
 		return camera2dPosition.distance_to(intersect_position)
 	return false
+
+func get_water_height():
+	distanceOfWater = get_parent().navAreaDimensions.x
