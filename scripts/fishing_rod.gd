@@ -4,6 +4,14 @@ extends Node3D
 
 @export var bobberResources : ResourcePreloader
 
+@export var timeToCast = 1.0 #How long it takes to fully charge a cast in seconds
+
+var castCharge := 0.0
+
+@onready var reticleResource = preload("res://modelScenes/bobber_reticle.tscn")
+
+var reticleReference = null
+
 signal cast_ended
 
 var cameraViewPort := get_viewport()
@@ -18,9 +26,6 @@ var bobberIndex = 0
 
 var destinationPosition = null
 
-@export var castCharge := 0.0
-
-var depthOutput = 0.0
 
 var lastCastBobber = null
 
@@ -33,6 +38,8 @@ var tween : Tween
 var alreadyTweened := false
 
 var distanceOfWater := 0.0 
+
+
 enum STATE {
 	MOVING,
 	CASTING
@@ -61,39 +68,38 @@ func _physics_process(delta):
 			if Input.is_action_pressed("cast"):
 				var increment_value = distanceOfWater / frame_rate
 				if(!alreadyTweened):
-					
+					create_reticle()
 					tween = get_tree().create_tween()
-					print("tween created")
-					tween.tween_property(self, "rotation_degrees:z", castAngle * 3, 1.0)
+					#print("tween created")
+					tween.tween_property(self, "rotation_degrees:z", castAngle * 3, timeToCast)
 					alreadyTweened = true
-					
-				castCharge += increment_value
+				var reticle_position = Vector3(castCharge, 0.1, global_position.z)
+				
+				castCharge += increment_value / timeToCast
 				castCharge = clampf(castCharge, 0.0, distanceOfWater)
-				print("rotation_degrees.z is " +str(rotation_degrees.z))
-				print("Cast charge is " +str(castCharge))
-				print("Current rotation is " + str(rotation_degrees))
+				if(reticleReference != null):
+					reticleReference.global_position = reticle_position
+				#print("rotation_degrees.z is " +str(rotation_degrees.z))
+				#print("Cast charge is " +str(castCharge))
+				#print("Current rotation is " + str(rotation_degrees))
 				
 			if Input.is_action_just_released("cast"):
 				
 				if(tween):
 					
-					print("Will kill tween " + str(tween))
+					#print("Will kill tween " + str(tween))
 					tween.kill()
 					alreadyTweened = false
+					
+				if(reticleReference != null):
+					reticleReference.queue_free()
 				
+				destinationPosition = Vector3(castCharge, global_position.y, global_position.z)
 				tween = get_tree().create_tween()
 				tween.tween_property(self, "rotation_degrees:z", 0.0, 0.1)
-				var depth_input = camera.project_position(clamped_mouse, 8)
-		
-				depthOutput = screen_point_to_ray(depth_input)
-				depthOutput = clampf(depthOutput, 3.0, 8.0)
 				
-				if(depthOutput):
-					
-					destinationPosition = camera.project_position(clamped_mouse, depthOutput)
-					destinationPosition = Vector3(castCharge, global_position.y, global_position.z)
-					create_bobber_from_anim()
-					currentState = STATE.CASTING
+				create_bobber_from_anim()
+				currentState = STATE.CASTING
 				castCharge = 0.0
 			var movement_position = camera.project_position(mousePos, 2)
 			
@@ -105,21 +111,27 @@ func _physics_process(delta):
 				
 				lastCastBobber.queue_free()
 				currentState = STATE.MOVING
-				depthOutput = false
-	
+				
+
+func create_reticle():
+	#print("Reticle created")
+	var reticle_instance = reticleResource.instantiate()
+	reticleReference = reticle_instance
+	get_parent().add_child(reticle_instance)
+	reticle_instance.global_position = global_position
+
 func create_bobber(index, destination):
 	
-	var bobberResource = bobberList[index]
-	bobberResource = bobberResources.get_resource(bobberResource)
-	bobberResource = bobberResource.instantiate()
-	get_parent().add_child(bobberResource)
-	bobberResource.global_position = destination
-	lastCastBobber = bobberResource
+	var bobber_resource = bobberList[index]
+	bobber_resource = bobberResources.get_resource(bobber_resource)
+	bobber_resource = bobber_resource.instantiate()
+	get_parent().add_child(bobber_resource)
+	bobber_resource.global_position = destination
+	lastCastBobber = bobber_resource
 	
 func create_bobber_from_anim():
-	if(depthOutput):
-		
-		create_bobber(bobberIndex,destinationPosition)
+	
+	create_bobber(bobberIndex,destinationPosition)
 
 func screen_point_to_ray(depth_input):
 	

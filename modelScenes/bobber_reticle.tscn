@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://cb0pq3c5c5ibc"]
+
+[ext_resource type="Texture2D" uid="uid://cm7ffcppcgyyo" path="res://textures/crosshairs_tilesheet_white.png" id="1_f7g4q"]
+[ext_resource type="Script" path="res://scripts/bobber_reticle.gd" id="2_3gau5"]
+
+[node name="bobber_reticle" type="Sprite3D"]
+sorting_offset = 3.0
+modulate = Color(1, 0.0235294, 0.0392157, 1)
+axis = 1
+texture = ExtResource("1_f7g4q")
+hframes = 20
+vframes = 10
+frame = 91
+script = ExtResource("2_3gau5")

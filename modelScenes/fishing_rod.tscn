@@ -59,10 +59,11 @@ _data = {
 [node name="fishing_rod" node_paths=PackedStringArray("animationPlayer", "bobberResources") instance=ExtResource("1_tc17c")]
 script = ExtResource("2_ejrp3")
 animationPlayer = NodePath("AnimationPlayer")
-bobberResources = NodePath("ResourcePreloader")
+bobberResources = NodePath("BobberResources")
+timeToCast = 2.0
 
 [node name="Object_1" parent="." index="0"]
-transform = Transform3D(0.00276984, 0, 0, 0, 0.002769, -6.80778e-05, 0, 6.80778e-05, 0.002769, -0.000331476, 0.326534, 0.00191456)
+transform = Transform3D(0.00276984, 0, 0, 0, 0.00276984, 0, 0, 0, 0.00276984, -0.000331476, 0.326534, 0.00191456)
 surface_material_override/0 = SubResource("StandardMaterial3D_ks787")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1"]
@@ -70,7 +71,7 @@ libraries = {
 "": SubResource("AnimationLibrary_qb4ri")
 }
 
-[node name="ResourcePreloader" type="ResourcePreloader" parent="." index="2"]
+[node name="BobberResources" type="ResourcePreloader" parent="." index="2"]
 resources = [PackedStringArray("bobber"), [ExtResource("3_jt8k4")]]
 
 [node name="BobberSpawnPoint" type="Marker3D" parent="." index="3"]
