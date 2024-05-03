@@ -12,3 +12,4 @@ shadow_enabled = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.38759)
 
 [node name="bobber" parent="." instance=ExtResource("1_jvcfp")]
+transform = Transform3D(0.126359, 0.0808286, 0, -0.0808286, 0.126359, 0, 0, 0, 0.15, 0, 0, 0)

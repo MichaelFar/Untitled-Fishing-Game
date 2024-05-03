@@ -1,13 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://bdunasxchfrai"]
+[gd_scene load_steps=4 format=3 uid="uid://bdunasxchfrai"]
 
 [ext_resource type="PackedScene" uid="uid://chx6h7xscg3ty" path="res://modelScenes/animated_low_poly_fish.glb" id="1_wtm05"]
 [ext_resource type="Script" path="res://scripts/basic_fish.gd" id="2_wigxq"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_by2ur"]
+height = 2.02044
 
 [node name="basic_fish" node_paths=PackedStringArray("animationPlayer", "navAgent") instance=ExtResource("1_wtm05")]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
 script = ExtResource("2_wigxq")
 animationPlayer = NodePath("AnimationPlayer")
 navAgent = NodePath("NavigationAgent3D")
+
+[node name="Sketchfab_model" parent="." index="0"]
+transform = Transform3D(-4.37114e-08, -1, 0, -4.37114e-08, 1.91068e-15, -1, 1, -4.37114e-08, -4.37114e-08, 0, 0, 0.121837)
 
 [node name="Armature_7" parent="Sketchfab_model/root/GLTF_SceneRootNode" index="0"]
 transform = Transform3D(0.564628, -5.29574e-11, -2.28592e-09, -2.28593e-09, -0.0261479, -0.564022, -5.29574e-11, 0.564022, -0.0261479, 0, 0.0581963, 0.263674)
@@ -20,3 +26,9 @@ bones/4/rotation = Quaternion(0.127741, -2.20557e-13, -2.9339e-07, 0.991808)
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="." index="2"]
 path_desired_distance = 0.5
+
+[node name="Area3D" type="Area3D" parent="." index="3"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" index="0"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_by2ur")
