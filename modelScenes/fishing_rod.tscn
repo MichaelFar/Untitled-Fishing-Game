@@ -56,10 +56,11 @@ _data = {
 "draw": SubResource("Animation_auehr")
 }
 
-[node name="fishing_rod" node_paths=PackedStringArray("animationPlayer", "bobberResources") instance=ExtResource("1_tc17c")]
+[node name="fishing_rod" node_paths=PackedStringArray("animationPlayer", "bobberResources", "bobberSpawnPoint") instance=ExtResource("1_tc17c")]
 script = ExtResource("2_ejrp3")
 animationPlayer = NodePath("AnimationPlayer")
 bobberResources = NodePath("BobberResources")
+bobberSpawnPoint = NodePath("BobberSpawnPoint")
 timeToCast = 2.0
 
 [node name="Object_1" parent="." index="0"]

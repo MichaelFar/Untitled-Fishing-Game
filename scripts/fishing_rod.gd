@@ -6,7 +6,10 @@ signal cast_ended
 
 @export var bobberResources : ResourcePreloader
 
+@export var bobberSpawnPoint : Marker3D
+
 @export var timeToCast = 1.0 #How long it takes to fully charge a cast in seconds
+
 
 var castCharge := 0.0
 
@@ -76,7 +79,7 @@ func _physics_process(delta):
 					tween.tween_property(self, "rotation_degrees:z", castAngle * 3, timeToCast)
 					alreadyTweened = true
 					
-				var reticle_position = Vector3(castCharge, 0.1, global_position.z)
+				var reticle_position = Vector3(castCharge + bobberSpawnPoint.global_position.x, 0.1, global_position.z)
 				
 				castCharge += increment_value / timeToCast
 				castCharge = clampf(castCharge, 0.0, distanceOfWater)
@@ -96,14 +99,15 @@ func _physics_process(delta):
 					
 					reticleReference.queue_free()
 				
-				destinationPosition = Vector3(castCharge, global_position.y, global_position.z)
+				destinationPosition = Vector3(castCharge + bobberSpawnPoint.global_position.x, global_position.y, global_position.z)
+				print(destinationPosition)
 				tween = get_tree().create_tween()
 				tween.tween_property(self, "rotation_degrees:z", 0.0, 0.1)
 				create_bobber_from_anim()
 				currentState = STATE.CASTING
 				castCharge = 0.0
 				
-			var movement_position = camera.project_position(mousePos, 2)
+			var movement_position = camera.project_position(mousePos, 3.4)
 			
 			global_position.z = movement_position.z
 			
