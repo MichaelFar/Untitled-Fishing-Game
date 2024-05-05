@@ -34,17 +34,18 @@ func _physics_process(delta):
 			current_agent_position = global_position
 			next_path_position = navAgent.get_next_path_position()
 			velocity = current_agent_position.direction_to(next_path_position) * fishSpeed
-			
+			print("Moving...")
 			if(!animationPlayer.is_playing()):
-				animationPlayer.play("swim")
+				animationPlayer.play("looping_swim")
 				
 			if(next_path_position != global_position):
 				look_at(next_path_position)
 				
 		FISHSTATE.IDLE:
+			print("Idling...")
 			if(idleTimer.is_stopped()):
 				print("Timer starting...")
-				animationPlayer.stop()
+				#animationPlayer.pause()
 				idleTimer.start()
 	
 	
