@@ -60,6 +60,7 @@ mesh = SubResource("PlaneMesh_4aobp")
 surface_material_override/0 = SubResource("ShaderMaterial_dmgjl")
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.566794, 0)
 navigation_mesh = SubResource("NavigationMesh_mnbxr")
 
 [node name="NavMesh" type="MeshInstance3D" parent="NavigationRegion3D"]

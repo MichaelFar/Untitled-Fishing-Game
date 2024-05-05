@@ -5,10 +5,10 @@
 [ext_resource type="PackedScene" uid="uid://c0bplh7eeexvd" path="res://modelScenes/fishing_rod.tscn" id="3_b1vkg"]
 [ext_resource type="PackedScene" uid="uid://bdunasxchfrai" path="res://modelScenes/basic_fish.tscn" id="3_if7u0"]
 
-[node name="FishingMinigame" type="Node3D" node_paths=PackedStringArray("water_mesh")]
+[node name="FishingMinigame" type="Node3D" node_paths=PackedStringArray("waterMesh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 2.5)
 script = ExtResource("1_qolej")
-water_mesh = NodePath("WaterPlane")
+waterMesh = NodePath("WaterPlane")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866025, -0.433013, 0.250001, 0.288224, -0.023767, 0.957268, -0.408568, 0.901074, 0.145388, -0.0186545, 2.13302, -0.318762)

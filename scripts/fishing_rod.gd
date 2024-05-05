@@ -100,7 +100,7 @@ func _physics_process(delta):
 					reticleReference.queue_free()
 				
 				destinationPosition = Vector3(castCharge + bobberSpawnPoint.global_position.x, global_position.y, global_position.z)
-				print(destinationPosition)
+				#print(destinationPosition)
 				tween = get_tree().create_tween()
 				tween.tween_property(self, "rotation_degrees:z", 0.0, 0.1)
 				create_bobber_from_anim()
