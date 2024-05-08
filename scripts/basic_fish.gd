@@ -83,3 +83,7 @@ func _on_idle_timer_timeout():
 func _on_navigation_agent_3d_target_reached():
 	velocity = Vector3.ZERO
 	currentState = FISHSTATE.IDLE
+
+
+func _on_detection_box_area_entered(area):
+	print("Fish caught")

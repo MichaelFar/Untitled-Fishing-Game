@@ -8,6 +8,8 @@ signal cast_ended
 
 @export var bobberSpawnPoint : Marker3D
 
+@export var bobberDestination : Marker3D
+
 @export var timeToCast = 1.0 #How long it takes to fully charge a cast in seconds
 
 
@@ -70,7 +72,7 @@ func _physics_process(delta):
 			
 			if Input.is_action_pressed("cast"):
 				
-				var increment_value = distanceOfWater / frame_rate
+				var increment_value = bobberDestination.global_position.x / frame_rate
 				
 				if(!alreadyTweened):
 					
@@ -82,7 +84,7 @@ func _physics_process(delta):
 				var reticle_position = Vector3(castCharge + bobberSpawnPoint.global_position.x, 0.1, global_position.z)
 				
 				castCharge += increment_value / timeToCast
-				castCharge = clampf(castCharge, 0.0, distanceOfWater)
+				castCharge = clampf(castCharge, 0.0, bobberDestination.global_position.x)
 				
 				if(reticleReference != null):
 					

@@ -56,11 +56,12 @@ _data = {
 "draw": SubResource("Animation_auehr")
 }
 
-[node name="fishing_rod" node_paths=PackedStringArray("animationPlayer", "bobberResources", "bobberSpawnPoint") instance=ExtResource("1_tc17c")]
+[node name="fishing_rod" node_paths=PackedStringArray("animationPlayer", "bobberResources", "bobberSpawnPoint", "bobberDestination") instance=ExtResource("1_tc17c")]
 script = ExtResource("2_ejrp3")
 animationPlayer = NodePath("AnimationPlayer")
 bobberResources = NodePath("BobberResources")
 bobberSpawnPoint = NodePath("BobberSpawnPoint")
+bobberDestination = NodePath("BobberDestination")
 timeToCast = 2.0
 
 [node name="Object_1" parent="." index="0"]
@@ -79,3 +80,4 @@ resources = [PackedStringArray("bobber"), [ExtResource("3_jt8k4")]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.543376, 0.336527, 0.0105892)
 
 [node name="BobberDestination" type="Marker3D" parent="." index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.33958, 0, 0)
