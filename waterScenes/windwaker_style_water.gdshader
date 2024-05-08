@@ -13,7 +13,8 @@ uniform sampler2D surfaceNoise;
 uniform sampler2D distortNoise;
 uniform bool enabled;
 uniform sampler2D DEPTH_TEXTURE : hint_depth_texture, filter_linear_mipmap;
-
+uniform float amount: hint_range(0.2, 5.0, 0.1) = 0.8;
+uniform float speed: hint_range(0.1, 5.0, 0.1) = 1;
 uniform float beer_factor = 0.8;
 
 uniform float foam_distance = 0.01;
@@ -43,10 +44,26 @@ vec4 alphaBlend(vec4 top, vec4 bottom)
 	return vec4(color, alpha);
 }
 
+float generateOffset(float x, float z, float val1, float val2, float time) {
+	float radiansX = ((mod(x + z * x * val1, amount) / amount) + (time * speed) * mod(x * 0.8 + z, 1.5)) * 2.0 * 3.14;
+	float radiansZ = ((mod(val2 * (z * x + x * z), amount) / amount) + (time * speed) * 2.0 * mod(x, 2.0)) * 2.0 * 3.14;
+	
+	return amount * 0.5 * (sin(radiansZ) * cos(radiansX));
+}
+vec3 applyDistortion(vec3 vertex, float time) {
+	float xd = generateOffset(vertex.x, vertex.z, 0.2, 0.1, time);
+	float yd = generateOffset(vertex.x, vertex.z, 0.1, 0.3, time);
+	float zd = generateOffset(vertex.x, vertex.z, 0.15, 0.2, time);
+	
+	return vertex + vec3(xd, yd, zd);
+}
+
 void vertex() {
+	VERTEX = applyDistortion(VERTEX, TIME * 0.1);
 	viewNormal = (MODELVIEW_MATRIX * vec4(NORMAL, 0.0)).xyz;
 	noiseUV = UV * surface_noise_tiling;
 	distortUV = UV;
+	
 }
 
 void fragment(){
