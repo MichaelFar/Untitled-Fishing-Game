@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://d2sk0n585gaay" path="res://waterScenes/water_plane.tscn" id="1_8ffyc"]
 [ext_resource type="Script" path="res://scripts/fishing_minigame.gd" id="1_qolej"]
 [ext_resource type="PackedScene" uid="uid://c0bplh7eeexvd" path="res://modelScenes/fishing_rod.tscn" id="3_b1vkg"]
-[ext_resource type="PackedScene" uid="uid://bdunasxchfrai" path="res://modelScenes/basic_fish.tscn" id="3_if7u0"]
+[ext_resource type="PackedScene" uid="uid://bxw1u1ckjb0kl" path="res://gameLogicScenes/spawn_manager.tscn" id="4_06l8t"]
 
 [node name="FishingMinigame" type="Node3D" node_paths=PackedStringArray("waterMesh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 2.5)
@@ -36,7 +36,6 @@ shadow_enabled = true
 shadow_bias = 1.122
 directional_shadow_mode = 0
 
-[node name="basic_fish" parent="." instance=ExtResource("3_if7u0")]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.175413, -0.146659, 0.462485)
+[node name="spawn_manager" parent="." instance=ExtResource("4_06l8t")]
 
 [editable path="WaterPlane"]

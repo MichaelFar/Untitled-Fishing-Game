@@ -21,7 +21,6 @@ enum FISHSTATE {
 
 func _ready():
 	
-	Globals.calculated_water_mesh_origin.connect(get_water_mesh_origin)
 	call_deferred("actor_setup")
 
 func _physics_process(delta):
@@ -51,7 +50,7 @@ func _physics_process(delta):
 	
 	move_and_slide()
 
-func get_water_mesh_origin(water_mesh_origin):
+func set_water_mesh_origin(water_mesh_origin):
 	
 	waterMeshOrigin = water_mesh_origin
 	print("Water mesh origin in basic_fish is " + str(waterMeshOrigin))

@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://bxw1u1ckjb0kl"]
+
+[ext_resource type="Script" path="res://scripts/spawn_manager.gd" id="1_cfuuw"]
+[ext_resource type="PackedScene" uid="uid://bdunasxchfrai" path="res://modelScenes/basic_fish.tscn" id="1_huau6"]
+
+[node name="spawn_manager" type="Node3D" node_paths=PackedStringArray("fishResources", "spawnTimer", "spawnReferencePoint")]
+script = ExtResource("1_cfuuw")
+fishResources = NodePath("FishResources")
+spawnTimer = NodePath("SpawnTimer")
+spawnReferencePoint = NodePath("spawnReferencePoint")
+
+[node name="FishResources" type="ResourcePreloader" parent="."]
+resources = [PackedStringArray("basic_fish"), [ExtResource("1_huau6")]]
+
+[node name="spawnReferencePoint" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.334595, 0)
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 5.0
