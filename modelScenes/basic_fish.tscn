@@ -152,7 +152,7 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.1182
 transform = Transform3D(1, 0, 0, 0, 2.22045e-16, -1, 0, 1, 2.22045e-16, 0, 0, 0)
 
 [node name="Armature_7" type="Node3D" parent="Sketchfab_model/root/GLTF_SceneRootNode"]
-transform = Transform3D(0.564628, -5.29574e-11, -2.28592e-09, -2.28593e-09, -0.0261479, -0.564022, -5.29574e-11, 0.564022, -0.0261479, 0, 0.0581963, 0.263674)
+transform = Transform3D(0.564628, -5.29614e-11, -2.28599e-09, -2.28599e-09, -0.0261487, -0.564022, -5.29614e-11, 0.564022, -0.0261487, 0, 0.0581963, 0.263674)
 
 [node name="GLTF_created_0" type="Node3D" parent="Sketchfab_model/root/GLTF_SceneRootNode/Armature_7"]
 
@@ -191,7 +191,7 @@ bones/4/parent = 3
 bones/4/rest = Transform3D(1, 5.81972e-07, -7.4956e-08, -5.81973e-07, 0.967365, -0.253388, -7.49552e-08, 0.253388, 0.967365, -1.43827e-15, 0.680567, 2.44059e-08)
 bones/4/enabled = true
 bones/4/position = Vector3(-1.43827e-15, 0.680567, 2.44059e-08)
-bones/4/rotation = Quaternion(0.127741, -2.20557e-13, -2.9339e-07, 0.991808)
+bones/4/rotation = Quaternion(0.127741, -2.25901e-13, -2.9339e-07, 0.991808)
 bones/4/scale = Vector3(1, 1, 1)
 
 [node name="Object_7" type="MeshInstance3D" parent="Sketchfab_model/root/GLTF_SceneRootNode/Armature_7/GLTF_created_0/Skeleton3D"]

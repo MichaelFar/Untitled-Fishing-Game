@@ -8,11 +8,15 @@ extends CharacterBody3D
 
 @export var fishSpeed := 0.5
 
+@export var angularAcceleration := 2.0 #Turns out 3d rotation is extra like that
+
 var waterMeshOrigin = Vector2.ZERO
 
 var chosenPosition := Vector3.ZERO
 
 var currentState = FISHSTATE.MOVE
+
+var rotating = false
 
 enum FISHSTATE {
 	MOVE,
@@ -33,19 +37,23 @@ func _physics_process(delta):
 			current_agent_position = global_position
 			next_path_position = navAgent.get_next_path_position()
 			velocity = current_agent_position.direction_to(next_path_position) * fishSpeed
-			print("Moving...")
+			#print("Moving...")
 			if(!animationPlayer.is_playing()):
 				animationPlayer.play("looping_swim")
 				
 			if(next_path_position != global_position):
-				look_at(next_path_position)
 				
+				rotation.y = lerp_angle(rotation.y, atan2(-velocity.x, -velocity.z), delta * angularAcceleration)# Thank you youtube guy holy goddamn
+				
+				#print("Rotation is " + str(rotation) + " and rotation.angle_to is " + str(position.angle_to(next_path_position)))
+
 		FISHSTATE.IDLE:
-			print("Idling...")
+			#print("Idling...")
 			if(idleTimer.is_stopped()):
 				print("Timer starting...")
 				#animationPlayer.pause()
 				idleTimer.start()
+				rotating = false
 	
 	
 	move_and_slide()
