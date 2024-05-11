@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://c6bcgwhy34msk"]
+
+[ext_resource type="Script" path="res://scripts/BobberSpawnPoint.gd" id="1_mj73d"]
+
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_ndoc1"]
+
+[node name="BobberSpawnPoint" type="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.543376, 0.346841, 0.00223449)
+mesh = SubResource("ImmediateMesh_ndoc1")
+script = ExtResource("1_mj73d")

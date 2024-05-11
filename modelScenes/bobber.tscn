@@ -44,10 +44,11 @@ _data = {
 [sub_resource type="SphereShape3D" id="SphereShape3D_fiwqv"]
 radius = 1.085
 
-[node name="bobber" node_paths=PackedStringArray("animationPlayer") instance=ExtResource("1_nv2g1")]
+[node name="bobber" node_paths=PackedStringArray("animationPlayer", "topOfBobber") instance=ExtResource("1_nv2g1")]
 transform = Transform3D(0.126359, 0.0808286, 0, -0.0808286, 0.126359, 0, 0, 0, 0.15, 0, 0, 0)
 script = ExtResource("2_sf8pp")
 animationPlayer = NodePath("AnimationPlayer")
+topOfBobber = NodePath("TopOfBobber")
 
 [node name="Icosphere_001" parent="." index="1"]
 transform = Transform3D(1, -3.55271e-15, 0, 3.55271e-15, 1, 0, 0, 0, 1, 0, -0.48, 0)
@@ -62,3 +63,6 @@ collision_mask = 8
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" index="0"]
 shape = SubResource("SphereShape3D_fiwqv")
+
+[node name="TopOfBobber" type="Marker3D" parent="." index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.514494, 0.804306, 0)

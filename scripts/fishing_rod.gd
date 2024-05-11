@@ -12,6 +12,9 @@ signal cast_ended
 
 @export var timeToCast = 1.0 #How long it takes to fully charge a cast in seconds
 
+var lineScene = preload("res://modelScenes/fishing_line.tscn")
+
+var lineReference = null
 
 var castCharge := 0.0
 
@@ -118,6 +121,8 @@ func _physics_process(delta):
 			if Input.is_action_just_released("cast"):
 				
 				lastCastBobber.queue_free()
+				lineReference.hasCast = false
+				lineReference.clear_line()
 				currentState = STATE.MOVING
 				
 func create_reticle():
@@ -127,14 +132,22 @@ func create_reticle():
 	get_parent().add_child(reticle_instance)
 	reticle_instance.global_position = global_position
 
-func create_bobber(index, destination):
+func create_bobber(index, destination : Vector3):
 	
 	var bobber_resource = bobberList[index]
 	bobber_resource = bobberResources.get_resource(bobber_resource)
 	bobber_resource = bobber_resource.instantiate()
-	get_parent().add_child(bobber_resource)
+	add_child(bobber_resource)
 	bobber_resource.global_position = destination
+	lineReference = create_line(bobber_resource)
 	lastCastBobber = bobber_resource
+
+func create_line(object_to_follow):
+	var line_instance = lineScene.instantiate()
+	line_instance.objectToFollow = object_to_follow
+	line_instance.hasCast = true
+	add_child(line_instance)
+	return line_instance
 	
 func create_bobber_from_anim():
 	

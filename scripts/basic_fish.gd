@@ -68,8 +68,9 @@ func actor_setup():
 
 	# Now that the navigation map is no longer empty, set the movement target.
 	set_movement_target(get_random_position())
+	
 
-func get_random_position():
+func get_random_position() -> Vector3:
 	
 	var randnum = RandomNumberGenerator.new()
 	var chosen_position := Vector3.ZERO

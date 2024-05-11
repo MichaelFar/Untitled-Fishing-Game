@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://c0bplh7eeexvd"]
+[gd_scene load_steps=10 format=3 uid="uid://c0bplh7eeexvd"]
 
 [ext_resource type="PackedScene" uid="uid://gw2lhpqxyqss" path="res://modelScenes/fishing_rod.glb" id="1_tc17c"]
 [ext_resource type="Script" path="res://scripts/fishing_rod.gd" id="2_ejrp3"]
 [ext_resource type="PackedScene" uid="uid://ccnea7702quod" path="res://modelScenes/bobber.tscn" id="3_jt8k4"]
+[ext_resource type="Script" path="res://scripts/BobberSpawnPoint.gd" id="4_a15t2"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ks787"]
 albedo_color = Color(0.556863, 0.270588, 0, 1)
@@ -56,6 +57,8 @@ _data = {
 "draw": SubResource("Animation_auehr")
 }
 
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_ndoc1"]
+
 [node name="fishing_rod" node_paths=PackedStringArray("animationPlayer", "bobberResources", "bobberSpawnPoint", "bobberDestination") instance=ExtResource("1_tc17c")]
 script = ExtResource("2_ejrp3")
 animationPlayer = NodePath("AnimationPlayer")
@@ -76,7 +79,10 @@ libraries = {
 [node name="BobberResources" type="ResourcePreloader" parent="." index="2"]
 resources = [PackedStringArray("bobber"), [ExtResource("3_jt8k4")]]
 
-[node name="BobberDestination" type="Marker3D" parent="." index="3"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.33958, 0, 0)
+[node name="BobberSpawnPoint" type="MeshInstance3D" parent="." index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.543376, 0.346841, 0.00223449)
+mesh = SubResource("ImmediateMesh_ndoc1")
+script = ExtResource("4_a15t2")
 
-[node name="BobberSpawnPoint" type="Marker3D" parent="." index="4"]
+[node name="BobberDestination" type="Marker3D" parent="." index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.33958, 0, 0)
