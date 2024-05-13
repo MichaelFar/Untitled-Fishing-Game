@@ -4,7 +4,7 @@
 
 [sub_resource type="ImmediateMesh" id="ImmediateMesh_ndoc1"]
 
-[node name="BobberSpawnPoint" type="MeshInstance3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.543376, 0.346841, 0.00223449)
+[node name="FishingLine" type="MeshInstance3D"]
+top_level = true
 mesh = SubResource("ImmediateMesh_ndoc1")
 script = ExtResource("1_mj73d")

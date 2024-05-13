@@ -12,8 +12,6 @@ func start_bobbing():
 	animationPlayer.play("bobbing")
 	create_y_tween()
 
-
-
 func create_y_tween():
 	
 	
@@ -24,4 +22,3 @@ func create_y_tween():
 	tween.finished.connect(create_y_tween)
 	
 
-	

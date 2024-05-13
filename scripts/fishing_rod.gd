@@ -10,7 +10,15 @@ signal cast_ended
 
 @export var bobberDestination : Marker3D
 
+@export var bezierArcPoint : Marker3D
+
 @export var timeToCast = 1.0 #How long it takes to fully charge a cast in seconds
+
+var arcAcceleration := 0.1
+
+var arcTime := 3.0
+
+
 
 var lineScene = preload("res://modelScenes/fishing_line.tscn")
 
@@ -43,6 +51,7 @@ var tween : Tween
 var alreadyTweened := false
 
 var distanceOfWater := 0.0 
+
 
 
 enum STATE {
@@ -92,6 +101,7 @@ func _physics_process(delta):
 				if(reticleReference != null):
 					
 					reticleReference.global_position = reticle_position
+					bezier_marker_placer()
 				
 			if Input.is_action_just_released("cast"):
 				
@@ -105,23 +115,35 @@ func _physics_process(delta):
 					reticleReference.queue_free()
 				
 				destinationPosition = Vector3(castCharge + bobberSpawnPoint.global_position.x, global_position.y, global_position.z)
-				#print(destinationPosition)
+				
 				tween = get_tree().create_tween()
 				tween.tween_property(self, "rotation_degrees:z", 0.0, 0.1)
 				create_bobber_from_anim()
 				currentState = STATE.CASTING
 				castCharge = 0.0
+			
 				
 			var movement_position = camera.project_position(mousePos, 3.4)
 			
 			global_position.z = movement_position.z
 			
 		STATE.CASTING:
-			
+			#if(lastCastBobber != null): Add this back in once you figure out bezier curves
+				#arcTime += delta * 5.0
+				#arcTime = clampf(arcTime, 0.0, 1.0)
+				#print("Bezier value is " + str(quadratic_bezier(bobberSpawnPoint.global_position, 
+				#bezierArcPoint.global_position, 
+				#destinationPosition, 
+				#arcTime)))
+				#
+				#lastCastBobber.global_position = quadratic_bezier(bobberSpawnPoint.global_position, 
+				#bezierArcPoint.global_position, 
+				#destinationPosition, 
+				#arcTime)
 			if Input.is_action_just_released("cast"):
 				
 				lastCastBobber.queue_free()
-				lineReference.hasCast = false
+				lineReference.queue_free()
 				lineReference.clear_line()
 				currentState = STATE.MOVING
 				
@@ -138,14 +160,17 @@ func create_bobber(index, destination : Vector3):
 	bobber_resource = bobberResources.get_resource(bobber_resource)
 	bobber_resource = bobber_resource.instantiate()
 	add_child(bobber_resource)
-	bobber_resource.global_position = destination
-	lineReference = create_line(bobber_resource)
+	bobber_resource.global_position = destinationPosition#bobberSpawnPoint.global_position
 	lastCastBobber = bobber_resource
+	await get_tree().physics_frame
+	lineReference = create_line(bobber_resource)
+	
 
 func create_line(object_to_follow):
 	var line_instance = lineScene.instantiate()
 	line_instance.objectToFollow = object_to_follow
-	line_instance.hasCast = true
+	line_instance.position = bobberSpawnPoint.position
+	line_instance.spawnObject = bobberSpawnPoint
 	add_child(line_instance)
 	return line_instance
 	
@@ -171,3 +196,15 @@ func screen_point_to_ray(depth_input):
 func get_water_height():
 	
 	distanceOfWater = get_parent().navAreaDimensions.x
+
+func quadratic_bezier(p0: Vector3, p1: Vector3, p2: Vector3, t: float):
+	
+	var q0 = p0.lerp(p1, t)
+	var q1 = p1.lerp(p2, t)
+	var r = q0.lerp(q1, t)
+	
+	return r
+
+func bezier_marker_placer():
+	bezierArcPoint.position.x = reticleReference.position.x / 2.0
+	

@@ -4,15 +4,19 @@ var startPoint = Vector3.ZERO #For the purposes of a fishing line this should no
 var endPoint = Vector3.ZERO
 
 var objectToFollow = null
+var spawnObject = null
+var frameCount = 0
 
-var hasCast := false
-
-func _process(delta):
+func _ready():
+	print(to_local(objectToFollow.topOfBobber.global_position))
 	
-	if(hasCast):
-		var modified_position = to_local(objectToFollow.topOfBobber.global_position)
-		
-		draw_line(modified_position)#+ Vector3(0,objectToFollow.position.y,0))
+
+func _physics_process(delta):
+	frameCount += 1
+	var modified_position = to_local(objectToFollow.topOfBobber.global_position)
+	startPoint = to_local(spawnObject.global_position)
+	#print(modified_position)
+	draw_line(modified_position)
 		
 func draw_line(new_end_point : Vector3):
 	clear_line()
@@ -22,8 +26,9 @@ func draw_line(new_end_point : Vector3):
 	endPoint = new_end_point
 	
 	mesh.surface_add_vertex(endPoint)
+	
 	mesh.surface_end()
-
+	
 func clear_line():
 	mesh.clear_surfaces()
 
