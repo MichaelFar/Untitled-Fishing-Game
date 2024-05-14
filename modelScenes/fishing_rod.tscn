@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://c0bplh7eeexvd"]
+[gd_scene load_steps=10 format=3 uid="uid://c0bplh7eeexvd"]
 
 [ext_resource type="PackedScene" uid="uid://gw2lhpqxyqss" path="res://modelScenes/fishing_rod.glb" id="1_tc17c"]
 [ext_resource type="Script" path="res://scripts/fishing_rod.gd" id="2_ejrp3"]
@@ -56,13 +56,23 @@ _data = {
 "draw": SubResource("Animation_auehr")
 }
 
-[node name="fishing_rod" node_paths=PackedStringArray("animationPlayer", "bobberResources", "bobberSpawnPoint", "bobberDestination", "bezierArcPoint") instance=ExtResource("1_tc17c")]
+[sub_resource type="Curve3D" id="Curve3D_tskrn"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0.547509, 0.374447, -0.014219, -0.753041, 0.00125897, -0.00345098, 0.753041, -0.00125897, 0.00345098, 2.35401, 1.17251, -0.011044, 0, 0, 0, 0, 0, 0, 4.43417, 0.0359406, 0.00691262),
+"tilts": PackedFloat32Array(0, 0, 0)
+}
+point_count = 3
+
+[sub_resource type="SphereMesh" id="SphereMesh_63okc"]
+
+[node name="fishing_rod" node_paths=PackedStringArray("animationPlayer", "bobberResources", "bobberSpawnPoint", "bobberDestination", "bobberPath", "bobberFollow") instance=ExtResource("1_tc17c")]
 script = ExtResource("2_ejrp3")
 animationPlayer = NodePath("AnimationPlayer")
 bobberResources = NodePath("BobberResources")
 bobberSpawnPoint = NodePath("BobberSpawnPoint")
 bobberDestination = NodePath("BobberDestination")
-bezierArcPoint = NodePath("BezierArcPoint")
+bobberPath = NodePath("Path3D")
+bobberFollow = NodePath("Path3D/BobberPath")
 timeToCast = 2.0
 
 [node name="Object_1" parent="." index="0"]
@@ -85,3 +95,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.534996, 0.360471, 0)
 
 [node name="BezierArcPoint" type="Marker3D" parent="." index="5"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.41045, 1.14531, 0)
+
+[node name="Path3D" type="Path3D" parent="." index="6"]
+curve = SubResource("Curve3D_tskrn")
+
+[node name="BobberPath" type="PathFollow3D" parent="Path3D" index="0"]
+transform = Transform3D(0.999942, 0, 0, 0, 0.999936, 0, 0, 0, 0.999943, 0.547509, 0.374447, -0.014219)
+rotation_mode = 0
+loop = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Path3D/BobberPath" index="0"]
+transform = Transform3D(-0.000527301, 4.466e-09, 0.3, -0.121229, 0.274415, -0.000213085, -0.274415, -0.121229, -0.00048233, 0.0142288, -0.0298542, 0.0192236)
+visible = false
+mesh = SubResource("SphereMesh_63okc")
+skeleton = NodePath("../../..")

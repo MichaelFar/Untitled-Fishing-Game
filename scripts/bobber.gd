@@ -5,9 +5,11 @@ extends Node3D
 var directionCoefficient = 1.0
 var currentXZPosition : Vector2
 
+signal has_hit_water
+
 func _ready():
-	start_bobbing()
-	
+	#start_bobbing()
+	has_hit_water.connect(start_bobbing)
 func start_bobbing():
 	animationPlayer.play("bobbing")
 	create_y_tween()
