@@ -8,14 +8,16 @@ var currentXZPosition : Vector2
 signal has_hit_water
 
 func _ready():
+	
 	#start_bobbing()
 	has_hit_water.connect(start_bobbing)
+	
 func start_bobbing():
+	
 	animationPlayer.play("bobbing")
 	create_y_tween()
 
 func create_y_tween():
-	
 	
 	directionCoefficient *= -1
 	var tween = get_tree().create_tween()

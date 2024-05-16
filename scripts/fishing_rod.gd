@@ -14,12 +14,17 @@ signal cast_ended
 
 @export var bobberFollow : PathFollow3D
 
+@export var rodMesh : MeshInstance3D
+
 @export var timeToCast = 1.0 #How long it takes to fully charge a cast in seconds
+
+@export var castAngle = 9.2 #Z angle for casting, used for dynamically interrupting cast for less power (future implementation as of 4/30)
+
+@export var bobberTravelSpeed = 0.01
 
 var arcAcceleration := 0.1
 
 var arcTime := 3.0
-
 
 var lineScene = preload("res://modelScenes/fishing_line.tscn")
 
@@ -44,8 +49,6 @@ var destinationPosition = null
 var lastCastBobber = null
 
 var frame_count = 0
-
-var castAngle = 9.2 #Z angle for casting, used for dynamically interrupting cast for less power (future implementation as of 4/30)
 
 var tween : Tween
 
@@ -74,9 +77,7 @@ func _ready():
 	camera = cameraViewPort.get_camera_3d()
 	
 	call_deferred("get_water_height")
-	print("Points in curve at _ready() " + str(get_points_in_curve()))
-	print("Point count is " + str(bobberPath.curve.point_count))
-	print("Point position of the second element is " + str(bobberPath.curve.get_point_position(1)))
+	
 func _physics_process(delta):
 	
 	var frame_rate = 1/delta
@@ -91,19 +92,19 @@ func _physics_process(delta):
 			
 			if Input.is_action_pressed("cast"):
 				
-				var increment_value = bobberDestination.global_position.x / frame_rate
+				var increment_value = bobberDestination.position.x / frame_rate
 				
 				if(!alreadyTweened):#Don't create a tween every frame
 					
 					create_reticle()
 					tween = get_tree().create_tween()
-					tween.tween_property(self, "rotation_degrees:z", castAngle * 3, timeToCast)
+					tween.tween_property(rodMesh, "rotation_degrees:z", castAngle * 3, timeToCast)
 					alreadyTweened = true
 					
-				var reticle_position = Vector3(castCharge + bobberSpawnPoint.global_position.x, 0.1, global_position.z)
+				var reticle_position = Vector3(castCharge + bobberSpawnPoint.position.x, 0.1, global_position.z)
 				
 				castCharge += increment_value / timeToCast
-				castCharge = clampf(castCharge, 0.0, bobberDestination.global_position.x)
+				castCharge = clampf(castCharge, 0.0, bobberDestination.position.x)
 				
 				if(reticleReference != null):
 					
@@ -117,29 +118,26 @@ func _physics_process(delta):
 					tween.kill()
 					alreadyTweened = false
 					
-				
-				
-				destinationPosition = Vector3(castCharge + bobberSpawnPoint.global_position.x, global_position.y, global_position.z)
+				destinationPosition = Vector3(castCharge + bobberSpawnPoint.position.x, position.y, position.z)
 				
 				tween = get_tree().create_tween()
-				tween.finished.connect(transition_to_cast)
-				tween.tween_property(self, "rotation_degrees:z", 0.0, 0.1)
+				transition_to_cast()
+				tween.tween_property(rodMesh, "rotation_degrees:z", 0.0, 0.1)
 				
 				castCharge = 0.0
 			var movement_position = camera.project_position(mousePos, 3.4)
 			
 			global_position.z = movement_position.z
 		
-		STATE.WAITING:
-			pass
-			
 		STATE.CASTING:
 			
 			if(reticleReference != null):
 					bezier_marker_placer()
 					create_bobber_from_anim()
 					reticleReference.queue_free()
-			bobberPath.get_children()[0].progress_ratio += 0.01
+					
+			bobberPath.get_children()[0].progress_ratio += bobberTravelSpeed
+			
 			if(bobberPath.get_children()[0].progress_ratio >= .99):
 				
 				lastCastBobber.has_hit_water.emit()
@@ -152,6 +150,7 @@ func _physics_process(delta):
 				currentState = STATE.MOVING
 				hasCreatedBobber = false
 				bobberPath.get_children()[0].progress_ratio = 0.0
+				
 func create_reticle():
 	
 	var reticle_instance = reticleResource.instantiate()
@@ -171,7 +170,6 @@ func create_bobber(index, destination : Vector3):
 	await get_tree().physics_frame
 	lineReference = create_line(bobber_resource)
 	
-
 func create_line(object_to_follow):
 	var line_instance = lineScene.instantiate()
 	line_instance.objectToFollow = object_to_follow
@@ -203,14 +201,6 @@ func get_water_height():
 	
 	distanceOfWater = get_parent().navAreaDimensions.x
 
-func quadratic_bezier(p0: Vector3, p1: Vector3, p2: Vector3, t: float):
-	
-	var q0 = p0.lerp(p1, t)
-	var q1 = p1.lerp(p2, t)
-	var r = q0.lerp(q1, t)
-	
-	return r
-
 func bezier_marker_placer():
 	var marker_position = bobberPath.curve.get_point_position(1)
 	marker_position.x = to_local(reticleReference.global_position).x / 2.0
@@ -221,16 +211,10 @@ func bezier_marker_placer():
 	bobberPath.curve.set_point_position(0, bobberSpawnPoint.position)
 	bobberPath.curve.set_point_position(1, marker_position)
 	bobberPath.curve.set_point_position(2, final_position)
-	print("marker_position for bezier is " + str(marker_position))
-	for i in range(3):
-		
-		print("And all points are " + str(bobberPath.curve.get_point_position(i)))
+	#print("marker_position for bezier is " + str(marker_position))
+	#for i in range(3):
+		#
+		#print("And all points are " + str(bobberPath.curve.get_point_position(i)))
 func transition_to_cast():
 	currentState = STATE.CASTING
-	
 
-func get_points_in_curve():
-	var curve : Curve3D 
-	curve = bobberPath.curve
-	
-	return curve.get_baked_points()

@@ -18,7 +18,7 @@ shadow_bias = 1.122
 directional_shadow_mode = 0
 
 [node name="TopDownCamera" type="Camera3D" parent="."]
-transform = Transform3D(8.5224e-08, 0.649899, -0.76002, 9.96646e-08, 0.76002, 0.649899, 1, -1.31134e-07, -2.13163e-14, -5.19567, 4.02466, -0.03381)
+transform = Transform3D(8.5224e-08, 0.649899, -0.76002, 9.96646e-08, 0.76002, 0.649899, 1, -1.31134e-07, 2.84217e-14, -5.72712, 4.02466, -0.0338099)
 fov = 41.19
 
 [node name="fishing_rod" parent="." instance=ExtResource("3_b1vkg")]
