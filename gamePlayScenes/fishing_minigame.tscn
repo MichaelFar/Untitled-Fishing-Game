@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bxw1u1ckjb0kl" path="res://gameLogicScenes/spawn_manager.tscn" id="4_06l8t"]
 
 [node name="FishingMinigame" type="Node3D" node_paths=PackedStringArray("waterMesh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 2.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.48856, 0, 2.50427)
 script = ExtResource("1_qolej")
 waterMesh = NodePath("WaterPlane")
 

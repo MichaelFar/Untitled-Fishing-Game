@@ -59,7 +59,7 @@ vec3 applyDistortion(vec3 vertex, float time) {
 }
 
 void vertex() {
-	VERTEX = applyDistortion(VERTEX, TIME * 0.1);
+	//VERTEX = applyDistortion(VERTEX, TIME * 0.1);
 	viewNormal = (MODELVIEW_MATRIX * vec4(NORMAL, 0.0)).xyz;
 	noiseUV = UV * surface_noise_tiling;
 	distortUV = UV;

@@ -1,25 +1,40 @@
-extends Node3D
+extends RigidBody3D
 
 @export var animationPlayer : AnimationPlayer
 @export var topOfBobber : Marker3D
 var directionCoefficient = 1.0
 var currentXZPosition : Vector2
+@export var float_force := 1.0
+@export var water_drag := 0.05
+@export var water_angular_drag := 0.05
+
+@onready var gravity: float = Globals.gravity
+
+var submerged := false
 
 signal has_hit_water
 
 func _ready():
 	
-	#start_bobbing()
-	#print("bobber position at ready is " + str(global_position))
 	has_hit_water.connect(start_bobbing)
 	
 func start_bobbing():
-	
-	animationPlayer.play("bobbing")
-	create_y_tween()
+	pass
+	#animationPlayer.play("bobbing")
+	#create_y_tween()
+func _physics_process(delta):
+	submerged = false
+	var depth = 0.0 - global_position.y
+	if depth > 0:
+		submerged = true
+		apply_force(Vector3.UP * float_force * gravity * depth)
 
+func _integrate_forces(state: PhysicsDirectBodyState3D):
+	if submerged:
+		state.linear_velocity *=  1 - water_drag
+		state.angular_velocity *= 1 - water_angular_drag 
 func create_y_tween():
-	#print("Bobber position is " + str(global_position))
+	
 	directionCoefficient *= -1
 	var tween = get_tree().create_tween()
 	tween.tween_property(self, "global_position:y", directionCoefficient * 0.1, 1)

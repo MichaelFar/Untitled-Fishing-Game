@@ -142,14 +142,9 @@ func _physics_process(delta):
 			
 			if(reticleReference != null):
 				
-				
 				reticleReference.queue_free()
 				
-				
-			
 			bobberPath.get_children()[0].progress_ratio += bobberTravelSpeed
-			
-			#bobberPath.get_children()[0].progress_ratio = clampf(bobberPath.get_children()[0].progress_ratio, 0.0, 1.0)
 			
 			if(bobberPath.get_children()[0].progress_ratio >= .99):
 				
@@ -227,20 +222,13 @@ func bezier_marker_placer():
 	final_position.x = reticleReference.position.x
 	final_position.y = reticleReference.position.y
 	
-	#print("position of bobberSpawnPoint is " + str(bobberSpawnPoint.position))
-	#print("position of debug sphere is " + str(debugSphere.position))
-	#if(lastCastBobber != null):
-		#print("position of bobber is " + str(lastCastBobber.position))
 	bezierArcPoint.position = marker_position#Debug placements
 	bezierDestination.position = final_position#Debug placements
 	
 	bobberPath.curve.set_point_position(0, bobberSpawnPoint.position)
 	bobberPath.curve.set_point_position(1, marker_position)
 	bobberPath.curve.set_point_position(2, final_position)
-	#print("marker_position for bezier is " + str(marker_position))
-	#for i in range(3):
-		#
-		#print("And all points are " + str(bobberPath.curve.get_point_position(i)))
+	
 	return final_position
 func transition_to_cast():
 	currentState = STATE.CASTING
