@@ -7,9 +7,6 @@ var objectToFollow = null
 var spawnObject = null
 var frameCount = 0
 
-func _ready():
-	print(to_local(objectToFollow.topOfBobber.global_position))
-	
 
 func _physics_process(delta):
 	frameCount += 1

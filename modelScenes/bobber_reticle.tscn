@@ -5,6 +5,7 @@
 
 [node name="bobber_reticle" type="Sprite3D"]
 sorting_offset = 3.0
+sorting_use_aabb_center = false
 modulate = Color(1, 0.0235294, 0.0392157, 1)
 axis = 1
 texture = ExtResource("1_f7g4q")

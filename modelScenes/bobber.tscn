@@ -41,8 +41,9 @@ _data = {
 "bobbing": SubResource("Animation_e7cek")
 }
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_fiwqv"]
-radius = 1.085
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mkpng"]
+radius = 1.27922
+height = 4.022
 
 [node name="bobber" node_paths=PackedStringArray("animationPlayer", "topOfBobber") instance=ExtResource("1_nv2g1")]
 transform = Transform3D(0.126359, 0.0808286, 0, -0.0808286, 0.126359, 0, 0, 0, 0.15, 0, 0, 0)
@@ -65,4 +66,5 @@ libraries = {
 collision_mask = 8
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" index="0"]
-shape = SubResource("SphereShape3D_fiwqv")
+transform = Transform3D(0.839677, -0.543087, 0, 0.543087, 0.839677, 0, 0, 0, 1, 1.47086, -2.29939, 0)
+shape = SubResource("CapsuleShape3D_mkpng")
