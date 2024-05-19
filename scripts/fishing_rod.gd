@@ -58,7 +58,9 @@ var lastCastBobber = null
 
 var frame_count = 0
 
-var tween : Tween
+var tweenDraw : Tween
+
+var tweenCast : Tween
 
 var alreadyTweened := false
 
@@ -78,6 +80,8 @@ var currentState = STATE.MOVING
 
 @onready var reticleResource = preload("res://modelScenes/bobber_reticle.tscn")
 
+var numTweensCreated := 0
+
 func _ready():
 	
 	bobberList = bobberResources.get_resource_list()
@@ -89,7 +93,7 @@ func _ready():
 func _physics_process(delta):
 	
 	var frame_rate = 1/delta
-	
+	var tweenCastIsRunning := false
 	mousePos = cameraViewPort.get_mouse_position()
 	
 	var clamped_mouse = Vector2(mousePos.x, clamp(mousePos.y, 30, 470))
@@ -97,17 +101,25 @@ func _physics_process(delta):
 	match currentState:
 		
 		STATE.MOVING:
+				
+			if(tweenCast != null):
+				#If the player casts again whil the tweenCast is running,
+				# unexpected behavior that leads to a crash occurs
+				# We avoid this by checking if it's running before casting
+				tweenCastIsRunning = tweenCast.is_running()
+				
 			
-			if Input.is_action_pressed("cast"):
+			if Input.is_action_pressed("cast") && !tweenCastIsRunning:
 				
 				var increment_value = bobberDestination.position.x / frame_rate
 				
 				if(!alreadyTweened):#Don't create a tween every frame
+					numTweensCreated += 1
+					reticleReference = create_reticle()
+					print("Reticle reference is " + str(reticleReference))
 					
-					create_reticle()
-					
-					tween = get_tree().create_tween()
-					tween.tween_property(rodMesh, "rotation_degrees:z", castAngle * 3, timeToCast)
+					tweenDraw = get_tree().create_tween()
+					tweenDraw.tween_property(rodMesh, "rotation_degrees:z", castAngle * 3, timeToCast)
 					alreadyTweened = true
 					
 				var reticle_position = Vector3(castCharge + bobberSpawnPoint.global_position.x, 0.1, global_position.z)
@@ -118,21 +130,23 @@ func _physics_process(delta):
 				if(reticleReference != null):
 					
 					reticleReference.global_position = reticle_position
-					
+				
 			if Input.is_action_just_released("cast"):
 				
-				if(tween):
-				
-					tween.kill()
+				if(tweenDraw):
+					
+					print("tween killed: " + str(numTweensCreated))
+					tweenDraw.kill()
 					alreadyTweened = false
 					
 				destinationPosition = Vector3(castCharge + bobberSpawnPoint.position.x, bobberSpawnPoint.position.y, bobberSpawnPoint.position.z)
 				
-				tween = get_tree().create_tween()
+				tweenCast = get_tree().create_tween()
 				
-				tween.tween_property(rodMesh, "rotation_degrees:z", 0.0, 0.1)
-				tween.finished.connect(create_bobber_from_anim)
+				tweenCast.tween_property(rodMesh, "rotation_degrees:z", 0.0, 0.1)
+				tweenCast.finished.connect(create_bobber_from_anim)
 				castCharge = 0.0
+				#alreadyTweened = true
 				
 			var movement_position = camera.project_position(mousePos, 3.4)
 			
@@ -141,17 +155,20 @@ func _physics_process(delta):
 		STATE.CASTING:
 			
 			if(reticleReference != null):
-				
-				reticleReference.queue_free()
-				
+					print("Reticle has been freed")
+					reticleReference.queue_free()
+					
 			bobberPath.get_children()[0].progress_ratio += bobberTravelSpeed
 			
 			if(bobberPath.get_children()[0].progress_ratio >= .99):
 				
 				lastCastBobber.has_hit_water.emit()
 				lastCastBobber.reparent(self)
+				
 			else:
+				
 				lastCastBobber.position = debugSphere.position
+				
 			if Input.is_action_just_released("cast"):
 				
 				lastCastBobber.queue_free()
@@ -163,10 +180,12 @@ func _physics_process(delta):
 				
 func create_reticle():
 	
+	
 	var reticle_instance = reticleResource.instantiate()
-	reticleReference = reticle_instance
+	
 	add_child(reticle_instance)
 	reticle_instance.position.x = bobberSpawnPoint.position.x
+	return reticle_instance
 
 func create_bobber(index):
 	
@@ -190,9 +209,10 @@ func create_line(object_to_follow):
 	return line_instance
 	
 func create_bobber_from_anim():
+	print("Created bobber from anim")
+	transition_to_cast()
 	bezier_marker_placer()
 	create_bobber(bobberIndex)
-	transition_to_cast()
 	
 func screen_point_to_ray(depth_input):
 	
@@ -216,6 +236,7 @@ func get_water_height():
 func bezier_marker_placer():
 	
 	var marker_position = bobberPath.curve.get_point_position(1)
+	print("reticle reference in bezier is " + str(reticleReference))
 	marker_position.x = reticleReference.position.x / 2.0
 	
 	var final_position = marker_position
@@ -230,6 +251,8 @@ func bezier_marker_placer():
 	bobberPath.curve.set_point_position(2, final_position)
 	
 	return final_position
+	
 func transition_to_cast():
 	currentState = STATE.CASTING
-
+	
+	
