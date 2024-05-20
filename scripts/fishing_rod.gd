@@ -181,7 +181,7 @@ func create_reticle():
 	var reticle_instance = reticleResource.instantiate()
 	
 	add_child(reticle_instance)
-	reticle_instance.position.x = bobberSpawnPoint.position.x
+	reticle_instance.position.x = bobberSpawnPoint.position.x + Globals.currentWaterDimension.x
 	return reticle_instance
 
 func create_bobber(index):

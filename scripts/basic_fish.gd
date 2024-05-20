@@ -10,6 +10,8 @@ extends CharacterBody3D
 
 @export var angularAcceleration := 2.0 #Turns out 3d rotation is extra like that
 
+@export var debugSphere := MeshInstance3D
+
 var waterMeshOrigin = Vector2.ZERO
 
 var chosenPosition := Vector3.ZERO
@@ -33,7 +35,7 @@ enum FISHSTATE {
 
 var BAIT_INTEREST_DICT = {Globals.BAITS.LEECHES: 15, 
 Globals.BAITS.GRUBS : 20, 
-Globals.BAITS.WORMS : 50}
+Globals.BAITS.WORMS : 100}
 
 func _ready():
 	
@@ -46,17 +48,21 @@ func _physics_process(delta):
 	var next_path_position: Vector3
 	
 	match currentState:
+		
 		FISHSTATE.MOVE:
+			
 			current_agent_position = global_position
 			next_path_position = navAgent.get_next_path_position()
 			velocity = current_agent_position.direction_to(next_path_position) * fishSpeed
 			#print("Moving...")
 			if(!animationPlayer.is_playing()):
+				
 				animationPlayer.play("looping_swim")
 				
-				#print("Rotation is " + str(rotation) + " and rotation.angle_to is " + str(position.angle_to(next_path_position)))
-			if(next_path_position != global_position):	
+			if(next_path_position != global_position):
+				
 				rotate_towards_velocity(delta)
+				
 		FISHSTATE.IDLE:
 			
 			if(idleTimer.is_stopped()):
@@ -64,14 +70,16 @@ func _physics_process(delta):
 				idleTimer.start()
 				
 		FISHSTATE.INTEREST:
+			
 			current_agent_position = global_position
 			next_path_position = navAgent.get_next_path_position()
 			velocity = current_agent_position.direction_to(next_path_position) * fishSpeed
+			print("Fish destination is " + str(next_path_position) + " and bobber is located at " + str(bobberGlobalPosition))
 			if(next_path_position != global_position):	
 				rotate_towards_velocity(delta)
 			if(bitingHook):
-				rotation.x = lerp_angle(rotation.x, atan2(-Vector3.UP.x, -Vector3.UP.z), globalDelta * angularAcceleration)
-	
+				rotation.x = lerp_angle(rotation.x, atan2(-Vector3.UP.x, -Vector3.UP.z), delta)
+	debugSphere.global_position = next_path_position
 	move_and_slide()
 
 func set_water_mesh_origin(water_mesh_origin):
@@ -106,7 +114,7 @@ func _on_idle_timer_timeout():
 func _on_navigation_agent_3d_target_reached():
 	
 	velocity = Vector3.ZERO
-	
+	print("Reached destination")
 	if(!isInterested):
 		
 		currentState = FISHSTATE.IDLE
@@ -124,7 +132,7 @@ func poll_interest(bait_key):
 	print("Interest result is " + str(poll_result))
 	var target = BAIT_INTEREST_DICT[bait_key]
 	
-	if(poll_result <= target):
+	if(poll_result <= target && isInterested == false):
 		print("Fish is interested")
 		currentState = FISHSTATE.INTEREST
 		isInterested = true
@@ -132,16 +140,23 @@ func poll_interest(bait_key):
 		idleTimer.stop()
 
 func _on_detection_box_area_entered(area):
+	
 	area.get_parent().polling_interest.connect(poll_interest)
 	bobberGlobalPosition = area.get_parent().global_position
 	print("Fish entered")
 
 func _on_detection_box_area_exited(area):
+	
 	print("Disconnecting signal")
 	area.get_parent().disconnect("polling_interest", poll_interest)
+	if(isInterested):
+		set_movement_target(get_random_position())
+		currentState = FISHSTATE.MOVE
+		isInterested = false
 	if(bitingHook):
 		queue_free()
 		get_parent().currentFishNum -= 1
+		
 func resize():
 	
 	var randnum = RandomNumberGenerator.new()
