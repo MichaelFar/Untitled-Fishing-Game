@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bdunasxchfrai"]
+[gd_scene load_steps=11 format=3 uid="uid://bdunasxchfrai"]
 
 [ext_resource type="Texture2D" uid="uid://lakse1k6krwu" path="res://modelScenes/animated_low_poly_fish_0.jpg" id="2_fhg2k"]
 [ext_resource type="Script" path="res://scripts/basic_fish.gd" id="2_wigxq"]
@@ -46,6 +46,10 @@ bind/3/pose = Transform3D(-1.77108, -4.06773e-06, -1.26327e-08, 1.986e-13, 0.005
 bind/4/name = &"Bone.003_3"
 bind/4/bone = -1
 bind/4/pose = Transform3D(-1.77108, -3.93818e-06, 1.01849e-06, 3.94733e-13, -0.443447, -1.71466, 4.06775e-06, -1.71466, 0.443447, 9.27965e-07, -1.14216, 0.404032)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5hy3q"]
+shading_mode = 0
+albedo_color = Color(0, 0.168627, 1, 1)
 
 [sub_resource type="Animation" id="Animation_bgbig"]
 resource_name = "looping_swim"
@@ -197,6 +201,7 @@ bones/4/scale = Vector3(1, 1, 1)
 [node name="Object_7" type="MeshInstance3D" parent="Sketchfab_model/root/GLTF_SceneRootNode/Armature_7/GLTF_created_0/Skeleton3D"]
 mesh = SubResource("ArrayMesh_uishp")
 skin = SubResource("Skin_m1lmd")
+surface_material_override/0 = SubResource("StandardMaterial3D_5hy3q")
 
 [node name="Plane_040_6" type="Node3D" parent="Sketchfab_model/root/GLTF_SceneRootNode/Armature_7/GLTF_created_0"]
 

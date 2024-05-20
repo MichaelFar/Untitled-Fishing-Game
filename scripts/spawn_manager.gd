@@ -5,6 +5,7 @@ extends Node3D
 @export var spawnReferencePoint : Marker3D #fish will spawn below the water, with this serving as the y reference
 
 @export var fishNum = 5 #Number of fish who will spawn in total
+
 var currentFishNum = 0
 
 var fishList := []
@@ -15,7 +16,6 @@ func _ready():
 	
 	Globals.calculated_water_mesh_origin.connect(set_water_mesh_origin)
 	fish_resources_to_list()
-	
 	#spawnTimer.start()
 	spawnTimer.timeout.connect(spawn_loop)
 	await get_tree().physics_frame

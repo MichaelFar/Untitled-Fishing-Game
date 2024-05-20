@@ -16,21 +16,32 @@ var chosenPosition := Vector3.ZERO
 
 var currentState = FISHSTATE.MOVE
 
-var rotating = false
+var isInterested := false
+
+var bitingHook := false
+
+var bobberGlobalPosition = Vector3.ZERO
+
+var globalDelta := 0.0
 
 enum FISHSTATE {
-	MOVE,
-	IDLE,
+	MOVE,#Move to chosen point
+	IDLE,#Idle at chosen point
+	INTEREST,#Bait has gained interest in fish
+	NIBBLE
 }
 
-var BAIT_INTEREST_DICT = {Globals.BAITS.LEECHES: 30, Globals.BAITS.GRUBS : 60, Globals.BAITS.WORMS : 80}
+var BAIT_INTEREST_DICT = {Globals.BAITS.LEECHES: 15, 
+Globals.BAITS.GRUBS : 20, 
+Globals.BAITS.WORMS : 50}
 
 func _ready():
 	
 	call_deferred("actor_setup")
+	scale = resize()
 
 func _physics_process(delta):
-	
+	globalDelta = delta
 	var current_agent_position: Vector3
 	var next_path_position: Vector3
 	
@@ -43,19 +54,23 @@ func _physics_process(delta):
 			if(!animationPlayer.is_playing()):
 				animationPlayer.play("looping_swim")
 				
-			if(next_path_position != global_position):
-				
-				rotation.y = lerp_angle(rotation.y, atan2(-velocity.x, -velocity.z), delta * angularAcceleration)# Thank you youtube guy holy goddamn
-				
 				#print("Rotation is " + str(rotation) + " and rotation.angle_to is " + str(position.angle_to(next_path_position)))
-
+			if(next_path_position != global_position):	
+				rotate_towards_velocity(delta)
 		FISHSTATE.IDLE:
-			#print("Idling...")
+			
 			if(idleTimer.is_stopped()):
-				print("Timer starting...")
-				#animationPlayer.pause()
+				
 				idleTimer.start()
-				rotating = false
+				
+		FISHSTATE.INTEREST:
+			current_agent_position = global_position
+			next_path_position = navAgent.get_next_path_position()
+			velocity = current_agent_position.direction_to(next_path_position) * fishSpeed
+			if(next_path_position != global_position):	
+				rotate_towards_velocity(delta)
+			if(bitingHook):
+				rotation.x = lerp_angle(rotation.x, atan2(-Vector3.UP.x, -Vector3.UP.z), globalDelta * angularAcceleration)
 	
 	move_and_slide()
 
@@ -91,9 +106,15 @@ func _on_idle_timer_timeout():
 func _on_navigation_agent_3d_target_reached():
 	
 	velocity = Vector3.ZERO
-	currentState = FISHSTATE.IDLE
-
 	
+	if(!isInterested):
+		
+		currentState = FISHSTATE.IDLE
+	else:
+		print("Fish bit lure")
+		bitingHook = true
+		
+
 func poll_interest(bait_key):
 	
 	var randnum = RandomNumberGenerator.new()
@@ -105,11 +126,33 @@ func poll_interest(bait_key):
 	
 	if(poll_result <= target):
 		print("Fish is interested")
+		currentState = FISHSTATE.INTEREST
+		isInterested = true
+		set_movement_target(bobberGlobalPosition)
+		idleTimer.stop()
 
 func _on_detection_box_area_entered(area):
 	area.get_parent().polling_interest.connect(poll_interest)
+	bobberGlobalPosition = area.get_parent().global_position
 	print("Fish entered")
 
-
 func _on_detection_box_area_exited(area):
+	print("Disconnecting signal")
 	area.get_parent().disconnect("polling_interest", poll_interest)
+	if(bitingHook):
+		queue_free()
+		get_parent().currentFishNum -= 1
+func resize():
+	
+	var randnum = RandomNumberGenerator.new()
+	
+	var scale_max = scale / 2.0
+	
+	var new_scale = randnum.randf_range(-scale_max.x, scale_max.x)
+	
+	return scale + Vector3(new_scale,new_scale,new_scale)
+	
+func rotate_towards_velocity(delta):
+	
+	rotation.y = lerp_angle(rotation.y, atan2(-velocity.x, -velocity.z), delta * angularAcceleration)# Thank you youtube guy holy goddamn
+	

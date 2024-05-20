@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 Globals="*res://scripts/global_info.gd"
 
+[debug]
+
+shapes/collision/shape_color=Color(0, 0.0627451, 0.701961, 0.643137)
+
 [input]
 
 cast={
