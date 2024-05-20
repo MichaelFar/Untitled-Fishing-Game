@@ -2,27 +2,30 @@ extends RigidBody3D
 
 @export var animationPlayer : AnimationPlayer
 @export var topOfBobber : Marker3D
-var directionCoefficient = 1.0
-var currentXZPosition : Vector2
+@export var interestTimer : Timer
+
 @export var float_force := 1.0
 @export var water_drag := 0.05
 @export var water_angular_drag := 0.05
 
 @onready var gravity: float = Globals.gravity
 
+var currentBait = Globals.BAITS.GRUBS #This will be changed to be whatever the player has decided to equip
+
+var directionCoefficient = 1.0
+var currentXZPosition : Vector2
+
 var submerged := false
 
 signal has_hit_water
 
+signal polling_interest
+
 func _ready():
-	
-	has_hit_water.connect(start_bobbing)
-	
-func start_bobbing():
-	pass
-	#animationPlayer.play("bobbing")
-	#create_y_tween()
+	interestTimer.timeout.connect(emit_polling)
+
 func _physics_process(delta):
+	
 	submerged = false
 	var depth = 0.0 - global_position.y
 	if depth > 0:
@@ -30,9 +33,11 @@ func _physics_process(delta):
 		apply_force(Vector3.UP * float_force * gravity * depth)
 
 func _integrate_forces(state: PhysicsDirectBodyState3D):
+	
 	if submerged:
 		state.linear_velocity *=  1 - water_drag
 		state.angular_velocity *= 1 - water_angular_drag 
+		
 func create_y_tween():
 	
 	directionCoefficient *= -1
@@ -41,4 +46,9 @@ func create_y_tween():
 	
 	tween.finished.connect(create_y_tween)
 	
+func _on_area_3d_area_entered(area):
+	interestTimer.start()
 
+func emit_polling():
+	
+	polling_interest.emit(currentBait)

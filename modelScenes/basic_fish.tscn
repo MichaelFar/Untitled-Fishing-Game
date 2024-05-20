@@ -220,4 +220,5 @@ wait_time = 3.0
 
 [connection signal="target_reached" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_target_reached"]
 [connection signal="area_entered" from="DetectionBox" to="." method="_on_detection_box_area_entered"]
+[connection signal="area_exited" from="DetectionBox" to="." method="_on_detection_box_area_exited"]
 [connection signal="timeout" from="IdleTimer" to="." method="_on_idle_timer_timeout"]

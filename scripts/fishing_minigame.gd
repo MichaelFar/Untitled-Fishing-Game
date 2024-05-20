@@ -17,8 +17,7 @@ func set_nav_area_dimensions():
 	var xz_position = Vector2(waterMesh.global_position.x, waterMesh.global_position.z)
 	waterMeshOrigin = (waterMesh.mesh.size / 2.0) - xz_position
 	Globals.emit_water_mesh_signal(get_water_mesh_origin())
-	print( "Origin of water mesh is " + str(waterMeshOrigin))
-	return waterMesh.mesh.size 
+	return waterMesh.mesh.size
 
 func get_water_mesh_origin():
 	return waterMeshOrigin

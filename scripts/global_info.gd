@@ -8,6 +8,13 @@ var currentLevel = null
 
 signal calculated_water_mesh_origin
 
+enum BAITS {
+	LEECHES,
+	GRUBS,
+	WORMS
+}
+
+
 func emit_water_mesh_signal(waterMeshOrigin : Vector2):
 	
 	calculated_water_mesh_origin.emit(waterMeshOrigin)

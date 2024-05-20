@@ -28,8 +28,6 @@ signal cast_ended
 
 @export var bobberTravelSpeed = 0.01
 
-
-
 var arcAcceleration := 0.1
 
 var arcTime := 3.0
@@ -76,6 +74,8 @@ enum STATE {
 	WAITING #Bobber is in water, player is waiting for fish
 }
 
+var baits_num = {Globals.BAITS.LEECHES : 0, Globals.BAITS.GRUBS: 0, Globals.BAITS.WORMS : 0}
+
 var currentState = STATE.MOVING
 
 @onready var reticleResource = preload("res://modelScenes/bobber_reticle.tscn")
@@ -103,12 +103,11 @@ func _physics_process(delta):
 		STATE.MOVING:
 				
 			if(tweenCast != null):
-				#If the player casts again whil the tweenCast is running,
+				#If the player casts again while the tweenCast is running,
 				# unexpected behavior that leads to a crash occurs
 				# We avoid this by checking if it's running before casting
 				tweenCastIsRunning = tweenCast.is_running()
 				
-			
 			if Input.is_action_pressed("cast") && !tweenCastIsRunning:
 				
 				var increment_value = bobberDestination.position.x / frame_rate
@@ -116,7 +115,7 @@ func _physics_process(delta):
 				if(!alreadyTweened):#Don't create a tween every frame
 					numTweensCreated += 1
 					reticleReference = create_reticle()
-					print("Reticle reference is " + str(reticleReference))
+					#print("Reticle reference is " + str(reticleReference))
 					
 					tweenDraw = get_tree().create_tween()
 					tweenDraw.tween_property(rodMesh, "rotation_degrees:z", castAngle * 3, timeToCast)
@@ -135,7 +134,7 @@ func _physics_process(delta):
 				
 				if(tweenDraw):
 					
-					print("tween killed: " + str(numTweensCreated))
+					#print("tween killed: " + str(numTweensCreated))
 					tweenDraw.kill()
 					alreadyTweened = false
 					
@@ -146,7 +145,6 @@ func _physics_process(delta):
 				tweenCast.tween_property(rodMesh, "rotation_degrees:z", 0.0, 0.1)
 				tweenCast.finished.connect(create_bobber_from_anim)
 				castCharge = 0.0
-				#alreadyTweened = true
 				
 			var movement_position = camera.project_position(mousePos, 3.4)
 			
@@ -155,14 +153,14 @@ func _physics_process(delta):
 		STATE.CASTING:
 			
 			if(reticleReference != null):
-					print("Reticle has been freed")
+					#print("Reticle has been freed")
 					reticleReference.queue_free()
 					
 			bobberPath.get_children()[0].progress_ratio += bobberTravelSpeed
 			
 			if(bobberPath.get_children()[0].progress_ratio >= .99):
 				
-				lastCastBobber.has_hit_water.emit()
+				
 				lastCastBobber.reparent(self)
 				
 			else:
@@ -179,7 +177,6 @@ func _physics_process(delta):
 				bobberPath.get_children()[0].progress_ratio = 0.0
 				
 func create_reticle():
-	
 	
 	var reticle_instance = reticleResource.instantiate()
 	
@@ -209,7 +206,7 @@ func create_line(object_to_follow):
 	return line_instance
 	
 func create_bobber_from_anim():
-	print("Created bobber from anim")
+	#print("Created bobber from anim")
 	transition_to_cast()
 	bezier_marker_placer()
 	create_bobber(bobberIndex)
@@ -236,7 +233,7 @@ func get_water_height():
 func bezier_marker_placer():
 	
 	var marker_position = bobberPath.curve.get_point_position(1)
-	print("reticle reference in bezier is " + str(reticleReference))
+	#print("reticle reference in bezier is " + str(reticleReference))
 	marker_position.x = reticleReference.position.x / 2.0
 	
 	var final_position = marker_position

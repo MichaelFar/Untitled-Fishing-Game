@@ -23,6 +23,8 @@ enum FISHSTATE {
 	IDLE,
 }
 
+var BAIT_INTEREST_DICT = {Globals.BAITS.LEECHES: 30, Globals.BAITS.GRUBS : 60, Globals.BAITS.WORMS : 80}
+
 func _ready():
 	
 	call_deferred("actor_setup")
@@ -55,13 +57,12 @@ func _physics_process(delta):
 				idleTimer.start()
 				rotating = false
 	
-	
 	move_and_slide()
 
 func set_water_mesh_origin(water_mesh_origin):
 	
 	waterMeshOrigin = water_mesh_origin
-	print("Water mesh origin in basic_fish is " + str(waterMeshOrigin))
+	
 func actor_setup():
 	# Wait for the first physics frame so the NavigationServer can sync.
 	await get_tree().physics_frame
@@ -69,7 +70,6 @@ func actor_setup():
 	# Now that the navigation map is no longer empty, set the movement target.
 	set_movement_target(get_random_position())
 	
-
 func get_random_position() -> Vector3:
 	
 	var randnum = RandomNumberGenerator.new()
@@ -84,14 +84,32 @@ func set_movement_target(movement_target: Vector3):
 	navAgent.set_target_position(movement_target)
 
 func _on_idle_timer_timeout():
+	
 	set_movement_target(get_random_position())
 	currentState = FISHSTATE.MOVE
 
-
 func _on_navigation_agent_3d_target_reached():
+	
 	velocity = Vector3.ZERO
 	currentState = FISHSTATE.IDLE
 
+	
+func poll_interest(bait_key):
+	
+	var randnum = RandomNumberGenerator.new()
+	
+	var poll_result = randnum.randi_range(1, 100)
+	
+	print("Interest result is " + str(poll_result))
+	var target = BAIT_INTEREST_DICT[bait_key]
+	
+	if(poll_result <= target):
+		print("Fish is interested")
 
 func _on_detection_box_area_entered(area):
-	print("Fish caught")
+	area.get_parent().polling_interest.connect(poll_interest)
+	print("Fish entered")
+
+
+func _on_detection_box_area_exited(area):
+	area.get_parent().disconnect("polling_interest", poll_interest)
