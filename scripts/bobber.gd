@@ -10,7 +10,7 @@ extends RigidBody3D
 
 @onready var gravity: float = Globals.gravity
 
-var currentBait = Globals.BAITS.WORMS #This will be changed to be whatever the player has decided to equip
+var currentBait = Globals.BAITS.GRUBS #This will be changed to be whatever the player has decided to equip
 
 var directionCoefficient = 1.0
 var currentXZPosition : Vector2
@@ -20,6 +20,8 @@ var submerged := false
 signal has_hit_water
 
 signal polling_interest
+
+signal in_the_bite_zone
 
 func _ready():
 	interestTimer.timeout.connect(emit_polling)
@@ -52,3 +54,7 @@ func _on_area_3d_area_entered(area):
 func emit_polling():
 	
 	polling_interest.emit(currentBait)
+
+
+func _on_bobber_bite_zone_area_entered(area):
+	in_the_bite_zone.emit()

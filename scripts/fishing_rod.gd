@@ -206,7 +206,7 @@ func create_line(object_to_follow):
 	return line_instance
 	
 func create_bobber_from_anim():
-	#print("Created bobber from anim")
+	
 	transition_to_cast()
 	bezier_marker_placer()
 	create_bobber(bobberIndex)
