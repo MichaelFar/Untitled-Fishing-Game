@@ -12,6 +12,8 @@ extends CharacterBody3D
 
 @export var debugSphere := MeshInstance3D
 
+@export var detectionBox : Area3D
+
 var waterMeshOrigin = Vector2.ZERO
 
 var chosenPosition := Vector3.ZERO
@@ -28,6 +30,8 @@ var globalDelta := 0.0
 
 var couldBeBiting := false
 
+var biteZoneID = null
+
 enum FISHSTATE {
 	MOVE,#Move to chosen point
 	IDLE,#Idle at chosen point
@@ -36,13 +40,15 @@ enum FISHSTATE {
 }
 
 var BAIT_INTEREST_DICT = {Globals.BAITS.LEECHES: 15, 
-Globals.BAITS.GRUBS : 20, 
+Globals.BAITS.GRUBS :5, 
 Globals.BAITS.WORMS : 100}
 
 func _ready():
 	
 	call_deferred("actor_setup")
 	scale = resize()
+	if(PlayerStatGlobal.fishCurrentlyBiting.size() != 0):#If the fish spawns in and there is already a fish on the hook
+		detectionBox.monitoring = false
 
 func _physics_process(delta):
 	globalDelta = delta
@@ -73,22 +79,32 @@ func _physics_process(delta):
 				
 		FISHSTATE.INTEREST:
 			
-			#next_path_position = navAgent.get_next_path_position()
+			
 			var flat_bobber_destination = bobberGlobalPosition
 			flat_bobber_destination.y = global_position.y
 			
 			velocity = global_position.direction_to(flat_bobber_destination) * fishSpeed
-			#print("flat_bobber is " + str(flat_bobber_destination))
-			#print("bobberGlobalPosition is " + str(bobberGlobalPosition))
-			#global_position = Vector3(flat_global_position.x, global_position.y, flat_global_position.y)
-			#print("Fish destination is " + str(next_path_position) + " and bobber is located at " + str(bobberGlobalPosition))
-			#print("bitingHook is " + str(bitingHook))
 			
 			rotate_towards_velocity(delta)
+			
 			if(couldBeBiting):
-				bitingHook = true
 				
+				
+				
+				if(PlayerStatGlobal.fishCurrentlyBiting.size() != PlayerStatGlobal.numFishPerBait):
+					bitingHook = true
+				Globals.disableOtherFishDetectionBox(self)
+					
+				couldBeBiting = false
+				if(biteZoneID.get_parent().is_connected("in_the_bite_zone", check_if_biting)):
+					
+					biteZoneID.get_parent().disconnect("in_the_bite_zone", check_if_biting)
+				
+				if(PlayerStatGlobal.fishCurrentlyBiting.find(self) == -1):
+					PlayerStatGlobal.fishCurrentlyBiting.append(self)
+					
 			if(bitingHook):
+				
 				rotation.x = lerp_angle(rotation.x, atan2(-Vector3.UP.x, -Vector3.UP.z), delta)
 	
 	debugSphere.global_position = next_path_position
@@ -127,7 +143,6 @@ func _on_idle_timer_timeout():
 func _on_navigation_agent_3d_target_reached():
 	
 	velocity = Vector3.ZERO
-	print("Reached destination")
 	if(!isInterested):
 		
 		currentState = FISHSTATE.IDLE
@@ -143,26 +158,36 @@ func poll_interest(bait_key):
 	var target = BAIT_INTEREST_DICT[bait_key]
 	
 	if(poll_result <= target && isInterested == false):
-		print("Fish is interested")
+		
 		currentState = FISHSTATE.INTEREST
 		isInterested = true
 		#set_movement_target(bobberGlobalPosition)
 		idleTimer.stop()
 
 func _on_detection_box_area_entered(area):
+	
 	if(!area.get_parent().polling_interest.is_connected(poll_interest)):
+		
 		area.get_parent().polling_interest.connect(poll_interest)
+		
+	if(!area.get_parent().in_the_bite_zone.is_connected(check_if_biting)):
+		
 		area.get_parent().in_the_bite_zone.connect(check_if_biting)
+		
 	bobberGlobalPosition = area.get_parent().global_position
 	print("Fish entered")
 
 func _on_detection_box_area_exited(area):
 	
 	print("Disconnecting signal")
-	if(area.name != "BobberBiteZone"):
+	
+	if(area.name != "BobberBiteZone"):#change to non magic string
+		
 		area.get_parent().disconnect("polling_interest", poll_interest)
-		area.get_parent().disconnect("in_the_bite_zone", check_if_biting)
+		#area.get_parent().disconnect("in_the_bite_zone", check_if_biting)
+		
 	couldBeBiting = false
+	
 	if(isInterested):
 		
 		set_movement_target(get_random_position())
@@ -172,7 +197,7 @@ func _on_detection_box_area_exited(area):
 	if(bitingHook):
 		
 		queue_free()
-		get_parent().currentFishNum -= 1
+		
 		
 func resize():
 	
@@ -188,7 +213,12 @@ func rotate_towards_velocity(delta):
 	
 	rotation.y = lerp_angle(rotation.y, atan2(-velocity.x, -velocity.z), delta * angularAcceleration)# Thank you youtube guy holy goddamn
 	
-func check_if_biting():
+func check_if_biting(areaID):
 	print("Check if biting..")
 	couldBeBiting = true
-	
+	biteZoneID = areaID
+
+func _on_tree_exited():
+	Globals.listOfSpawnedFish.pop_at(Globals.listOfSpawnedFish.find(self))
+	PlayerStatGlobal.fishCurrentlyBiting.pop_at(PlayerStatGlobal.fishCurrentlyBiting.find(self))
+	Globals.enableAllFishDetectionBox()

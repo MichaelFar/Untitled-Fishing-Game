@@ -3,10 +3,14 @@ extends RigidBody3D
 @export var animationPlayer : AnimationPlayer
 @export var topOfBobber : Marker3D
 @export var interestTimer : Timer
+@export var biteZone : Area3D
+@export var baitRange: Area3D
 
 @export var float_force := 1.0
 @export var water_drag := 0.05
 @export var water_angular_drag := 0.05
+
+
 
 @onready var gravity: float = Globals.gravity
 
@@ -25,6 +29,7 @@ signal in_the_bite_zone
 
 func _ready():
 	interestTimer.timeout.connect(emit_polling)
+	Globals.currentBobber = self
 
 func _physics_process(delta):
 	
@@ -57,4 +62,4 @@ func emit_polling():
 
 
 func _on_bobber_bite_zone_area_entered(area):
-	in_the_bite_zone.emit()
+	in_the_bite_zone.emit(biteZone)

@@ -142,13 +142,14 @@ height = 2.02044
 
 [sub_resource type="SphereMesh" id="SphereMesh_6ywp2"]
 
-[node name="basic_fish" type="CharacterBody3D" node_paths=PackedStringArray("animationPlayer", "navAgent", "idleTimer", "debugSphere")]
+[node name="basic_fish" type="CharacterBody3D" node_paths=PackedStringArray("animationPlayer", "navAgent", "idleTimer", "debugSphere", "detectionBox")]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
 script = ExtResource("2_wigxq")
 animationPlayer = NodePath("AnimationPlayer")
 navAgent = NodePath("NavigationAgent3D")
 idleTimer = NodePath("IdleTimer")
 debugSphere = NodePath("MeshInstance3D")
+detectionBox = NodePath("DetectionBox")
 
 [node name="Sketchfab_model" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.118263, 0, 0)
@@ -217,7 +218,6 @@ libraries = {
 path_desired_distance = 0.2
 path_max_distance = 1.01
 path_postprocessing = 1
-debug_enabled = true
 
 [node name="DetectionBox" type="Area3D" parent="."]
 collision_layer = 8
@@ -233,6 +233,7 @@ wait_time = 3.0
 visible = false
 mesh = SubResource("SphereMesh_6ywp2")
 
+[connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="target_reached" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_target_reached"]
 [connection signal="area_entered" from="DetectionBox" to="." method="_on_detection_box_area_entered"]
 [connection signal="area_exited" from="DetectionBox" to="." method="_on_detection_box_area_exited"]

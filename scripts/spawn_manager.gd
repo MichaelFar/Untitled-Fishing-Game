@@ -25,10 +25,12 @@ func fish_resources_to_list():
 	fishList = fishResources.get_resource_list()
 
 func spawn_loop():
+	currentFishNum = Globals.listOfSpawnedFish.size()
+	
 	if(currentFishNum < fishNum):
+		
 		spawnTimer.start()
 		spawn_fish()
-		currentFishNum += 1
 		
 func set_water_mesh_origin(water_mesh_origin):
 	waterMeshOrigin = water_mesh_origin
@@ -40,6 +42,7 @@ func spawn_fish():
 	var fish_instance = fishResources.get_resource(fishList[rand_index]).instantiate()
 	
 	add_child(fish_instance)
+	Globals.listOfSpawnedFish.append(fish_instance)
 	fish_instance.global_position = random_spawn_point()
 	fish_instance.waterMeshOrigin = waterMeshOrigin
 

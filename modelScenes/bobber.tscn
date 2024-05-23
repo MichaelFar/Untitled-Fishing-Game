@@ -122,7 +122,7 @@ radius = 0.809034
 height = 0.718593
 radius = 0.323306
 
-[node name="bobber" type="RigidBody3D" node_paths=PackedStringArray("animationPlayer", "topOfBobber", "interestTimer")]
+[node name="bobber" type="RigidBody3D" node_paths=PackedStringArray("animationPlayer", "topOfBobber", "interestTimer", "biteZone", "baitRange")]
 transform = Transform3D(0.842396, 0.538859, 0, -0.538859, 0.842396, 0, 0, 0, 1, 0, 0, 0)
 mass = 0.05
 gravity_scale = 0.2
@@ -130,6 +130,8 @@ script = ExtResource("2_sf8pp")
 animationPlayer = NodePath("AnimationPlayer")
 topOfBobber = NodePath("TopOfBobber")
 interestTimer = NodePath("InterestTimer")
+biteZone = NodePath("BobberBiteZone")
+baitRange = NodePath("BaitRange")
 float_force = 0.2
 
 [node name="TopOfBobber" type="Marker3D" parent="."]
