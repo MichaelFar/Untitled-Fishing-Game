@@ -3,7 +3,7 @@ extends Node3D
 @export var fishResources : ResourcePreloader
 @export var spawnTimer : Timer
 @export var spawnReferencePoint : Marker3D #fish will spawn below the water, with this serving as the y reference
-
+@export var spawnDestination : Marker3D #fish will swim up upon spawning, this is where they are headed to
 @export var fishNum = 5 #Number of fish who will spawn in total
 
 var currentFishNum = 0
@@ -25,6 +25,7 @@ func fish_resources_to_list():
 	fishList = fishResources.get_resource_list()
 
 func spawn_loop():
+	
 	currentFishNum = Globals.listOfSpawnedFish.size()
 	
 	if(currentFishNum < fishNum):
@@ -33,6 +34,7 @@ func spawn_loop():
 		spawn_fish()
 		
 func set_water_mesh_origin(water_mesh_origin):
+	
 	waterMeshOrigin = water_mesh_origin
 	
 
@@ -43,6 +45,9 @@ func spawn_fish():
 	
 	add_child(fish_instance)
 	Globals.listOfSpawnedFish.append(fish_instance)
+	Globals.currentWaterPlane.entered_swim_zone.connect(fish_instance.entered_swim_zone)
+	
+	fish_instance.spawnDestination = spawnDestination.global_position
 	fish_instance.global_position = random_spawn_point()
 	fish_instance.waterMeshOrigin = waterMeshOrigin
 

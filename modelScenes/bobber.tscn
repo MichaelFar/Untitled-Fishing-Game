@@ -168,5 +168,6 @@ collision_mask = 8
 transform = Transform3D(0.839696, -0.543057, 0, 0.543057, 0.839696, 0, 0, 0, 1, 0.156264, -0.220962, 0)
 shape = SubResource("CylinderShape3D_fh1ol")
 
+[connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
 [connection signal="area_entered" from="BaitRange" to="." method="_on_area_3d_area_entered"]
 [connection signal="area_entered" from="BobberBiteZone" to="." method="_on_bobber_bite_zone_area_entered"]

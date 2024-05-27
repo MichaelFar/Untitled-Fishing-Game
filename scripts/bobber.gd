@@ -10,8 +10,6 @@ extends RigidBody3D
 @export var water_drag := 0.05
 @export var water_angular_drag := 0.05
 
-
-
 @onready var gravity: float = Globals.gravity
 
 var currentBait = Globals.BAITS.GRUBS #This will be changed to be whatever the player has decided to equip
@@ -54,12 +52,19 @@ func create_y_tween():
 	tween.finished.connect(create_y_tween)
 	
 func _on_area_3d_area_entered(area):
+	
 	interestTimer.start()
 
 func emit_polling():
 	
 	polling_interest.emit(currentBait)
 
-
 func _on_bobber_bite_zone_area_entered(area):
+
 	in_the_bite_zone.emit(biteZone)
+
+
+
+func _on_tree_exiting():
+	for i in Globals.listOfSpawnedFish:
+		i.biteZoneID = null

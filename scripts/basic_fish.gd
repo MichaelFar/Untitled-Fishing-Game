@@ -14,17 +14,21 @@ extends CharacterBody3D
 
 @export var detectionBox : Area3D
 
+@export var navDetectionBox : Area3D
+
 var waterMeshOrigin = Vector2.ZERO
 
 var chosenPosition := Vector3.ZERO
 
-var currentState = FISHSTATE.MOVE
+var currentState = FISHSTATE.SPAWNMOVE
 
 var isInterested := false
 
 var bitingHook := false
 
 var bobberGlobalPosition = Vector3.ZERO
+
+var spawnDestination = Vector3.ZERO #When fish spawn, they swim up to this 
 
 var globalDelta := 0.0
 
@@ -33,42 +37,58 @@ var couldBeBiting := false
 var biteZoneID = null
 
 enum FISHSTATE {
+	SPAWNMOVE,#Not yet implemented: When spawned swim up
 	MOVE,#Move to chosen point
 	IDLE,#Idle at chosen point
 	INTEREST,#Bait has gained interest in fish
 	NIBBLE
 }
 
-var BAIT_INTEREST_DICT = {Globals.BAITS.LEECHES: 15, 
-Globals.BAITS.GRUBS :5, 
-Globals.BAITS.WORMS : 100}
+var BAIT_INTEREST_DICT = {
+Globals.BAITS.LEECHES : 15, 
+Globals.BAITS.GRUBS   : 5, 
+Globals.BAITS.WORMS   : 100}
 
 func _ready():
 	
 	call_deferred("actor_setup")
+	
 	scale = resize()
+	
+	animationPlayer.play("looping_swim")
+	
 	if(PlayerStatGlobal.fishCurrentlyBiting.size() != 0):#If the fish spawns in and there is already a fish on the hook
+		
 		detectionBox.monitoring = false
 
 func _physics_process(delta):
+	
 	globalDelta = delta
+	
 	var current_agent_position: Vector3
+	
 	var next_path_position: Vector3
 	
 	match currentState:
 		
+		FISHSTATE.SPAWNMOVE:
+			
+			rotation.x = lerp_angle(rotation.x, atan2(-Vector3.UP.x, -Vector3.UP.z), delta)
+			var modified_spawn_destination = Vector3(global_position.x, spawnDestination.y, global_position.z)
+			velocity = global_position.direction_to(modified_spawn_destination) * fishSpeed
+		
 		FISHSTATE.MOVE:
 			
 			current_agent_position = global_position
+			
 			next_path_position = navAgent.get_next_path_position()
+			
 			velocity = current_agent_position.direction_to(next_path_position) * fishSpeed
-			#print("Moving...")
-			if(!animationPlayer.is_playing()):
-				
-				animationPlayer.play("looping_swim")
-				
+			
+			#print("Next path is " + str(next_path_position) + " and fish position is " + str(global_position))
+			
 			if(next_path_position != global_position):
-				
+				rotation.x = lerp_angle(rotation.x,atan2(-Vector3.FORWARD.x, -Vector3.FORWARD.z), delta * angularAcceleration)
 				rotate_towards_velocity(delta)
 				
 		FISHSTATE.IDLE:
@@ -89,24 +109,26 @@ func _physics_process(delta):
 			
 			if(couldBeBiting):
 				
-				
-				
 				if(PlayerStatGlobal.fishCurrentlyBiting.size() != PlayerStatGlobal.numFishPerBait):
+					
 					bitingHook = true
+					
 				Globals.disableOtherFishDetectionBox(self)
 					
 				couldBeBiting = false
+				
 				if(biteZoneID.get_parent().is_connected("in_the_bite_zone", check_if_biting)):
 					
 					biteZoneID.get_parent().disconnect("in_the_bite_zone", check_if_biting)
 				
 				if(PlayerStatGlobal.fishCurrentlyBiting.find(self) == -1):
+					
 					PlayerStatGlobal.fishCurrentlyBiting.append(self)
 					
 			if(bitingHook):
 				
 				rotation.x = lerp_angle(rotation.x, atan2(-Vector3.UP.x, -Vector3.UP.z), delta)
-	
+	#print("fish state is " + str(currentState))
 	debugSphere.global_position = next_path_position
 	
 	move_and_slide()
@@ -133,6 +155,8 @@ func get_random_position() -> Vector3:
 	return chosen_position
 	
 func set_movement_target(movement_target: Vector3):
+	
+	print(movement_target)
 	navAgent.set_target_position(movement_target)
 
 func _on_idle_timer_timeout():
@@ -141,13 +165,13 @@ func _on_idle_timer_timeout():
 	currentState = FISHSTATE.MOVE
 
 func _on_navigation_agent_3d_target_reached():
+	pass
+	#velocity = Vector3.ZERO
+	#print("Reached target")
+	#if(!isInterested):
+		#
+		#currentState = FISHSTATE.IDLE
 	
-	velocity = Vector3.ZERO
-	if(!isInterested):
-		
-		currentState = FISHSTATE.IDLE
-	
-
 func poll_interest(bait_key):
 	
 	var randnum = RandomNumberGenerator.new()
@@ -155,6 +179,7 @@ func poll_interest(bait_key):
 	var poll_result = randnum.randi_range(1, 100)
 	
 	print("Interest result is " + str(poll_result))
+	
 	var target = BAIT_INTEREST_DICT[bait_key]
 	
 	if(poll_result <= target && isInterested == false):
@@ -165,7 +190,7 @@ func poll_interest(bait_key):
 		idleTimer.stop()
 
 func _on_detection_box_area_entered(area):
-	
+	print(area.get_parent())
 	if(!area.get_parent().polling_interest.is_connected(poll_interest)):
 		
 		area.get_parent().polling_interest.connect(poll_interest)
@@ -184,7 +209,6 @@ func _on_detection_box_area_exited(area):
 	if(area.name != "BobberBiteZone"):#change to non magic string
 		
 		area.get_parent().disconnect("polling_interest", poll_interest)
-		#area.get_parent().disconnect("in_the_bite_zone", check_if_biting)
 		
 	couldBeBiting = false
 	
@@ -197,7 +221,6 @@ func _on_detection_box_area_exited(area):
 	if(bitingHook):
 		
 		queue_free()
-		
 		
 func resize():
 	
@@ -214,11 +237,35 @@ func rotate_towards_velocity(delta):
 	rotation.y = lerp_angle(rotation.y, atan2(-velocity.x, -velocity.z), delta * angularAcceleration)# Thank you youtube guy holy goddamn
 	
 func check_if_biting(areaID):
+	#This runs if the fish is found in the inner bobber cylinder regardless of interest
+	#If they are interested, this will trigger the biting in the INTEREST state
+	
 	print("Check if biting..")
 	couldBeBiting = true
 	biteZoneID = areaID
+	print(biteZoneID)
 
 func _on_tree_exited():
+	
 	Globals.listOfSpawnedFish.pop_at(Globals.listOfSpawnedFish.find(self))
 	PlayerStatGlobal.fishCurrentlyBiting.pop_at(PlayerStatGlobal.fishCurrentlyBiting.find(self))
 	Globals.enableAllFishDetectionBox()
+	
+func entered_swim_zone():
+	
+	currentState = FISHSTATE.MOVE
+	
+	#rotation.x = atan2(-Vector3.FORWARD.x, -Vector3.FORWARD.z)
+	#global_position = Vector3(global_position.x, spawnDestination.y, global_position.z)
+	if(!Globals.currentWaterPlane.entered_swim_zone.is_connected(entered_swim_zone)):
+		
+		disconnect(Globals.currentWaterPlane.entered_swim_zone, entered_swim_zone)
+
+
+func _on_destination_end_area_entered(area):
+	if(area == navDetectionBox):
+		velocity = Vector3.ZERO
+		print("Reached target")
+		if(!isInterested):
+			
+			currentState = FISHSTATE.IDLE

@@ -2,6 +2,8 @@ extends Node
 
 var currentWaterDimension := Vector2.ZERO
 
+var currentWaterPlane = null
+
 var currentLevel = null
 
 var currentBobber = null
