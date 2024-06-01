@@ -36,6 +36,8 @@ var couldBeBiting := false
 
 var biteZoneID = null
 
+signal biting #Emits when fish bites the bobber, signal is connected to a bobber object function
+
 enum FISHSTATE {
 	SPAWNMOVE,#Not yet implemented: When spawned swim up
 	MOVE,#Move to chosen point
@@ -60,7 +62,9 @@ func _ready():
 	if(PlayerStatGlobal.fishCurrentlyBiting.size() != 0):#If the fish spawns in and there is already a fish on the hook
 		
 		detectionBox.monitoring = false
-
+		
+	Globals.connectBitingSignal()
+	
 func _physics_process(delta):
 	
 	globalDelta = delta
@@ -74,7 +78,9 @@ func _physics_process(delta):
 		FISHSTATE.SPAWNMOVE:
 			
 			rotation.x = lerp_angle(rotation.x, atan2(-Vector3.UP.x, -Vector3.UP.z), delta)
+			
 			var modified_spawn_destination = Vector3(global_position.x, spawnDestination.y, global_position.z)
+			
 			velocity = global_position.direction_to(modified_spawn_destination) * fishSpeed
 		
 		FISHSTATE.MOVE:
@@ -88,7 +94,9 @@ func _physics_process(delta):
 			#print("Next path is " + str(next_path_position) + " and fish position is " + str(global_position))
 			
 			if(next_path_position != global_position):
+				
 				rotation.x = lerp_angle(rotation.x,atan2(-Vector3.FORWARD.x, -Vector3.FORWARD.z), delta * angularAcceleration)
+				
 				rotate_towards_velocity(delta)
 				
 		FISHSTATE.IDLE:
@@ -99,8 +107,8 @@ func _physics_process(delta):
 				
 		FISHSTATE.INTEREST:
 			
-			
 			var flat_bobber_destination = bobberGlobalPosition
+			
 			flat_bobber_destination.y = global_position.y
 			
 			velocity = global_position.direction_to(flat_bobber_destination) * fishSpeed
@@ -114,7 +122,7 @@ func _physics_process(delta):
 					bitingHook = true
 					
 				Globals.disableOtherFishDetectionBox(self)
-					
+				#idleTimer.stop()
 				couldBeBiting = false
 				
 				if(biteZoneID.get_parent().is_connected("in_the_bite_zone", check_if_biting)):
@@ -125,8 +133,9 @@ func _physics_process(delta):
 					
 					PlayerStatGlobal.fishCurrentlyBiting.append(self)
 					
+				biting.emit()
 			if(bitingHook):
-				
+				global_position += Globals.currentBobber.deltaGlobalPosition
 				rotation.x = lerp_angle(rotation.x, atan2(-Vector3.UP.x, -Vector3.UP.z), delta)
 	#print("fish state is " + str(currentState))
 	debugSphere.global_position = next_path_position
@@ -164,14 +173,6 @@ func _on_idle_timer_timeout():
 	set_movement_target(get_random_position())
 	currentState = FISHSTATE.MOVE
 
-func _on_navigation_agent_3d_target_reached():
-	pass
-	#velocity = Vector3.ZERO
-	#print("Reached target")
-	#if(!isInterested):
-		#
-		#currentState = FISHSTATE.IDLE
-	
 func poll_interest(bait_key):
 	
 	var randnum = RandomNumberGenerator.new()
@@ -190,7 +191,7 @@ func poll_interest(bait_key):
 		idleTimer.stop()
 
 func _on_detection_box_area_entered(area):
-	print(area.get_parent())
+	
 	if(!area.get_parent().polling_interest.is_connected(poll_interest)):
 		
 		area.get_parent().polling_interest.connect(poll_interest)
@@ -200,7 +201,8 @@ func _on_detection_box_area_entered(area):
 		area.get_parent().in_the_bite_zone.connect(check_if_biting)
 		
 	bobberGlobalPosition = area.get_parent().global_position
-	print("Fish entered")
+	
+	print("Fish entered bobber bait range")
 
 func _on_detection_box_area_exited(area):
 	
@@ -212,15 +214,15 @@ func _on_detection_box_area_exited(area):
 		
 	couldBeBiting = false
 	
-	if(isInterested):
-		
-		set_movement_target(get_random_position())
-		currentState = FISHSTATE.MOVE
-		isInterested = false
+	#if(isInterested):
+		#
+		#set_movement_target(get_random_position())
+		#currentState = FISHSTATE.MOVE
+		#isInterested = false
 		
 	if(bitingHook):
 		
-		queue_free()
+		queue_free()#Replace with minigame transition code
 		
 func resize():
 	
@@ -255,15 +257,14 @@ func entered_swim_zone():
 	
 	currentState = FISHSTATE.MOVE
 	
-	#rotation.x = atan2(-Vector3.FORWARD.x, -Vector3.FORWARD.z)
-	#global_position = Vector3(global_position.x, spawnDestination.y, global_position.z)
-	if(!Globals.currentWaterPlane.entered_swim_zone.is_connected(entered_swim_zone)):
+	if(Globals.currentWaterPlane.entered_swim_zone.is_connected(entered_swim_zone)):
 		
-		disconnect(Globals.currentWaterPlane.entered_swim_zone, entered_swim_zone)
-
+		Globals.currentWaterPlane.disconnect("entered_swim_zone", entered_swim_zone)
 
 func _on_destination_end_area_entered(area):
+	
 	if(area == navDetectionBox):
+		
 		velocity = Vector3.ZERO
 		print("Reached target")
 		if(!isInterested):

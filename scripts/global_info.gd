@@ -34,6 +34,14 @@ func disableOtherFishDetectionBox(fishID):
 			i.detectionBox.monitoring = false
 		
 func enableAllFishDetectionBox():
+	
 	for i in listOfSpawnedFish:
 		print("Enabling fish " + str(i))
 		i.detectionBox.monitoring = true
+		
+func connectBitingSignal():
+	
+	if(currentBobber != null):
+		for i in listOfSpawnedFish:
+			if(!i.biting.is_connected(currentBobber.start_jolt_timer)):
+				i.biting.connect(currentBobber.start_jolt_timer)

@@ -1,5 +1,5 @@
 extends Sprite3D
 
-func _process(delta):
+func _physics_process(delta):
 	
-	rotation_degrees.y += 2.0
+	rotation_degrees.y += 4.0
