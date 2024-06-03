@@ -16,7 +16,7 @@ extends RigidBody3D
 var prevPosition := Vector3.ZERO
 var deltaGlobalPosition := Vector3.ZERO
 
-var currentBait = Globals.BAITS.GRUBS #This will be changed to be whatever the player has decided to equip
+var currentBait = Globals.BAITS.WORMS #This will be changed to be whatever the player has decided to equip
 #Currently, set it to worms for guaranteed interest
 var directionCoefficient = 1.0
 var currentXZPosition : Vector2

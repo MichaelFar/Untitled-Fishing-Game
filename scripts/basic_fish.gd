@@ -65,6 +65,8 @@ func _ready():
 		
 	Globals.connectBitingSignal()
 	
+	
+	
 func _physics_process(delta):
 	
 	globalDelta = delta
@@ -125,18 +127,24 @@ func _physics_process(delta):
 				#idleTimer.stop()
 				couldBeBiting = false
 				
-				if(biteZoneID.get_parent().is_connected("in_the_bite_zone", check_if_biting)):
-					
-					biteZoneID.get_parent().disconnect("in_the_bite_zone", check_if_biting)
+				#if(biteZoneID.get_parent().is_connected("in_the_bite_zone", check_if_biting)):
+					#
+					#biteZoneID.get_parent().disconnect("in_the_bite_zone", check_if_biting)
 				
 				if(PlayerStatGlobal.fishCurrentlyBiting.find(self) == -1):
 					
 					PlayerStatGlobal.fishCurrentlyBiting.append(self)
 					
-				biting.emit()
+				biting.emit()#received by the bobber
+				
+				Globals.stop_other_fish_interest(self)
+				
 			if(bitingHook):
+				
 				global_position += Globals.currentBobber.deltaGlobalPosition
+				
 				rotation.x = lerp_angle(rotation.x, atan2(-Vector3.UP.x, -Vector3.UP.z), delta)
+				
 	#print("fish state is " + str(currentState))
 	debugSphere.global_position = next_path_position
 	
@@ -226,11 +234,11 @@ func _on_detection_box_area_exited(area):
 		
 func resize():
 	
-	var randnum = RandomNumberGenerator.new()
+	var randnum := RandomNumberGenerator.new()
 	
-	var scale_max = scale / 2.0
+	var scale_max := scale / 2.0
 	
-	var new_scale = randnum.randf_range(-scale_max.x, scale_max.x)
+	var new_scale := randnum.randf_range(-scale_max.x, scale_max.x)
 	
 	return scale + Vector3(new_scale,new_scale,new_scale)
 	
