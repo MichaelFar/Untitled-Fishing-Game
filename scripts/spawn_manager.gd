@@ -6,6 +6,8 @@ extends Node3D
 @export var spawnDestination : Marker3D #fish will swim up upon spawning, this is where they are headed to
 @export var fishNum = 5 #Number of fish who will spawn in total
 
+
+
 var currentFishNum = 0
 
 var fishList := []
@@ -20,8 +22,14 @@ func _ready():
 	spawnTimer.timeout.connect(spawn_loop)
 	await get_tree().physics_frame
 	spawn_loop()
-
+	print(fishResources.get_resource("basic_fish"))
+func spawn_preexisting_fish():
+	
+	for i in Globals.listOfSpawnedFish:
+		pass
+		
 func fish_resources_to_list():
+	
 	fishList = fishResources.get_resource_list()
 
 func spawn_loop():
@@ -50,6 +58,7 @@ func spawn_fish():
 	fish_instance.spawnDestination = spawnDestination.global_position
 	fish_instance.global_position = random_spawn_point()
 	fish_instance.waterMeshOrigin = waterMeshOrigin
+	fish_instance.fishResource = fishResources.get_resource(fishList[rand_index])
 
 func random_spawn_point():
 	

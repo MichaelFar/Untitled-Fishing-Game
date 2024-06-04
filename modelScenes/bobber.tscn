@@ -119,8 +119,8 @@ height = 0.6029
 radius = 0.809034
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_fh1ol"]
-height = 0.718593
-radius = 0.124402
+height = 2.18113
+radius = 0.0106243
 
 [node name="bobber" type="RigidBody3D" node_paths=PackedStringArray("animationPlayer", "topOfBobber", "interestTimer", "biteZone", "baitRange", "joltTimer")]
 transform = Transform3D(0.842396, 0.538859, 0, -0.538859, 0.842396, 0, 0, 0, 1, 0, 0, 0)
@@ -166,7 +166,7 @@ shape = SubResource("CylinderShape3D_t86p6")
 collision_mask = 8
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BobberBiteZone"]
-transform = Transform3D(0.839696, -0.543057, 0, 0.543057, 0.839696, 0, 0, 0, 1, 0.156264, -0.220962, 0)
+transform = Transform3D(0.839696, -0.543057, 0, 0.543057, 0.839696, 0, 0, 0, 1, 0.604332, -0.921425, 0)
 shape = SubResource("CylinderShape3D_fh1ol")
 
 [node name="JoltTimer" type="Timer" parent="."]

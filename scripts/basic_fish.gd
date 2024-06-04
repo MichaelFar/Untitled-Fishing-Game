@@ -16,6 +16,8 @@ extends CharacterBody3D
 
 @export var navDetectionBox : Area3D
 
+var fishResource : Resource #Set in spawner as the path of this fish's respective scene
+
 var waterMeshOrigin = Vector2.ZERO
 
 var chosenPosition := Vector3.ZERO
@@ -64,7 +66,6 @@ func _ready():
 		detectionBox.monitoring = false
 		
 	Globals.connectBitingSignal()
-	
 	
 	
 func _physics_process(delta):
@@ -141,10 +142,12 @@ func _physics_process(delta):
 				
 			if(bitingHook):
 				
-				global_position += Globals.currentBobber.deltaGlobalPosition
+				global_position.y += Globals.currentBobber.deltaGlobalPosition.y
 				
 				rotation.x = lerp_angle(rotation.x, atan2(-Vector3.UP.x, -Vector3.UP.z), delta)
 				
+			else:
+				rotate_towards_velocity(delta)
 	#print("fish state is " + str(currentState))
 	debugSphere.global_position = next_path_position
 	
@@ -157,7 +160,7 @@ func set_water_mesh_origin(water_mesh_origin):
 func actor_setup():
 	# Wait for the first physics frame so the NavigationServer can sync.
 	await get_tree().physics_frame
-
+	print(fishResource)
 	# Now that the navigation map is no longer empty, set the movement target.
 	set_movement_target(get_random_position())
 	
@@ -189,11 +192,16 @@ func poll_interest(bait_key):
 	
 	print("Interest result is " + str(poll_result))
 	
-	var target = BAIT_INTEREST_DICT[bait_key]
+	var target := 0
+	
+	if(BAIT_INTEREST_DICT.has(bait_key)):
+		
+		target = BAIT_INTEREST_DICT[bait_key]
 	
 	if(poll_result <= target && isInterested == false):
 		
 		currentState = FISHSTATE.INTEREST
+		velocity = Vector3.ZERO
 		isInterested = true
 		#set_movement_target(bobberGlobalPosition)
 		idleTimer.stop()
@@ -229,8 +237,9 @@ func _on_detection_box_area_exited(area):
 		#isInterested = false
 		
 	if(bitingHook):
-		
-		queue_free()#Replace with minigame transition code
+		if(Globals.currentBobber.is_queued_for_deletion()):
+			Globals.store_fish_for_respawn()
+			queue_free()#Replace with minigame transition code
 		
 func resize():
 	

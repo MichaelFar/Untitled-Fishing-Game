@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bdunasxchfrai"]
+[gd_scene load_steps=14 format=3 uid="uid://bdunasxchfrai"]
 
 [ext_resource type="Texture2D" uid="uid://lakse1k6krwu" path="res://modelScenes/animated_low_poly_fish_0.jpg" id="2_fhg2k"]
 [ext_resource type="Script" path="res://scripts/basic_fish.gd" id="2_wigxq"]
@@ -136,12 +136,16 @@ _data = {
 "swim": SubResource("Animation_0806g")
 }
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_by2ur"]
-height = 1.47304
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_nsglc"]
+radius = 0.244866
+height = 0.489732
 
 [sub_resource type="SphereMesh" id="SphereMesh_6ywp2"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_8g46q"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_by2ur"]
+height = 1.47304
 
 [node name="basic_fish" type="CharacterBody3D" node_paths=PackedStringArray("animationPlayer", "navAgent", "idleTimer", "debugSphere", "detectionBox", "navDetectionBox")]
 transform = Transform3D(0.3, 0, 0, 0, -1.31134e-08, -0.3, 0, 0.3, -1.31134e-08, 0, 0, 0)
@@ -220,11 +224,12 @@ libraries = {
 debug_enabled = true
 
 [node name="DetectionBox" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 1.42109e-14, 0, -1.42109e-14, 1, 0, 0, 0)
 collision_layer = 8
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionBox"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
-shape = SubResource("CapsuleShape3D_by2ur")
+shape = SubResource("CapsuleShape3D_nsglc")
 
 [node name="IdleTimer" type="Timer" parent="."]
 wait_time = 3.0

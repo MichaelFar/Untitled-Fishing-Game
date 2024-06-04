@@ -10,16 +10,19 @@ var currentBobber = null
 
 var listOfSpawnedFish := []
 
+var fishStorageDict = {}
+
 @onready var gravity : float =  ProjectSettings.get_setting("physics/3d/default_gravity")
 
 var waterMeshOrigin = Vector3.ZERO
 
 signal calculated_water_mesh_origin
 
-enum BAITS {
+enum BAITS {#Currently test baits, can be anything, fish will check if they have a matching key when polling interest
 	LEECHES,
 	GRUBS,
-	WORMS
+	WORMS,
+	TESTNOBAIT
 }
 
 func emit_water_mesh_signal(water_mesh_origin : Vector2):
@@ -44,8 +47,17 @@ func connectBitingSignal():
 		for i in listOfSpawnedFish:
 			if(!i.biting.is_connected(currentBobber.start_jolt_timer)):
 				i.biting.connect(currentBobber.start_jolt_timer)
+				
 func stop_other_fish_interest(fish):
 	for i in listOfSpawnedFish:
 		if(i != fish):
 			i.currentState = i.FISHSTATE.MOVE
 			i.isInterested = false
+
+func store_fish_for_respawn(): #Creates a dictionary of fish and their sizes, used for reloading the fishing minigame from
+	var index = 0
+	fishStorageDict = {}
+	for i in listOfSpawnedFish:
+		fishStorageDict[index] = i.fishResource
+		fishStorageDict[index + 1] = i.scale
+	print(fishStorageDict)
