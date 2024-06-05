@@ -57,7 +57,10 @@ func stop_other_fish_interest(fish):
 func store_fish_for_respawn(): #Creates a dictionary of fish and their sizes, used for reloading the fishing minigame from
 	var index = 0
 	fishStorageDict = {}
+	print("storing fish in dict for respawn")
 	for i in listOfSpawnedFish:
+		
 		fishStorageDict[index] = i.fishResource
 		fishStorageDict[index + 1] = i.scale
+		index += 2
 	print(fishStorageDict)

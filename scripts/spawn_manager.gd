@@ -23,11 +23,32 @@ func _ready():
 	await get_tree().physics_frame
 	spawn_loop()
 	print(fishResources.get_resource("basic_fish"))
-func spawn_preexisting_fish():
 	
-	for i in Globals.listOfSpawnedFish:
-		pass
+	
+func _physics_process(delta):
+	
+	if(Input.is_action_just_released("ui_select")):
+		Globals.store_fish_for_respawn()
+		for i in Globals.listOfSpawnedFish:
+			
+			i.queue_free()
+			
+		await get_tree().physics_frame
 		
+		spawn_preexisting_fish()
+		
+func spawn_preexisting_fish():
+	print("respawning fish")
+	for i in Globals.fishStorageDict:
+		
+		if i % 2 == 0 || i == 0:
+			
+			var fish_instance = spawn_fish(Globals.fishStorageDict[i])
+			print(fish_instance)
+			print(Globals.fishStorageDict[i])
+			await get_tree().physics_frame
+			fish_instance.scale = Globals.fishStorageDict[i + 1]
+
 func fish_resources_to_list():
 	
 	fishList = fishResources.get_resource_list()
@@ -44,14 +65,21 @@ func spawn_loop():
 func set_water_mesh_origin(water_mesh_origin):
 	
 	waterMeshOrigin = water_mesh_origin
-	
 
-func spawn_fish():
+func spawn_fish(fish_packed_scene = null):
+	
 	var randnum = RandomNumberGenerator.new()
 	var rand_index = randnum.randi_range(0, fishList.size() - 1)
-	var fish_instance = fishResources.get_resource(fishList[rand_index]).instantiate()
+	var fish_instance = fishResources.get_resource(fishList[rand_index])
+	
+	if(fish_packed_scene != null):
+		
+		fish_instance = fish_packed_scene
+		
+	fish_instance = fish_instance.instantiate()
 	
 	add_child(fish_instance)
+	
 	Globals.listOfSpawnedFish.append(fish_instance)
 	Globals.currentWaterPlane.entered_swim_zone.connect(fish_instance.entered_swim_zone)
 	
@@ -59,7 +87,9 @@ func spawn_fish():
 	fish_instance.global_position = random_spawn_point()
 	fish_instance.waterMeshOrigin = waterMeshOrigin
 	fish_instance.fishResource = fishResources.get_resource(fishList[rand_index])
-
+	
+	return fish_instance
+	
 func random_spawn_point():
 	
 	var randnum = RandomNumberGenerator.new()

@@ -38,6 +38,8 @@ var couldBeBiting := false
 
 var biteZoneID = null
 
+var wasRespawned := false
+
 signal biting #Emits when fish bites the bobber, signal is connected to a bobber object function
 
 enum FISHSTATE {
@@ -238,7 +240,7 @@ func _on_detection_box_area_exited(area):
 		
 	if(bitingHook):
 		if(Globals.currentBobber.is_queued_for_deletion()):
-			Globals.store_fish_for_respawn()
+			#Globals.store_fish_for_respawn()
 			queue_free()#Replace with minigame transition code
 		
 func resize():
@@ -248,6 +250,9 @@ func resize():
 	var scale_max := scale / 2.0
 	
 	var new_scale := randnum.randf_range(-scale_max.x, scale_max.x)
+	
+	if(wasRespawned):
+		return scale
 	
 	return scale + Vector3(new_scale,new_scale,new_scale)
 	
@@ -266,8 +271,10 @@ func check_if_biting(areaID):
 
 func _on_tree_exited():
 	
+	#Globals.store_fish_for_respawn()
 	Globals.listOfSpawnedFish.pop_at(Globals.listOfSpawnedFish.find(self))
 	PlayerStatGlobal.fishCurrentlyBiting.pop_at(PlayerStatGlobal.fishCurrentlyBiting.find(self))
+	
 	Globals.enableAllFishDetectionBox()
 	
 func entered_swim_zone():
