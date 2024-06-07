@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://3s2aa0glavxw"]
+
+[ext_resource type="Script" path="res://scripts/FishingPonds.gd" id="1_pyqui"]
+[ext_resource type="PackedScene" uid="uid://0m8it4yapeb" path="res://gamePlayScenes/fishing_minigame.tscn" id="2_5uqem"]
+
+[node name="FishingPondsStorage" type="Node3D" node_paths=PackedStringArray("PondResources")]
+script = ExtResource("1_pyqui")
+PondResources = NodePath("PondResources")
+
+[node name="PondResources" type="ResourcePreloader" parent="."]
+resources = [PackedStringArray("fishing_minigame"), [ExtResource("2_5uqem")]]

@@ -6,17 +6,19 @@ extends CharacterBody3D
 
 @export var idleTimer : Timer
 
-@export var fishSpeed := 0.5
-
-@export var angularAcceleration := 2.0 #Turns out 3d rotation is extra like that
-
 @export var debugSphere := MeshInstance3D
 
 @export var detectionBox : Area3D
 
 @export var navDetectionBox : Area3D
 
-var fishResource : Resource #Set in spawner as the path of this fish's respective scene
+@export var minigamePreloader : ResourcePreloader
+
+@export var fishSpeed := 0.5
+
+@export var angularAcceleration := 2.0 #Turns out 3d rotation is extra like that
+
+var fishResource : Resource #Set in spawner as the PackedScene of this fish
 
 var waterMeshOrigin = Vector2.ZERO
 
@@ -39,6 +41,8 @@ var couldBeBiting := false
 var biteZoneID = null
 
 var wasRespawned := false
+
+var minigame = null
 
 signal biting #Emits when fish bites the bobber, signal is connected to a bobber object function
 
@@ -69,7 +73,8 @@ func _ready():
 		
 	Globals.connectBitingSignal()
 	
-	
+	minigame = choose_minigame()
+	print("Stored minigame is " + str(minigame))
 func _physics_process(delta):
 	
 	globalDelta = delta
@@ -155,6 +160,17 @@ func _physics_process(delta):
 	
 	move_and_slide()
 
+#when fish is added to the scene tree, it chooses from a list of it's minigames
+func choose_minigame():
+	
+	var randobj = RandomNumberGenerator.new()
+	
+	var resource_list = minigamePreloader.get_resource_list()
+	
+	var chosen_game_index = randobj.randi_range(0, resource_list.size() - 1)
+	print("Minigame scene vvv")
+	return minigamePreloader.get_resource(resource_list[chosen_game_index])
+	print("Minigame scene ^^^")
 func set_water_mesh_origin(water_mesh_origin):
 	
 	waterMeshOrigin = water_mesh_origin
@@ -242,6 +258,8 @@ func _on_detection_box_area_exited(area):
 		if(Globals.currentBobber.is_queued_for_deletion()):
 			#Globals.store_fish_for_respawn()
 			queue_free()#Replace with minigame transition code
+			print("Minigame before calling leveltransition is " + str(minigame))
+			LevelTransition.transition_to_minigame(minigame)
 		
 func resize():
 	
@@ -294,3 +312,4 @@ func _on_destination_end_area_entered(area):
 		if(!isInterested):
 			
 			currentState = FISHSTATE.IDLE
+

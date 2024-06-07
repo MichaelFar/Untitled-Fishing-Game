@@ -8,9 +8,13 @@ var currentLevel = null
 
 var currentBobber = null
 
+var currentSpawnManager = null
+
 var listOfSpawnedFish := []
 
 var fishStorageDict = {}
+
+var pondHasBeenReloaded := false
 
 @onready var gravity : float =  ProjectSettings.get_setting("physics/3d/default_gravity")
 
@@ -63,4 +67,5 @@ func store_fish_for_respawn(): #Creates a dictionary of fish and their sizes, us
 		fishStorageDict[index] = i.fishResource
 		fishStorageDict[index + 1] = i.scale
 		index += 2
+		
 	print(fishStorageDict)

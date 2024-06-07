@@ -1,7 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://bdunasxchfrai"]
+[gd_scene load_steps=15 format=3 uid="uid://bdunasxchfrai"]
 
 [ext_resource type="Texture2D" uid="uid://lakse1k6krwu" path="res://modelScenes/animated_low_poly_fish_0.jpg" id="2_fhg2k"]
 [ext_resource type="Script" path="res://scripts/basic_fish.gd" id="2_wigxq"]
+[ext_resource type="PackedScene" uid="uid://c77smiruvlkwm" path="res://gamePlayScenes/shoot_the_bottle_game.tscn" id="3_et3km"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_voqu1"]
 resource_name = "Material.006"
@@ -147,7 +148,7 @@ height = 0.489732
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_by2ur"]
 height = 1.47304
 
-[node name="basic_fish" type="CharacterBody3D" node_paths=PackedStringArray("animationPlayer", "navAgent", "idleTimer", "debugSphere", "detectionBox", "navDetectionBox")]
+[node name="basic_fish" type="CharacterBody3D" node_paths=PackedStringArray("animationPlayer", "navAgent", "idleTimer", "debugSphere", "detectionBox", "navDetectionBox", "minigamePreloader")]
 transform = Transform3D(0.3, 0, 0, 0, -1.31134e-08, -0.3, 0, 0.3, -1.31134e-08, 0, 0, 0)
 script = ExtResource("2_wigxq")
 animationPlayer = NodePath("AnimationPlayer")
@@ -156,6 +157,7 @@ idleTimer = NodePath("IdleTimer")
 debugSphere = NodePath("MeshInstance3D")
 detectionBox = NodePath("DetectionBox")
 navDetectionBox = NodePath("NavDetectionBox")
+minigamePreloader = NodePath("PossibleMinigameResources")
 
 [node name="Sketchfab_model" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.118263, 0, 0)
@@ -251,6 +253,9 @@ collision_mask = 0
 [node name="CollisionShape3D" type="CollisionShape3D" parent="NavDetectionBox"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_by2ur")
+
+[node name="PossibleMinigameResources" type="ResourcePreloader" parent="."]
+resources = [PackedStringArray("shoot_the_bottle_game"), [ExtResource("3_et3km")]]
 
 [connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="area_entered" from="DetectionBox" to="." method="_on_detection_box_area_entered"]
