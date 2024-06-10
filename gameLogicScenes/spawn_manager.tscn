@@ -20,3 +20,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.639697, 0)
 wait_time = 5.0
 
 [node name="spawnDestination" type="Marker3D" parent="."]
+
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]

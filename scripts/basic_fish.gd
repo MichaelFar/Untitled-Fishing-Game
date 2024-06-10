@@ -247,19 +247,15 @@ func _on_detection_box_area_exited(area):
 		area.get_parent().disconnect("polling_interest", poll_interest)
 		
 	couldBeBiting = false
-	
-	#if(isInterested):
-		#
-		#set_movement_target(get_random_position())
-		#currentState = FISHSTATE.MOVE
-		#isInterested = false
 		
 	if(bitingHook):
+		
 		if(Globals.currentBobber.is_queued_for_deletion()):
+			
 			#Globals.store_fish_for_respawn()
-			queue_free()#Replace with minigame transition code
+			#queue_free()#Replace with minigame transition code
 			print("Minigame before calling leveltransition is " + str(minigame))
-			LevelTransition.transition_to_minigame(minigame)
+			LevelTransition.transition_to_minigame(minigame, self)
 		
 func resize():
 	
@@ -270,6 +266,7 @@ func resize():
 	var new_scale := randnum.randf_range(-scale_max.x, scale_max.x)
 	
 	if(wasRespawned):
+		
 		return scale
 	
 	return scale + Vector3(new_scale,new_scale,new_scale)
@@ -287,14 +284,6 @@ func check_if_biting(areaID):
 	biteZoneID = areaID
 	print(biteZoneID)
 
-func _on_tree_exited():
-	
-	#Globals.store_fish_for_respawn()
-	Globals.listOfSpawnedFish.pop_at(Globals.listOfSpawnedFish.find(self))
-	PlayerStatGlobal.fishCurrentlyBiting.pop_at(PlayerStatGlobal.fishCurrentlyBiting.find(self))
-	
-	Globals.enableAllFishDetectionBox()
-	
 func entered_swim_zone():
 	
 	currentState = FISHSTATE.MOVE
@@ -313,3 +302,13 @@ func _on_destination_end_area_entered(area):
 			
 			currentState = FISHSTATE.IDLE
 
+func _on_tree_exiting():
+	Globals.listOfSpawnedFish.pop_at(Globals.listOfSpawnedFish.find(self))
+	#Globals.store_fish_for_respawn()
+	
+func _on_tree_exited():
+	
+	
+	PlayerStatGlobal.fishCurrentlyBiting.pop_at(PlayerStatGlobal.fishCurrentlyBiting.find(self))
+	
+	Globals.enableAllFishDetectionBox()

@@ -20,10 +20,14 @@ func _ready():
 	#spawnTimer.start()
 	spawnTimer.timeout.connect(spawn_loop)
 	await get_tree().physics_frame
-	spawn_loop()
+	
+	
 	print(fishResources.get_resource("basic_fish"))
+	
 	if(Globals.pondHasBeenReloaded):
 		spawn_preexisting_fish()
+	else:
+		spawn_loop()
 #func _physics_process(delta):
 	#
 	#if(Input.is_action_just_released("ui_select")):
@@ -47,6 +51,7 @@ func spawn_preexisting_fish():
 			print(Globals.fishStorageDict[i])
 			await get_tree().physics_frame
 			fish_instance.scale = Globals.fishStorageDict[i + 1]
+	spawn_loop()
 
 func fish_resources_to_list():
 	
@@ -59,8 +64,12 @@ func spawn_loop():
 	if(currentFishNum < fishNum):
 		
 		spawnTimer.start()
-		spawn_fish()
 		
+		if(!Globals.pondHasBeenReloaded):
+			spawn_fish()
+		
+		Globals.pondHasBeenReloaded = false
+			
 func set_water_mesh_origin(water_mesh_origin):
 	
 	waterMeshOrigin = water_mesh_origin
@@ -100,3 +109,5 @@ func random_spawn_point():
 	chosen_position.y = spawnReferencePoint.global_position.y
 	return chosen_position
 	
+func _on_spawn_timer_timeout():
+	pass # Replace with function body.
