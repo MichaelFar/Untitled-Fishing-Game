@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ckjuvouyio6mu"
-path.s3tc="res://.godot/imported/cowboy_fish_07_-_Default_baseColor.jpg-460ab99a52f82506ecb54670a15fb113.s3tc.ctex"
+uid="uid://bd5xgk2fhnoa5"
+path.s3tc="res://.godot/imported/boot_fish_Mooneye_Hiodon_tergisus_9-19-13.jpg-6f5a65061b2b1da69f6e50be76e5996e.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ generator_parameters={}
 
 [deps]
 
-source_file="res://modelScenes/cowboy_fish_07_-_Default_baseColor.jpg"
-dest_files=["res://.godot/imported/cowboy_fish_07_-_Default_baseColor.jpg-460ab99a52f82506ecb54670a15fb113.s3tc.ctex"]
+source_file="res://modelScenes/boot_fish_Mooneye_Hiodon_tergisus_9-19-13.jpg"
+dest_files=["res://.godot/imported/boot_fish_Mooneye_Hiodon_tergisus_9-19-13.jpg-6f5a65061b2b1da69f6e50be76e5996e.s3tc.ctex"]
 
 [params]
 
@@ -21,12 +21,12 @@ compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=2
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1
-roughness/mode=0
-roughness/src_normal=""
+roughness/mode=1
+roughness/src_normal="res://modelScenes/boot_fish_Mooneye_Hiodon_tergisus_9-19-13.jpg"
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false

@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://dhb5sne0431ib"
-path="res://.godot/imported/cowboy_boot.glb-dee7d1bfa17ea057aced92827b7ba243.scn"
+uid="uid://lxccb7aqge2f"
+path="res://.godot/imported/boot_fish.glb-cc5ac4c86ee0e16fdccf195132fe3a7e.scn"
 
 [deps]
 
-source_file="res://modelScenes/cowboy_boot.glb"
-dest_files=["res://.godot/imported/cowboy_boot.glb-dee7d1bfa17ea057aced92827b7ba243.scn"]
+source_file="res://modelScenes/boot_fish.glb"
+dest_files=["res://.godot/imported/boot_fish.glb-cc5ac4c86ee0e16fdccf195132fe3a7e.scn"]
 
 [params]
 

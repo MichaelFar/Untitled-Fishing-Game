@@ -103,10 +103,12 @@ func random_spawn_point():
 	var randnum = RandomNumberGenerator.new()
 	var chosen_position := Vector3.ZERO
 	#Remember, x and z are the "2d" coordinates not x and y. Y is always up
-	print("water dimensions are origin is " + str(Globals.currentWaterDimension))
+	print("water dimension of origin is " + str(Globals.currentWaterDimension))
+	
 	chosen_position.x = randnum.randf_range(waterMeshOrigin.x, Globals.currentWaterDimension.x)
 	chosen_position.z = randnum.randf_range(waterMeshOrigin.y, Globals.currentWaterDimension.y)
 	chosen_position.y = spawnReferencePoint.global_position.y
+	
 	return chosen_position
 	
 func _on_spawn_timer_timeout():

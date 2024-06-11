@@ -74,7 +74,9 @@ func _ready():
 	Globals.connectBitingSignal()
 	
 	minigame = choose_minigame()
+	
 	print("Stored minigame is " + str(minigame))
+	
 func _physics_process(delta):
 	
 	globalDelta = delta

@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cps7bibpq4475"
-path.s3tc="res://.godot/imported/cow_boy_fish_and_boot_Material.jpg-f0c80298834694423c32884396cab8f6.s3tc.ctex"
+uid="uid://bne8kijx7yl55"
+path.s3tc="res://.godot/imported/boot_fish_CowboyBoots_BaseColor.png-5e3831e91f2c3a53e9d4853b9b124f46.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ generator_parameters={}
 
 [deps]
 
-source_file="res://modelScenes/cow_boy_fish_and_boot_Material.jpg"
-dest_files=["res://.godot/imported/cow_boy_fish_and_boot_Material.jpg-f0c80298834694423c32884396cab8f6.s3tc.ctex"]
+source_file="res://modelScenes/boot_fish_CowboyBoots_BaseColor.png"
+dest_files=["res://.godot/imported/boot_fish_CowboyBoots_BaseColor.png-5e3831e91f2c3a53e9d4853b9b124f46.s3tc.ctex"]
 
 [params]
 
