@@ -2,12 +2,13 @@
 
 [ext_resource type="Script" path="res://scripts/screen_cursor_container.gd" id="1_wrx4h"]
 
-[node name="screen_cursor_container" type="Node3D"]
+[node name="screen_cursor_container" type="Node3D" node_paths=PackedStringArray("camera")]
 script = ExtResource("1_wrx4h")
-
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.518605, 1.80612)
+camera = NodePath("Camera3D")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866024, -0.433016, 0.25, 0.433016, -0.899518, -0.0580155, 0.250001, 0.0580111, 0.966506, 0, 0, 0)
 shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.518605, 1.80612)

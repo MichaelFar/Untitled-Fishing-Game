@@ -2,7 +2,7 @@ extends Node3D
 
 @export var pathFollow : PathFollow3D
 
-@export var bottleMesh : MeshInstance3D
+@export var bottleMesh : Node3D
 
 @export var lowerRotSpeed : float
 
@@ -13,6 +13,7 @@ var timeCalcNumerator := 60.0
 var rotationSpeed := 0.0
 
 var timeToCompleteArc = 0.0
+
 func _ready():
 	
 	#random_tilt()
@@ -26,6 +27,7 @@ func _ready():
 	tween_path_follow()
 	print("Time to complete arc is " + str(timeToCompleteArc))
 	print("Chosen rotation speed is " + str(rotationSpeed))
+	
 func _physics_process(delta):
 	
 	bottleMesh.rotation_degrees.x += rotationSpeed
@@ -46,8 +48,8 @@ func random_rotation_speed():
 	var randobj = RandomNumberGenerator.new()
 	return randobj.randi_range(lowerRotSpeed, upperRotSpeed)
 	
-	
 func tween_path_follow():
+	
 	await get_tree().physics_frame
 	var tween = get_tree().create_tween()
 	
