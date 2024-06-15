@@ -3,8 +3,15 @@ extends Node3D
 var cursor = load("res://textures/crosshair_red_large.png")
 
 @export var camera : Camera3D
+
+signal send_raycast_result
+
 func _ready():
 	
+	if(owner.has_method("handle_raycast_result")):
+		
+		send_raycast_result.connect(owner.handle_raycast_result)
+		
 	Input.set_custom_mouse_cursor(cursor)
 
 func _physics_process(delta):
@@ -26,3 +33,6 @@ func shoot_gun():
 	ray_query.collide_with_areas = true
 	var raycast_result = space.intersect_ray(ray_query)
 	print(raycast_result)
+	if(raycast_result):
+		send_raycast_result.emit(raycast_result)
+		#raycast_result.collider.get_parent().owner.queue_free()

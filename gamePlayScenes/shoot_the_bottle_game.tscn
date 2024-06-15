@@ -1,16 +1,32 @@
-[gd_scene load_steps=3 format=3 uid="uid://c77smiruvlkwm"]
+[gd_scene load_steps=5 format=3 uid="uid://c77smiruvlkwm"]
 
+[ext_resource type="Script" path="res://scripts/shoot_the_bottle_game.gd" id="1_6a6ac"]
 [ext_resource type="PackedScene" uid="uid://0tm8pk2l4xpc" path="res://modelScenes/thrown_bottle.tscn" id="2_5f777"]
 [ext_resource type="PackedScene" uid="uid://byojtkt762x4c" path="res://gameLogicScenes/screen_cursor_container.tscn" id="2_8gtqs"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_75m7p"]
+size = Vector3(46, 1, 45)
+
 [node name="shoot_the_bottle_game" type="Node3D"]
+script = ExtResource("1_6a6ac")
 
 [node name="screen_cursor_container" parent="." instance=ExtResource("2_8gtqs")]
 
 [node name="DirectionalLight3D" parent="screen_cursor_container" index="0"]
 transform = Transform3D(-0.57947, -0.327094, 0.746475, 0.212861, -0.944877, -0.248792, 0.786705, 0.0147274, 0.617153, 2.65592, 1.69012, 0)
 
+[node name="Camera3D" parent="screen_cursor_container" index="1"]
+fov = 61.6168
+
 [node name="thrown_bottle" parent="." instance=ExtResource("2_5f777")]
 transform = Transform3D(-0.839923, 0, -0.542705, 0, 1, 0, 0.542705, 0, -0.839923, 1.90506, 0, 0)
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.764313, -9.44495, -7.31445)
+shape = SubResource("BoxShape3D_75m7p")
+
+[connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
 
 [editable path="screen_cursor_container"]

@@ -36,3 +36,5 @@ transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Path3D/PathFollow3D/ShootZone"]
 shape = SubResource("CapsuleShape3D_yvrqm")
+
+[connection signal="area_entered" from="Path3D/PathFollow3D/ShootZone" to="." method="_on_shoot_zone_area_entered"]

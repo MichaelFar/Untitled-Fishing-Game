@@ -10,10 +10,7 @@ func transition_to_minigame(packed_minigame_scene, fish_to_ignore):
 
 func transition_to_fishing_game(packed_main_fishing_game):
 	
-	
-	
-	#Globals.listOfSpawnedFish = []
-	
+	Input.set_custom_mouse_cursor(null)
 	get_tree().change_scene_to_packed.bind(packed_main_fishing_game).call_deferred()
 	
 	Globals.pondHasBeenReloaded = true

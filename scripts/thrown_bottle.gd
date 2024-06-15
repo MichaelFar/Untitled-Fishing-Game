@@ -14,6 +14,8 @@ var rotationSpeed := 0.0
 
 var timeToCompleteArc = 0.0
 
+var brokenBottleScene := preload("res://modelScenes/shattered_bottle.tscn")
+
 func _ready():
 	
 	#random_tilt()
@@ -54,3 +56,14 @@ func tween_path_follow():
 	var tween = get_tree().create_tween()
 	
 	tween.tween_property(pathFollow, "progress_ratio" , 1.0, timeToCompleteArc)
+
+
+func _on_shoot_zone_area_entered(area):
+	print("Raycast hit target")
+	
+func spawn_broken_bottle():
+	
+	var broken_bottle_instance = brokenBottleScene.instantiate()
+	owner.add_child(broken_bottle_instance)
+	broken_bottle_instance.global_position = bottleMesh.global_position
+	broken_bottle_instance.rotation = bottleMesh.rotation
