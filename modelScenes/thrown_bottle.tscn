@@ -5,22 +5,24 @@
 
 [sub_resource type="Curve3D" id="Curve3D_uos8k"]
 _data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, -0.005, 0.004, 0, 1, -6, 0, -1, 6, -8.74228e-07, 4, 10, 0, 0, 0, 0, 0, 0, 0, -20, 18),
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, -0.005, 0.004, 0, 0, -6, 0, -1, 6, 0, 12, 9, 0, 0, 0, 0, 0, 0, 0, -20, 18),
 "tilts": PackedFloat32Array(0, 0, 0)
 }
 point_count = 3
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yvrqm"]
-radius = 1.0
+radius = 1.227
 height = 2.65267
 
-[node name="thrown_bottle" type="Node3D" node_paths=PackedStringArray("pathFollow", "bottleMesh")]
+[node name="thrown_bottle" type="Node3D" node_paths=PackedStringArray("pathFollow", "path3D", "bottleMesh", "midPoint")]
 transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 0, 0, 0)
 script = ExtResource("1_m4bq1")
 pathFollow = NodePath("Path3D/PathFollow3D")
+path3D = NodePath("Path3D")
 bottleMesh = NodePath("Path3D/PathFollow3D/beerbottle001")
-lowerRotSpeed = 20.0
-upperRotSpeed = 30.0
+lowerRotSpeed = 10.0
+upperRotSpeed = 13.0
+midPoint = NodePath("MidArcPoint")
 
 [node name="Path3D" type="Path3D" parent="."]
 curve = SubResource("Curve3D_uos8k")
@@ -37,4 +39,8 @@ transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Path3D/PathFollow3D/ShootZone"]
 shape = SubResource("CapsuleShape3D_yvrqm")
 
-[connection signal="area_entered" from="Path3D/PathFollow3D/ShootZone" to="." method="_on_shoot_zone_area_entered"]
+[node name="MidArcPoint" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, 9)
+
+[node name="EndArcPoint" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -20, 18)

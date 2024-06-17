@@ -2,11 +2,15 @@ extends Node3D
 
 @export var pathFollow : PathFollow3D
 
+@export var path3D : Path3D
+
 @export var bottleMesh : Node3D
 
 @export var lowerRotSpeed : float
 
 @export var upperRotSpeed : float
+
+@export var midPoint : Marker3D
 
 var timeCalcNumerator := 60.0
 
@@ -15,6 +19,7 @@ var rotationSpeed := 0.0
 var timeToCompleteArc = 0.0
 
 var brokenBottleScene := preload("res://modelScenes/shattered_bottle.tscn")
+
 
 func _ready():
 	
@@ -32,7 +37,15 @@ func _ready():
 	
 func _physics_process(delta):
 	
-	bottleMesh.rotation_degrees.x += rotationSpeed
+	if(bottleMesh != null):
+		bottleMesh.rotation_degrees.x += rotationSpeed
+
+func set_path_points(mid_point : Vector3, end_point : Vector3):
+	
+	
+	path3D.curve.set_point_position(1, mid_point)
+	path3D.curve.set_point_position(2, end_point)
+
 
 func random_tilt():
 	
@@ -57,9 +70,6 @@ func tween_path_follow():
 	
 	tween.tween_property(pathFollow, "progress_ratio" , 1.0, timeToCompleteArc)
 
-
-func _on_shoot_zone_area_entered(area):
-	print("Raycast hit target")
 	
 func spawn_broken_bottle():
 	
