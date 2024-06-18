@@ -22,6 +22,10 @@ PlayerStatGlobal="*res://scripts/player_stat_global.gd"
 LevelTransition="*res://scripts/level_transition.gd"
 FishingPondsStorage="*res://gameLogicScenes/fishing_ponds.tscn"
 
+[display]
+
+window/size/mode=2
+
 [input]
 
 cast={

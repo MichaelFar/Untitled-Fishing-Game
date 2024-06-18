@@ -20,6 +20,7 @@ var timeToCompleteArc = 0.0
 
 var brokenBottleScene := preload("res://modelScenes/shattered_bottle.tscn")
 
+var parent = null
 
 func _ready():
 	
@@ -42,10 +43,11 @@ func _physics_process(delta):
 
 func set_path_points(mid_point : Vector3, end_point : Vector3):
 	
+	print(mid_point)
+	print(end_point)
 	
 	path3D.curve.set_point_position(1, mid_point)
 	path3D.curve.set_point_position(2, end_point)
-
 
 func random_tilt():
 	
@@ -70,10 +72,19 @@ func tween_path_follow():
 	
 	tween.tween_property(pathFollow, "progress_ratio" , 1.0, timeToCompleteArc)
 
-	
 func spawn_broken_bottle():
 	
 	var broken_bottle_instance = brokenBottleScene.instantiate()
-	owner.add_child(broken_bottle_instance)
+	parent.add_child(broken_bottle_instance)
 	broken_bottle_instance.global_position = bottleMesh.global_position
 	broken_bottle_instance.rotation = bottleMesh.rotation
+	print("Spawned broken bottle")
+
+
+func _on_shoot_zone_input_event(camera, event, position, normal, shape_idx):
+	
+	if(event.is_action_pressed("cast")):
+		
+		spawn_broken_bottle()
+		queue_free()
+		print("Bottle was clicked")

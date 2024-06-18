@@ -10,6 +10,7 @@ func _ready():
 	rigidChildList = get_rigid_children()
 	orient_rigid_bodies()
 	apply_force_to_pieces()
+	print("global_position of shattered bottle is " + str(global_position))
 	
 func get_rigid_children():
 	

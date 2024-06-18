@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://ci7ul28ks3731" path="res://modelScenes/beerbottle001.glb" id="2_2ojt4"]
 
 [sub_resource type="Curve3D" id="Curve3D_uos8k"]
+resource_local_to_scene = true
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, -0.005, 0.004, 0, 0, -6, 0, -1, 6, 0, 12, 9, 0, 0, 0, 0, 0, 0, 0, -20, 18),
 "tilts": PackedFloat32Array(0, 0, 0)
@@ -15,7 +16,7 @@ radius = 1.227
 height = 2.65267
 
 [node name="thrown_bottle" type="Node3D" node_paths=PackedStringArray("pathFollow", "path3D", "bottleMesh", "midPoint")]
-transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 0, 0, 0)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 script = ExtResource("1_m4bq1")
 pathFollow = NodePath("Path3D/PathFollow3D")
 path3D = NodePath("Path3D")
@@ -44,3 +45,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, 9)
 
 [node name="EndArcPoint" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -20, 18)
+
+[connection signal="input_event" from="Path3D/PathFollow3D/ShootZone" to="." method="_on_shoot_zone_input_event"]
