@@ -1,17 +1,41 @@
-[gd_scene load_steps=5 format=3 uid="uid://c77smiruvlkwm"]
+[gd_scene load_steps=11 format=3 uid="uid://c77smiruvlkwm"]
 
 [ext_resource type="Script" path="res://scripts/shoot_the_bottle_game.gd" id="1_6a6ac"]
 [ext_resource type="PackedScene" uid="uid://0tm8pk2l4xpc" path="res://modelScenes/thrown_bottle.tscn" id="2_5f777"]
 [ext_resource type="PackedScene" uid="uid://byojtkt762x4c" path="res://gameLogicScenes/screen_cursor_container.tscn" id="2_8gtqs"]
+[ext_resource type="Shader" path="res://shaders/sky_shader.gdshader" id="4_ods0t"]
+[ext_resource type="Texture2D" uid="uid://d3t86okb6fs2b" path="res://textures/gl-cloudy-sky-01.jpg" id="5_jrjbm"]
+[ext_resource type="PackedScene" uid="uid://bb2uwu5neecxd" path="res://gameLogicScenes/minigame_ui_container.tscn" id="6_782up"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_75m7p"]
 size = Vector3(46, 1, 45)
 
-[node name="shoot_the_bottle_game" type="Node3D" node_paths=PackedStringArray("markerContainer", "thrownObjectResources", "throwTimer")]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ux0q5"]
+shader = ExtResource("4_ods0t")
+shader_parameter/energy = 1.4
+shader_parameter/gamma = 1.681
+shader_parameter/scale = 0.915
+shader_parameter/triplanar_blend_power = 40.0
+shader_parameter/seamless_blend = 0.5
+shader_parameter/sky_tex = ExtResource("5_jrjbm")
+
+[sub_resource type="Sky" id="Sky_wyfig"]
+sky_material = SubResource("ShaderMaterial_ux0q5")
+
+[sub_resource type="Environment" id="Environment_dqkrr"]
+background_mode = 2
+sky = SubResource("Sky_wyfig")
+sky_custom_fov = 50.0
+ambient_light_source = 3
+
+[node name="shoot_the_bottle_game" type="Node3D" node_paths=PackedStringArray("markerContainer", "thrownObjectResources", "throwTimer", "endGameTimer", "UIContainer")]
 script = ExtResource("1_6a6ac")
 markerContainer = NodePath("MarkerContainer")
 thrownObjectResources = NodePath("ResourcePreloader")
 throwTimer = NodePath("BottleThrowTimer")
+endGameTimer = NodePath("EndGameTimer")
+UIContainer = NodePath("MinigameUIContainer")
+listOfPhrases = PackedStringArray("shoot the bottles", "break That glass", "test your aim")
 numThrows = 10
 
 [node name="screen_cursor_container" parent="." instance=ExtResource("2_8gtqs")]
@@ -23,6 +47,7 @@ transform = Transform3D(-0.57947, -0.327094, 0.746475, 0.212861, -0.944877, -0.2
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.184342, -1.71055, 1.47427)
 
 [node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -14.4624, 0)
 collision_layer = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
@@ -32,19 +57,19 @@ shape = SubResource("BoxShape3D_75m7p")
 [node name="MarkerContainer" type="Node3D" parent="."]
 
 [node name="UpperStartPoint" type="Marker3D" parent="MarkerContainer"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.42514, -6.878, 0.991)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.7031, -6.878, -3.45268)
 gizmo_extents = 2.0
 
 [node name="LowerStartPoint" type="Marker3D" parent="MarkerContainer"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.10116, -6.878, 0.991)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.0168, -6.878, -3.45268)
 gizmo_extents = 2.0
 
 [node name="UpperEndPoint" type="Marker3D" parent="MarkerContainer"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.13014, -6.878, -15.5041)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.13014, -6.878, -19.4916)
 gizmo_extents = 2.0
 
 [node name="LowerEndPoint" type="Marker3D" parent="MarkerContainer"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.48151, -6.878, -15.5041)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.5513, -6.878, -19.4916)
 gizmo_extents = 2.0
 
 [node name="ResourcePreloader" type="ResourcePreloader" parent="."]
@@ -52,7 +77,16 @@ resources = [PackedStringArray("thrown_bottle"), [ExtResource("2_5f777")]]
 
 [node name="BottleThrowTimer" type="Timer" parent="."]
 
+[node name="EndGameTimer" type="Timer" parent="."]
+wait_time = 3.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_dqkrr")
+
+[node name="MinigameUIContainer" parent="." instance=ExtResource("6_782up")]
+
 [connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
 [connection signal="timeout" from="BottleThrowTimer" to="." method="_on_bottle_throw_timer_timeout"]
+[connection signal="timeout" from="EndGameTimer" to="." method="_on_end_game_timer_timeout"]
 
 [editable path="screen_cursor_container"]

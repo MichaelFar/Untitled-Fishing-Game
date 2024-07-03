@@ -1,8 +1,9 @@
-[gd_scene load_steps=24 format=3 uid="uid://du027q7nas1j"]
+[gd_scene load_steps=25 format=3 uid="uid://du027q7nas1j"]
 
 [ext_resource type="PackedScene" uid="uid://clj4465y4vpek" path="res://modelScenes/shattered_bottle.glb" id="1_1od2t"]
 [ext_resource type="Script" path="res://scripts/shattered_bottle.gd" id="2_06ip0"]
 [ext_resource type="Material" uid="uid://bx4raconmky6n" path="res://modelScenes/materials/Material.tres" id="2_k1cj4"]
+[ext_resource type="PackedScene" uid="uid://byq2rf8mq0h8y" path="res://modelScenes/hit_effect_container.tscn" id="3_rdtip"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ngty0"]
 radius = 0.1
@@ -320,6 +321,7 @@ shadow_mesh = SubResource("ArrayMesh_spnh4")
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 script = ExtResource("2_06ip0")
 shard_speed = 20.0
+hitScene = ExtResource("3_rdtip")
 
 [node name="bottle_001_cell_009" parent="." index="0"]
 visible = false
@@ -482,3 +484,5 @@ shape = SubResource("SphereShape3D_ngty0")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D9/Area3D" index="0"]
 shape = SubResource("SphereShape3D_sroyw")
+
+[node name="hit_effect_container" parent="." index="18" instance=ExtResource("3_rdtip")]

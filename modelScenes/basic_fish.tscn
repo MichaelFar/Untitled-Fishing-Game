@@ -223,7 +223,6 @@ libraries = {
 }
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
-debug_enabled = true
 
 [node name="DetectionBox" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 1.42109e-14, 0, -1.42109e-14, 1, 0, 0, 0)
@@ -237,6 +236,7 @@ shape = SubResource("CapsuleShape3D_nsglc")
 wait_time = 3.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+visible = false
 mesh = SubResource("SphereMesh_6ywp2")
 
 [node name="DestinationEnd" type="Area3D" parent="MeshInstance3D"]

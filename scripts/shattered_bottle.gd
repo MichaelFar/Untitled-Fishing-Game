@@ -1,9 +1,10 @@
 extends Node3D
 
+@export var shard_speed := 3.0
+
+@export var hitScene : PackedScene
 
 var rigidChildList := []
-
-@export var shard_speed := 3.0
 
 func _ready():
 	
@@ -12,6 +13,15 @@ func _ready():
 	apply_force_to_pieces()
 	print("global_position of shattered bottle is " + str(global_position))
 	
+func spawn_hit_effect():
+	
+	var hit_scene = hitScene
+	
+	hit_scene = hit_scene.instantiate()
+	
+	add_child(hit_scene)
+	hit_scene.global_position = global_position
+
 func get_rigid_children():
 	
 	var rigid_child_list = []
