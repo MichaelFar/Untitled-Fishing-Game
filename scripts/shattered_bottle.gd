@@ -20,6 +20,7 @@ func spawn_hit_effect():
 	hit_scene = hit_scene.instantiate()
 	
 	add_child(hit_scene)
+	
 	hit_scene.global_position = global_position
 
 func get_rigid_children():

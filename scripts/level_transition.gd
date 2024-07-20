@@ -3,6 +3,20 @@ extends Node
 #This global node handles transitioning between the current fishing pond scene and a fish's respective minigame
 #Certain functions are contained in global_info, like storing fish in a dict to be reloaded
 
+var minigameDifficulty := DIFFICULTY.EASY
+
+enum DIFFICULTY { #This set based on size of the fish
+	EASY,
+	MEDIUM,
+	HARD
+}
+
+func _process(delta):
+	
+	if(Input.is_action_just_released("ui_select")):
+		
+		transition_to_fishing_game(FishingPondsStorage.get_pond_resource(0))
+
 func transition_to_minigame(packed_minigame_scene, fish_to_ignore):
 	Globals.store_fish_for_respawn(fish_to_ignore)
 	
@@ -15,8 +29,21 @@ func transition_to_fishing_game(packed_main_fishing_game):
 	
 	Globals.pondHasBeenReloaded = true
 	
-func _process(delta):
+
+func calculate_difficulty(difficulty_num, max_difficulty_num):
 	
-	if(Input.is_action_just_released("ui_select")):
+	var enum_array : Array[DIFFICULTY] = [DIFFICULTY.EASY, DIFFICULTY.MEDIUM, DIFFICULTY.HARD]
+	
+	var enum_size = enum_array.size()
+	print("enum array" + str(enum_array))
+	
+	max_difficulty_num = max_difficulty_num / enum_size
+	print( "Difficulty num is " + str(difficulty_num))
+	print( "Max difficulty num is " + str(max_difficulty_num))
+	for i in range(enum_size):
 		
-		transition_to_fishing_game(FishingPondsStorage.get_pond_resource(0))
+		if(difficulty_num <= max_difficulty_num * (i + 1)):
+			
+			return enum_array[i]
+			
+	

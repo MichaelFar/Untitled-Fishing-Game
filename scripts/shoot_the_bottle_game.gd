@@ -12,6 +12,8 @@ extends Node3D
 
 @export var listOfPhrases : PackedStringArray
 
+@export var listOfOutroPhrases : PackedStringArray
+
 @export var numThrows := 0
 
 var currentThrows := 0
@@ -24,6 +26,10 @@ var brokenBottleScene := preload("res://modelScenes/shattered_bottle.tscn")
 
 var markerList = []
 
+var score := 0
+
+var difficulty := LevelTransition.DIFFICULTY.EASY
+
 func _ready():
 	
 	markerList = markerContainer.get_children()
@@ -32,17 +38,13 @@ func _ready():
 	
 	UIContainer.intro_phrase_done.connect(initiate_game)
 	
-func _physics_process(delta):
-	
-	pass
-
 func set_random_phrase():
 	
 	var randobj = RandomNumberGenerator.new()
 	
 	var rand_index = randobj.randi_range(0, listOfPhrases.size() - 1)
 	
-	UIContainer.phrase = listOfPhrases[rand_index]
+	UIContainer.introPhrase = listOfPhrases[rand_index]
 	
 	UIContainer.convert_phrase_to_list()
 
@@ -105,25 +107,56 @@ func spawn_bottle():
 	add_child(thrown_bottle)
 	
 	thrown_bottle.parent = self
-	#var mid_point = calculate_mid_point(start_point, end_point)
-	#mid_point.y = 12#thrown_bottle.midPoint.global_position.y
-	#print("Mid point is " + str(mid_point))
 	thrown_bottle.global_position = start_point
 	thrown_bottle.rotation.y = new_angle
-
+	thrown_bottle.tree_exiting.connect(score_count)
 
 func _on_bottle_throw_timer_timeout():
+	
 	if(currentThrows < numThrows):
+		
 		spawn_bottle.call_deferred()
-	elif(!endGameTimer.time_left):
+		
+	elif(!endGameTimer.time_left):#Replace this with code that is called when user clicks on the score screen
+		
 		endGameTimer.start()
+		
 		print("End game timer has started")
 
 
 func _on_end_game_timer_timeout():
-	LevelTransition.transition_to_fishing_game(FishingPondsStorage.get_pond_resource(0))
+	#LevelTransition.transition_to_fishing_game(FishingPondsStorage.get_pond_resource(0))
+	UIContainer.display_end("You hit " + str(score) + " / " + str(numThrows) + " bottles" + "\n\n\n" + calculate_outro_phrase())
 
+func score_count():
+	
+	score += 1
+	
 func initiate_game():
 	
 	throwTimer.start()
+
+func calculate_outro_phrase():
 	
+	var phrase_list = listOfOutroPhrases
+	
+	var num_tiers = phrase_list.size()
+	
+	var max_score = numThrows
+	
+	var player_score = score
+	
+	player_score = player_score / num_tiers
+	
+	player_score *= num_tiers
+	
+	max_score = max_score / num_tiers
+	
+	print("Player score " + str(player_score))
+	print("Max score " + str(max_score))
+	
+	for i in range(num_tiers):
+		
+		if(player_score <= max_score * (i + 1)):
+			return phrase_list[i]
+

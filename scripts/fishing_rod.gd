@@ -28,11 +28,13 @@ signal cast_ended
 
 @export var bobberTravelSpeed = 0.01
 
+var lineScene = preload("res://modelScenes/fishing_line.tscn")
+
+var reticleResource = preload("res://modelScenes/bobber_reticle.tscn")
+
 var arcAcceleration := 0.1
 
 var arcTime := 3.0
-
-var lineScene = preload("res://modelScenes/fishing_line.tscn")
 
 var lineReference = null
 
@@ -71,14 +73,11 @@ var hasCreatedBobber := false
 enum STATE {
 	MOVING, #Rod moves left and right
 	CASTING,#Rod casts and the bobber is released
-	WAITING #Bobber is in water, player is waiting for fish
 }
 
-var baits_num = {Globals.BAITS.LEECHES : 0, Globals.BAITS.GRUBS: 0, Globals.BAITS.WORMS : 0}
+var baitsNum = {Globals.BAITS.LEECHES : 0, Globals.BAITS.GRUBS: 0, Globals.BAITS.WORMS : 0}
 
 var currentState = STATE.MOVING
-
-@onready var reticleResource = preload("res://modelScenes/bobber_reticle.tscn")
 
 var numTweensCreated := 0
 

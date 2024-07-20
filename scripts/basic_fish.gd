@@ -1,3 +1,5 @@
+class_name BasicFish
+
 extends CharacterBody3D
 
 @export var animationPlayer : AnimationPlayer
@@ -13,6 +15,8 @@ extends CharacterBody3D
 @export var navDetectionBox : Area3D
 
 @export var minigamePreloader : ResourcePreloader
+
+@export var FiniteStateMachine : FiniteStateMachine
 
 @export var fishSpeed := 0.5
 
@@ -44,21 +48,27 @@ var wasRespawned := false
 
 var minigame = null
 
+var currentDifficulty := LevelTransition.DIFFICULTY.EASY
+
 signal biting #Emits when fish bites the bobber, signal is connected to a bobber object function
 
 enum FISHSTATE {
-	SPAWNMOVE,#Not yet implemented: When spawned swim up
-	MOVE,#Move to chosen point
-	IDLE,#Idle at chosen point
-	INTEREST,#Bait has gained interest in fish
+	SPAWNMOVE,#When spawned swim up
+	MOVE,     #Move to chosen point
+	IDLE,     #Idle at chosen point
+	INTEREST, #Fish has gained interest in bait
 	NIBBLE
 }
 
 var BAIT_INTEREST_DICT = {
-Globals.BAITS.LEECHES : 15, 
-Globals.BAITS.GRUBS   : 5, 
-Globals.BAITS.WORMS   : 100}
-
+	
+	Globals.BAITS.LEECHES : 15, 
+	
+	Globals.BAITS.GRUBS   : 5, 
+	
+	Globals.BAITS.WORMS   : 100
+	
+	}
 func _ready():
 	
 	call_deferred("actor_setup")
@@ -103,8 +113,6 @@ func _physics_process(delta):
 			
 			velocity = current_agent_position.direction_to(next_path_position) * fishSpeed
 			
-			#print("Next path is " + str(next_path_position) + " and fish position is " + str(global_position))
-			
 			if(next_path_position != global_position):
 				
 				rotation.x = lerp_angle(rotation.x,atan2(-Vector3.FORWARD.x, -Vector3.FORWARD.z), delta * angularAcceleration)
@@ -134,12 +142,8 @@ func _physics_process(delta):
 					bitingHook = true
 					
 				Globals.disableOtherFishDetectionBox(self)
-				#idleTimer.stop()
-				couldBeBiting = false
 				
-				#if(biteZoneID.get_parent().is_connected("in_the_bite_zone", check_if_biting)):
-					#
-					#biteZoneID.get_parent().disconnect("in_the_bite_zone", check_if_biting)
+				couldBeBiting = false
 				
 				if(PlayerStatGlobal.fishCurrentlyBiting.find(self) == -1):
 					
@@ -151,7 +155,9 @@ func _physics_process(delta):
 				
 			if(bitingHook):
 				
-				global_position.y += Globals.currentBobber.deltaGlobalPosition.y
+				if(Globals.currentBobber != null):
+					
+					global_position.y += Globals.currentBobber.deltaGlobalPosition.y
 				
 				rotation.x = lerp_angle(rotation.x, atan2(-Vector3.UP.x, -Vector3.UP.z), delta)
 				
@@ -163,6 +169,10 @@ func _physics_process(delta):
 	move_and_slide()
 
 #when fish is added to the scene tree, it chooses from a list of it's minigames
+
+func calculate_difficulty():
+	pass
+
 func choose_minigame():
 	
 	var randobj = RandomNumberGenerator.new()
@@ -180,7 +190,6 @@ func set_water_mesh_origin(water_mesh_origin):
 func actor_setup():
 	# Wait for the first physics frame so the NavigationServer can sync.
 	await get_tree().physics_frame
-	print(fishResource)
 	# Now that the navigation map is no longer empty, set the movement target.
 	set_movement_target(get_random_position())
 	
@@ -257,6 +266,7 @@ func _on_detection_box_area_exited(area):
 			#Globals.store_fish_for_respawn()
 			#queue_free()#Replace with minigame transition code
 			print("Minigame before calling leveltransition is " + str(minigame))
+			LevelTransition.minigameDifficulty = currentDifficulty
 			LevelTransition.transition_to_minigame(minigame, self)
 		
 func resize():
@@ -267,11 +277,17 @@ func resize():
 	
 	var new_scale := randnum.randf_range(-scale_max.x, scale_max.x)
 	
+	var difficulty_range = absf(new_scale) + scale_max.x
+	
+	currentDifficulty = LevelTransition.calculate_difficulty(difficulty_range, scale_max.x * 2)
+	
+	print("Current difficulty is " + str(currentDifficulty))
+	
 	if(wasRespawned):
 		
 		return scale
 	
-	return scale + Vector3(new_scale,new_scale,new_scale)
+	return scale + Vector3(new_scale, new_scale, new_scale)
 	
 func rotate_towards_velocity(delta):
 	
@@ -305,11 +321,11 @@ func _on_destination_end_area_entered(area):
 			currentState = FISHSTATE.IDLE
 
 func _on_tree_exiting():
+	
 	Globals.listOfSpawnedFish.pop_at(Globals.listOfSpawnedFish.find(self))
 	#Globals.store_fish_for_respawn()
 	
 func _on_tree_exited():
-	
 	
 	PlayerStatGlobal.fishCurrentlyBiting.pop_at(PlayerStatGlobal.fishCurrentlyBiting.find(self))
 	

@@ -4,16 +4,30 @@ extends Control
 
 @export var timer : Timer
 
-var phrase : String
+var introPhrase : String
+
+var scoreText : String
 
 var splitPhrase := []
 
+var scoreLabelSize := Vector2.ZERO
+
 var currentIndex = 0
+
+var readyToReturnToFishing := false
 
 signal intro_phrase_done
 
 func _ready():
+	
+	scoreLabelSize = textLabel.size
+	
 	calculate_position()
+
+func _physics_process(delta):
+	if(readyToReturnToFishing):
+		if(Input.is_action_just_released("cast")):
+			LevelTransition.transition_to_fishing_game(FishingPondsStorage.currentPond)
 
 func calculate_position():
 
@@ -24,8 +38,7 @@ func calculate_position():
 func convert_phrase_to_list():
 	
 	timer.start()
-	splitPhrase = phrase.split(" ")
-
+	splitPhrase = introPhrase.split(" ")
 
 func _on_timer_timeout():
 	
@@ -36,4 +49,10 @@ func _on_timer_timeout():
 	else:
 		timer.stop()
 		intro_phrase_done.emit()
-		textLabel.queue_free()
+		textLabel.size = Vector2(1, 0)
+
+func display_end(end_screen_string : String):
+	
+	readyToReturnToFishing = true
+	textLabel.text = end_screen_string
+	textLabel.size = scoreLabelSize

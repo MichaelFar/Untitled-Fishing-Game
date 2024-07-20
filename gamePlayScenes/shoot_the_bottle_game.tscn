@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://c77smiruvlkwm"]
+[gd_scene load_steps=12 format=3 uid="uid://c77smiruvlkwm"]
 
 [ext_resource type="Script" path="res://scripts/shoot_the_bottle_game.gd" id="1_6a6ac"]
 [ext_resource type="PackedScene" uid="uid://0tm8pk2l4xpc" path="res://modelScenes/thrown_bottle.tscn" id="2_5f777"]
@@ -6,6 +6,7 @@
 [ext_resource type="Shader" path="res://shaders/sky_shader.gdshader" id="4_ods0t"]
 [ext_resource type="Texture2D" uid="uid://d3t86okb6fs2b" path="res://textures/gl-cloudy-sky-01.jpg" id="5_jrjbm"]
 [ext_resource type="PackedScene" uid="uid://bb2uwu5neecxd" path="res://gameLogicScenes/minigame_ui_container.tscn" id="6_782up"]
+[ext_resource type="AudioStream" uid="uid://cpnxadqtho4ql" path="res://audio/sounds/690307__paulorrdotcom__best-shot.wav" id="7_0ts2o"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_75m7p"]
 size = Vector3(46, 1, 45)
@@ -35,7 +36,8 @@ thrownObjectResources = NodePath("ResourcePreloader")
 throwTimer = NodePath("BottleThrowTimer")
 endGameTimer = NodePath("EndGameTimer")
 UIContainer = NodePath("MinigameUIContainer")
-listOfPhrases = PackedStringArray("shoot the bottles", "break That glass", "test your aim")
+listOfPhrases = PackedStringArray("shoot them bottles", "kick the habit", "try another", "Feelin Lucky?")
+listOfOutroPhrases = PackedStringArray("That kinda sucked", "Better than my uncle at least", "Yeah ok go touch some grass", "This town is big enough for both of us")
 numThrows = 10
 
 [node name="screen_cursor_container" parent="." instance=ExtResource("2_8gtqs")]
@@ -84,6 +86,9 @@ wait_time = 3.0
 environment = SubResource("Environment_dqkrr")
 
 [node name="MinigameUIContainer" parent="." instance=ExtResource("6_782up")]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_0ts2o")
 
 [connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
 [connection signal="timeout" from="BottleThrowTimer" to="." method="_on_bottle_throw_timer_timeout"]

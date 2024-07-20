@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bb2uwu5neecxd"]
 
 [ext_resource type="Script" path="res://scripts/minigame_ui_container.gd" id="1_0qm76"]
-[ext_resource type="FontFile" uid="uid://da214g244davj" path="res://fonts/AntonSC-Regular.ttf" id="2_72fje"]
+[ext_resource type="FontFile" uid="uid://cewagkbsqynf4" path="res://fonts/Romantiques-n6r1.ttf" id="2_o6jyr"]
 
 [node name="MinigameUIContainer" type="Control" node_paths=PackedStringArray("textLabel", "timer")]
 layout_mode = 3
@@ -12,18 +12,23 @@ offset_bottom = -0.28801
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_0qm76")
-textLabel = NodePath("RichTextLabel")
+textLabel = NodePath("TextLabel")
 timer = NodePath("Timer")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
+[node name="TextLabel" type="RichTextLabel" parent="."]
 modulate = Color(0, 0, 0, 1)
 layout_mode = 0
-offset_right = 351.0
-offset_bottom = 162.0
-theme_override_fonts/normal_font = ExtResource("2_72fje")
-theme_override_font_sizes/normal_font_size = 120
+offset_right = 1379.0
+offset_bottom = 796.0
+theme_override_fonts/normal_font = ExtResource("2_o6jyr")
+theme_override_font_sizes/normal_font_size = 80
 bbcode_enabled = true
 scroll_active = false
+
+[node name="ClickAnywhereText" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.5

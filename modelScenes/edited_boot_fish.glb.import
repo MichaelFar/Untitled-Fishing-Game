@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://djxnijyd7l7v"
-path="res://.godot/imported/boot_fish.glb-cc5ac4c86ee0e16fdccf195132fe3a7e.scn"
+uid="uid://xu6huhfxwlti"
+path="res://.godot/imported/edited_boot_fish.glb-58a7d6066640fd83425afeffb0037469.scn"
 
 [deps]
 
-source_file="res://modelScenes/boot_fish.glb"
-dest_files=["res://.godot/imported/boot_fish.glb-cc5ac4c86ee0e16fdccf195132fe3a7e.scn"]
+source_file="res://modelScenes/edited_boot_fish.glb"
+dest_files=["res://.godot/imported/edited_boot_fish.glb-58a7d6066640fd83425afeffb0037469.scn"]
 
 [params]
 

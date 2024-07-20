@@ -6,8 +6,6 @@ extends RigidBody3D
 @export var biteZone : Area3D #Shape that determines when the fish should bite if it's interested
 @export var baitRange: Area3D #Range that the bait sends the signal
 @export var joltTimer : Timer #When the fish bites, jolt the bobber up and down with physics
-
-
 @export var float_force := 1.0
 @export var water_drag := 0.05
 @export var water_angular_drag := 0.05
@@ -35,6 +33,7 @@ func _ready():
 	Globals.connectBitingSignal()
 
 func _physics_process(delta):
+	
 	deltaGlobalPosition = global_position - prevPosition
 	submerged = false
 	var depth = 0.0 - global_position.y
@@ -44,11 +43,8 @@ func _physics_process(delta):
 		submerged = true
 		apply_force(Vector3.UP * float_force * gravity * depth)
 		
-	#if(Input.is_action_just_released("ui_select")):
-		#
-		#start_jolt_timer()
-		
 	prevPosition = global_position
+	
 func _integrate_forces(state: PhysicsDirectBodyState3D):
 	
 	if submerged:
