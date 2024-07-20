@@ -98,12 +98,12 @@ func _physics_process(delta):
 	match currentState:
 		
 		FISHSTATE.SPAWNMOVE:
-			
-			rotation.x = lerp_angle(rotation.x, atan2(-Vector3.UP.x, -Vector3.UP.z), delta)
-			
-			var modified_spawn_destination = Vector3(global_position.x, spawnDestination.y, global_position.z)
-			
-			velocity = global_position.direction_to(modified_spawn_destination) * fishSpeed
+			pass
+			#rotation.x = lerp_angle(rotation.x, atan2(-Vector3.UP.x, -Vector3.UP.z), delta)
+			#
+			#var modified_spawn_destination = Vector3(global_position.x, spawnDestination.y, global_position.z)
+			#
+			#velocity = global_position.direction_to(modified_spawn_destination) * fishSpeed
 		
 		FISHSTATE.MOVE:
 			
@@ -311,14 +311,8 @@ func entered_swim_zone():
 		Globals.currentWaterPlane.disconnect("entered_swim_zone", entered_swim_zone)
 
 func _on_destination_end_area_entered(area):
+	pass
 	
-	if(area == navDetectionBox):
-		
-		velocity = Vector3.ZERO
-		print("Reached target")
-		if(!isInterested):
-			
-			currentState = FISHSTATE.IDLE
 
 func _on_tree_exiting():
 	

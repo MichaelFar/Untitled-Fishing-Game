@@ -22,7 +22,7 @@ func _ready():
 	await get_tree().physics_frame
 	
 	
-	print(fishResources.get_resource("basic_fish"))
+	#print(fishResources.get_resource("basic_fish"))
 	
 	if(Globals.pondHasBeenReloaded):
 		spawn_preexisting_fish()
