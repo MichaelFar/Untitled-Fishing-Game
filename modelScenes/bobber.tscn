@@ -2,6 +2,52 @@
 
 [ext_resource type="Script" path="res://scripts/bobber.gd" id="2_sf8pp"]
 
+[sub_resource type="Animation" id="Animation_75a3e"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, -0.569082)]
+}
+
+[sub_resource type="Animation" id="Animation_e7cek"]
+resource_name = "bobbing"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6, 1.4, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, -0.569082), Vector3(0.22047, -3.86271e-09, -0.569082), Vector3(-0.219911, 0, -0.568977), Vector3(0, 0, -0.569082)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sy8pn"]
+_data = {
+"RESET": SubResource("Animation_75a3e"),
+"bobbing": SubResource("Animation_e7cek")
+}
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_fh1ol"]
+height = 2.18113
+radius = 0.0106243
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_t86p6"]
+height = 0.405367
+radius = 0.809034
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ytesv"]
 resource_name = "Material.001"
 cull_mode = 2
@@ -76,52 +122,6 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_atyx8")
 
-[sub_resource type="Animation" id="Animation_75a3e"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0, -0.569082)]
-}
-
-[sub_resource type="Animation" id="Animation_e7cek"]
-resource_name = "bobbing"
-length = 2.0
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.6, 1.4, 2),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector3(0, 0, -0.569082), Vector3(0.22047, -3.86271e-09, -0.569082), Vector3(-0.219911, 0, -0.568977), Vector3(0, 0, -0.569082)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_sy8pn"]
-_data = {
-"RESET": SubResource("Animation_75a3e"),
-"bobbing": SubResource("Animation_e7cek")
-}
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_t86p6"]
-height = 0.6029
-radius = 0.809034
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_fh1ol"]
-height = 2.18113
-radius = 0.0106243
-
 [node name="bobber" type="RigidBody3D" node_paths=PackedStringArray("animationPlayer", "topOfBobber", "interestTimer", "biteZone", "baitRange", "joltTimer")]
 transform = Transform3D(0.842396, 0.538859, 0, -0.538859, 0.842396, 0, 0, 0, 1, 0, 0, 0)
 mass = 0.05
@@ -136,43 +136,47 @@ joltTimer = NodePath("JoltTimer")
 float_force = 0.2
 
 [node name="TopOfBobber" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0762738, 0.119238, 0)
-
-[node name="Icosphere" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, 0, 0, 0)
-mesh = SubResource("ArrayMesh_8061n")
-skeleton = NodePath("")
-
-[node name="Icosphere_001" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.15, 2.98023e-08, 0, -2.98023e-08, 0.15, 0, 0, 0, 0.15, 0.000154879, -0.0723961, 0)
-mesh = SubResource("ArrayMesh_57elb")
-skeleton = NodePath("")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.136262, 0)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_sy8pn")
 }
 
-[node name="BaitRange" type="Area3D" parent="."]
-collision_mask = 8
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="BaitRange"]
-transform = Transform3D(0.839697, -0.543058, 0, 0.543058, 0.839697, 0, 0, 0, 1, 0.156264, -0.220962, 0)
-shape = SubResource("CylinderShape3D_t86p6")
-
-[node name="InterestTimer" type="Timer" parent="."]
-
 [node name="BobberBiteZone" type="Area3D" parent="."]
 collision_mask = 8
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BobberBiteZone"]
-transform = Transform3D(0.839696, -0.543057, 0, 0.543057, 0.839696, 0, 0, 0, 1, 0.604332, -0.921425, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.10704, 0)
 shape = SubResource("CylinderShape3D_fh1ol")
+
+[node name="BaitRange" type="Area3D" parent="."]
+transform = Transform3D(0.842452, 0.538771, 0, -0.538771, 0.842452, 0, 0, 0, 1, 0, 0, 0)
+collision_mask = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BaitRange"]
+transform = Transform3D(0.839697, -0.543058, 0, 0.543058, 0.839697, 0, 0, 0, 1, 0.106931, -0.167204, 0)
+shape = SubResource("CylinderShape3D_t86p6")
+
+[node name="MeshHalvesContainer" type="Node3D" parent="."]
+transform = Transform3D(0.842453, 0.538771, 0, -0.538771, 0.842453, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Icosphere" type="MeshInstance3D" parent="MeshHalvesContainer"]
+transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, 0, 0, 0)
+mesh = SubResource("ArrayMesh_8061n")
+skeleton = NodePath("")
+
+[node name="Icosphere_001" type="MeshInstance3D" parent="MeshHalvesContainer"]
+transform = Transform3D(0.15, 2.98023e-08, 0, -2.98023e-08, 0.15, 0, 0, 0, 0.15, 0.000154879, -0.0723961, 0)
+mesh = SubResource("ArrayMesh_57elb")
+skeleton = NodePath("")
+
+[node name="InterestTimer" type="Timer" parent="."]
 
 [node name="JoltTimer" type="Timer" parent="."]
 wait_time = 0.1
 
 [connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
-[connection signal="area_entered" from="BaitRange" to="." method="_on_area_3d_area_entered"]
 [connection signal="area_entered" from="BobberBiteZone" to="." method="_on_bobber_bite_zone_area_entered"]
+[connection signal="area_entered" from="BaitRange" to="." method="_on_area_3d_area_entered"]
 [connection signal="timeout" from="JoltTimer" to="." method="_on_jolt_timer_timeout"]

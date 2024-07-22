@@ -230,22 +230,19 @@ func poll_interest(bait_key):
 	if(poll_result <= target && isInterested == false):
 		
 		currentState = FISHSTATE.INTEREST
-		velocity = Vector3.ZERO
-		isInterested = true
-		#set_movement_target(bobberGlobalPosition)
-		idleTimer.stop()
+		
 
 func _on_detection_box_area_entered(area):
 	
-	if(!area.get_parent().polling_interest.is_connected(poll_interest)):
+	if(!area.owner.polling_interest.is_connected(poll_interest)):
 		
-		area.get_parent().polling_interest.connect(poll_interest)
+		area.owner.polling_interest.connect(poll_interest)
 		
-	if(!area.get_parent().in_the_bite_zone.is_connected(check_if_biting)):
+	if(!area.owner.in_the_bite_zone.is_connected(check_if_biting)):
 		
-		area.get_parent().in_the_bite_zone.connect(check_if_biting)
+		area.owner.in_the_bite_zone.connect(check_if_biting)
 		
-	bobberGlobalPosition = area.get_parent().global_position
+	bobberGlobalPosition = area.owner.global_position
 	
 	print("Fish entered bobber bait range")
 
@@ -310,9 +307,7 @@ func entered_swim_zone():
 		
 		Globals.currentWaterPlane.disconnect("entered_swim_zone", entered_swim_zone)
 
-func _on_destination_end_area_entered(area):
-	pass
-	
+
 
 func _on_tree_exiting():
 	

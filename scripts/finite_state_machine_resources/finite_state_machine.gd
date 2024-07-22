@@ -16,3 +16,5 @@ func change_state(new_state : State):
 	new_state.enter_state()
 	
 	state = new_state
+	
+

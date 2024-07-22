@@ -192,6 +192,7 @@ func create_bobber(index):
 	destinationPosition.y = 0.0
 	bobber_resource.global_position = bobberSpawnPoint.global_position
 	lastCastBobber = bobber_resource
+	lastCastBobber.rotation.z = 0
 	await get_tree().physics_frame
 	lineReference = create_line(bobber_resource)
 	
