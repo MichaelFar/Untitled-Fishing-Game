@@ -16,7 +16,7 @@ extends CharacterBody3D
 
 @export var minigamePreloader : ResourcePreloader
 
-@export var FiniteStateMachine : FiniteStateMachine
+@export var stateMachine : FiniteStateMachine
 
 @export var fishSpeed := 0.5
 
@@ -106,24 +106,24 @@ func _physics_process(delta):
 			#velocity = global_position.direction_to(modified_spawn_destination) * fishSpeed
 		
 		FISHSTATE.MOVE:
-			
-			current_agent_position = global_position
-			
-			next_path_position = navAgent.get_next_path_position()
-			
-			velocity = current_agent_position.direction_to(next_path_position) * fishSpeed
-			
-			if(next_path_position != global_position):
-				
-				rotation.x = lerp_angle(rotation.x,atan2(-Vector3.FORWARD.x, -Vector3.FORWARD.z), delta * angularAcceleration)
-				
-				rotate_towards_velocity(delta)
+			pass
+			#current_agent_position = global_position
+			#
+			#next_path_position = navAgent.get_next_path_position()
+			#
+			#velocity = current_agent_position.direction_to(next_path_position) * fishSpeed
+			#
+			#if(next_path_position != global_position):
+				#
+				#rotation.x = lerp_angle(rotation.x,atan2(-Vector3.FORWARD.x, -Vector3.FORWARD.z), delta * angularAcceleration)
+				#
+				#rotate_towards_velocity(delta)
 				
 		FISHSTATE.IDLE:
-			
-			if(idleTimer.is_stopped()):
-				
-				idleTimer.start()
+			pass
+			#if(idleTimer.is_stopped()):
+				#
+				#idleTimer.start()
 				
 		FISHSTATE.INTEREST:
 			
@@ -164,7 +164,6 @@ func _physics_process(delta):
 			else:
 				rotate_towards_velocity(delta)
 	#print("fish state is " + str(currentState))
-	debugSphere.global_position = next_path_position
 	
 	move_and_slide()
 
@@ -209,9 +208,9 @@ func set_movement_target(movement_target: Vector3):
 	navAgent.set_target_position(movement_target)
 
 func _on_idle_timer_timeout():
-	
-	set_movement_target(get_random_position())
-	currentState = FISHSTATE.MOVE
+	pass
+	#set_movement_target(get_random_position())
+	#currentState = FISHSTATE.MOVE
 
 func poll_interest(bait_key):
 	
@@ -229,8 +228,8 @@ func poll_interest(bait_key):
 	
 	if(poll_result <= target && isInterested == false):
 		
-		currentState = FISHSTATE.INTEREST
-		
+		#currentState = FISHSTATE.INTEREST
+		stateMachine.change_state(stateMachine.state.interruptState)
 
 func _on_detection_box_area_entered(area):
 	
@@ -301,13 +300,11 @@ func check_if_biting(areaID):
 
 func entered_swim_zone():
 	
-	currentState = FISHSTATE.MOVE
+	stateMachine.change_state(stateMachine.get_next_state())
 	
 	if(Globals.currentWaterPlane.entered_swim_zone.is_connected(entered_swim_zone)):
 		
 		Globals.currentWaterPlane.disconnect("entered_swim_zone", entered_swim_zone)
-
-
 
 func _on_tree_exiting():
 	

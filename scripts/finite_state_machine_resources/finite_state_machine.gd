@@ -9,6 +9,8 @@ func _ready():
 
 func change_state(new_state : State):
 	
+	print("New state is " + str(new_state))
+	
 	if (state is State):
 		
 		state.exit_state()
@@ -17,4 +19,6 @@ func change_state(new_state : State):
 	
 	state = new_state
 	
-
+func get_next_state():
+	
+	return state.nextState

@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://bxw1u1ckjb0kl"]
+[gd_scene load_steps=3 format=3 uid="uid://bxw1u1ckjb0kl"]
 
 [ext_resource type="Script" path="res://scripts/spawn_manager.gd" id="1_cfuuw"]
 [ext_resource type="PackedScene" uid="uid://bdunasxchfrai" path="res://modelScenes/basic_fish.tscn" id="1_huau6"]
-[ext_resource type="PackedScene" uid="uid://bqb48ynw6jca5" path="res://modelScenes/cowboy_fish_boss.tscn" id="3_rmqqo"]
 
 [node name="spawn_manager" type="Node3D" node_paths=PackedStringArray("fishResources", "spawnTimer", "spawnReferencePoint", "spawnDestination")]
 script = ExtResource("1_cfuuw")
@@ -12,7 +11,7 @@ spawnReferencePoint = NodePath("spawnReferencePoint")
 spawnDestination = NodePath("spawnDestination")
 
 [node name="FishResources" type="ResourcePreloader" parent="."]
-resources = [PackedStringArray("basic_fish", "cowboy_fish_boss"), [ExtResource("1_huau6"), ExtResource("3_rmqqo")]]
+resources = [PackedStringArray("basic_fish"), [ExtResource("1_huau6")]]
 
 [node name="spawnReferencePoint" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.639697, 0)

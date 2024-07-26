@@ -26,7 +26,8 @@ func _physics_process(delta):
 	actor.velocity = actor.global_position.direction_to(modified_spawn_destination) * actor.fishSpeed
 
 func _on_destination_end_area_entered(area):
-	
+	print("Actor is " + str(actor))
+	print("actor.statemachine is " +str(actor.stateMachine))
 	if(area == actor.navDetectionBox):
-		actor.FiniteStateMachine.change_state(nextState)
+		actor.stateMachine.change_state(nextState)
 		

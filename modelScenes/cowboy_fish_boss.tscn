@@ -103,7 +103,7 @@ height = 0.489732
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_by2ur"]
 height = 1.47304
 
-[node name="cowboy_fish_boss" type="CharacterBody3D" node_paths=PackedStringArray("animationPlayer", "navAgent", "idleTimer", "debugSphere", "detectionBox", "navDetectionBox", "minigamePreloader", "FiniteStateMachine")]
+[node name="cowboy_fish_boss" type="CharacterBody3D" node_paths=PackedStringArray("animationPlayer", "navAgent", "idleTimer", "debugSphere", "detectionBox", "navDetectionBox", "minigamePreloader")]
 transform = Transform3D(0.3, 0, 0, 0, -1.31134e-08, -0.3, 0, 0.3, -1.31134e-08, 0, 0, 0)
 script = ExtResource("1_notb4")
 animationPlayer = NodePath("cowboy_fish_model/AnimationPlayer")
@@ -113,7 +113,6 @@ debugSphere = NodePath("MeshInstance3D")
 detectionBox = NodePath("DetectionBox")
 navDetectionBox = NodePath("NavDetectionBox")
 minigamePreloader = NodePath("PossibleMinigameResources")
-FiniteStateMachine = NodePath("FiniteStateMachine")
 
 [node name="FiniteStateMachine" type="Node" parent="." node_paths=PackedStringArray("state")]
 script = ExtResource("2_gky5p")
