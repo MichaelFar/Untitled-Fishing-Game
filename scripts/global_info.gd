@@ -65,12 +65,12 @@ func connectBitingSignal():
 				
 func stop_other_fish_interest(fish):
 	
-	for i in listOfSpawnedFish:
+	for i : BasicFish in listOfSpawnedFish:
 		
 		if(i != fish):
 			
-			i.currentState = i.FISHSTATE.MOVE
-			
+			#i.currentState = i.FISHSTATE.MOVE
+			i.stateMachine.change_state(i.stateMachine.state.nextState)
 			i.isInterested = false
 
 func store_fish_for_respawn(fish_to_ignore): #Creates a dictionary of fish and their sizes, used for reloading the fishing minigame from

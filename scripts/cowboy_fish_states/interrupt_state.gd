@@ -10,4 +10,4 @@ func enter_state() -> void:
 	actor.isInterested = true
 	#set_movement_target(bobberGlobalPosition)
 	actor.idleTimer.stop()
-	actor.FiniteStateMachine.change_state(nextState)
+	actor.stateMachine.change_state(nextState)

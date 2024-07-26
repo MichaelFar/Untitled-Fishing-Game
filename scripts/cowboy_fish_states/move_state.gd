@@ -26,7 +26,8 @@ func _physics_process(delta):
 		actor.rotate_towards_velocity(delta)
 		
 	actor.debugSphere.global_position = next_path_position
-
+	
+	actor.move_and_slide()
 func enter_state():
 	set_physics_process(true)
 

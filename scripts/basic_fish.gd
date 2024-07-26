@@ -126,46 +126,46 @@ func _physics_process(delta):
 				#idleTimer.start()
 				
 		FISHSTATE.INTEREST:
-			
-			var flat_bobber_destination = bobberGlobalPosition
-			
-			flat_bobber_destination.y = global_position.y
-			
-			velocity = global_position.direction_to(flat_bobber_destination) * fishSpeed
-			
-			rotate_towards_velocity(delta)
-			
-			if(couldBeBiting):
-				
-				if(PlayerStatGlobal.fishCurrentlyBiting.size() != PlayerStatGlobal.numFishPerBait):
-					
-					bitingHook = true
-					
-				Globals.disableOtherFishDetectionBox(self)
-				
-				couldBeBiting = false
-				
-				if(PlayerStatGlobal.fishCurrentlyBiting.find(self) == -1):
-					
-					PlayerStatGlobal.fishCurrentlyBiting.append(self)
-					
-				biting.emit()#received by the bobber
-				
-				Globals.stop_other_fish_interest(self)
-				
-			if(bitingHook):
-				
-				if(Globals.currentBobber != null):
-					
-					global_position.y += Globals.currentBobber.deltaGlobalPosition.y
-				
-				rotation.x = lerp_angle(rotation.x, atan2(-Vector3.UP.x, -Vector3.UP.z), delta)
-				
-			else:
-				rotate_towards_velocity(delta)
+			pass
+			#var flat_bobber_destination = bobberGlobalPosition
+			#
+			#flat_bobber_destination.y = global_position.y
+			#
+			#velocity = global_position.direction_to(flat_bobber_destination) * fishSpeed
+			#
+			#rotate_towards_velocity(delta)
+			#
+			#if(couldBeBiting):
+				#
+				#if(PlayerStatGlobal.fishCurrentlyBiting.size() != PlayerStatGlobal.numFishPerBait):
+					#
+					#bitingHook = true
+					#
+				#Globals.disableOtherFishDetectionBox(self)
+				#
+				#couldBeBiting = false
+				#
+				#if(PlayerStatGlobal.fishCurrentlyBiting.find(self) == -1):
+					#
+					#PlayerStatGlobal.fishCurrentlyBiting.append(self)
+					#
+				#biting.emit()#received by the bobber
+				#
+				#Globals.stop_other_fish_interest(self)
+				#
+			#if(bitingHook):
+				#
+				#if(Globals.currentBobber != null):
+					#
+					#global_position.y += Globals.currentBobber.deltaGlobalPosition.y
+				#
+				#rotation.x = lerp_angle(rotation.x, atan2(-Vector3.UP.x, -Vector3.UP.z), delta)
+				#
+			#else:
+				#rotate_towards_velocity(delta)
 	#print("fish state is " + str(currentState))
 	
-	move_and_slide()
+	#move_and_slide()
 
 #when fish is added to the scene tree, it chooses from a list of it's minigames
 
@@ -218,7 +218,7 @@ func poll_interest(bait_key):
 	
 	var poll_result = randnum.randi_range(1, 100)
 	
-	print("Interest result is " + str(poll_result))
+	#print("Interest result is " + str(poll_result))
 	
 	var target := 0
 	
@@ -229,6 +229,7 @@ func poll_interest(bait_key):
 	if(poll_result <= target && isInterested == false):
 		
 		#currentState = FISHSTATE.INTEREST
+		isInterested = true
 		stateMachine.change_state(stateMachine.state.interruptState)
 
 func _on_detection_box_area_entered(area):
