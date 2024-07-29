@@ -1,3 +1,4 @@
+class_name Bobber
 extends RigidBody3D
 
 @export var animationPlayer : AnimationPlayer
@@ -65,7 +66,7 @@ func _on_area_3d_area_entered(area):
 
 func emit_polling():
 	
-	polling_interest.emit(currentBait)
+	polling_interest.emit(currentBait, self)
 
 func _on_bobber_bite_zone_area_entered(area):
 
@@ -74,8 +75,10 @@ func _on_bobber_bite_zone_area_entered(area):
 func _on_tree_exiting():
 	for i in Globals.listOfSpawnedFish:
 		i.biteZoneID = null
-
+	Globals.enableAllFishDetectionBox()
+	
 func start_jolt_timer():
+	
 	joltTimer.start()
 
 func _on_jolt_timer_timeout():

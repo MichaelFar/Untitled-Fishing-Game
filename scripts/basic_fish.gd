@@ -40,7 +40,7 @@ var spawnDestination = Vector3.ZERO #When fish spawn, they swim up to this
 
 var globalDelta := 0.0
 
-var couldBeBiting := false
+var inBiteRange := false
 
 var biteZoneID = null
 
@@ -49,6 +49,8 @@ var wasRespawned := false
 var minigame = null
 
 var currentDifficulty := LevelTransition.DIFFICULTY.EASY
+
+#var bobberReference := load("bobber.gd")
 
 signal biting #Emits when fish bites the bobber, signal is connected to a bobber object function
 
@@ -87,87 +89,6 @@ func _ready():
 	
 	print("Stored minigame is " + str(minigame))
 	
-func _physics_process(delta):
-	
-	globalDelta = delta
-	
-	var current_agent_position: Vector3
-	
-	var next_path_position: Vector3
-	
-	match currentState:
-		
-		FISHSTATE.SPAWNMOVE:
-			pass
-			#rotation.x = lerp_angle(rotation.x, atan2(-Vector3.UP.x, -Vector3.UP.z), delta)
-			#
-			#var modified_spawn_destination = Vector3(global_position.x, spawnDestination.y, global_position.z)
-			#
-			#velocity = global_position.direction_to(modified_spawn_destination) * fishSpeed
-		
-		FISHSTATE.MOVE:
-			pass
-			#current_agent_position = global_position
-			#
-			#next_path_position = navAgent.get_next_path_position()
-			#
-			#velocity = current_agent_position.direction_to(next_path_position) * fishSpeed
-			#
-			#if(next_path_position != global_position):
-				#
-				#rotation.x = lerp_angle(rotation.x,atan2(-Vector3.FORWARD.x, -Vector3.FORWARD.z), delta * angularAcceleration)
-				#
-				#rotate_towards_velocity(delta)
-				
-		FISHSTATE.IDLE:
-			pass
-			#if(idleTimer.is_stopped()):
-				#
-				#idleTimer.start()
-				
-		FISHSTATE.INTEREST:
-			pass
-			#var flat_bobber_destination = bobberGlobalPosition
-			#
-			#flat_bobber_destination.y = global_position.y
-			#
-			#velocity = global_position.direction_to(flat_bobber_destination) * fishSpeed
-			#
-			#rotate_towards_velocity(delta)
-			#
-			#if(couldBeBiting):
-				#
-				#if(PlayerStatGlobal.fishCurrentlyBiting.size() != PlayerStatGlobal.numFishPerBait):
-					#
-					#bitingHook = true
-					#
-				#Globals.disableOtherFishDetectionBox(self)
-				#
-				#couldBeBiting = false
-				#
-				#if(PlayerStatGlobal.fishCurrentlyBiting.find(self) == -1):
-					#
-					#PlayerStatGlobal.fishCurrentlyBiting.append(self)
-					#
-				#biting.emit()#received by the bobber
-				#
-				#Globals.stop_other_fish_interest(self)
-				#
-			#if(bitingHook):
-				#
-				#if(Globals.currentBobber != null):
-					#
-					#global_position.y += Globals.currentBobber.deltaGlobalPosition.y
-				#
-				#rotation.x = lerp_angle(rotation.x, atan2(-Vector3.UP.x, -Vector3.UP.z), delta)
-				#
-			#else:
-				#rotate_towards_velocity(delta)
-	#print("fish state is " + str(currentState))
-	
-	#move_and_slide()
-
-#when fish is added to the scene tree, it chooses from a list of it's minigames
 
 func calculate_difficulty():
 	pass
@@ -212,7 +133,7 @@ func _on_idle_timer_timeout():
 	#set_movement_target(get_random_position())
 	#currentState = FISHSTATE.MOVE
 
-func poll_interest(bait_key):
+func poll_interest(bait_key, bobber):
 	
 	var randnum = RandomNumberGenerator.new()
 	
@@ -234,15 +155,17 @@ func poll_interest(bait_key):
 
 func _on_detection_box_area_entered(area):
 	
-	if(!area.owner.polling_interest.is_connected(poll_interest)):
+	var bobber = area.owner
+	
+	if(!bobber.polling_interest.is_connected(poll_interest)):
 		
-		area.owner.polling_interest.connect(poll_interest)
+		bobber.polling_interest.connect(poll_interest)
 		
-	if(!area.owner.in_the_bite_zone.is_connected(check_if_biting)):
+	if(!bobber.in_the_bite_zone.is_connected(check_if_biting)):
 		
-		area.owner.in_the_bite_zone.connect(check_if_biting)
+		bobber.in_the_bite_zone.connect(check_if_biting)
 		
-	bobberGlobalPosition = area.owner.global_position
+	bobberGlobalPosition = bobber.global_position
 	
 	print("Fish entered bobber bait range")
 
@@ -250,18 +173,16 @@ func _on_detection_box_area_exited(area):
 	
 	print("Disconnecting signal")
 	
-	if(area.name != "BobberBiteZone"):#change to non magic string
+	#if(area.name != "BobberBiteZone"):#change to non magic string
+	#if(area.owner != bobberReference):#BAD does not do what the above does
+	area.get_parent().disconnect("polling_interest", poll_interest)
 		
-		area.get_parent().disconnect("polling_interest", poll_interest)
-		
-	couldBeBiting = false
+	#couldBeBiting = false
 		
 	if(bitingHook):
 		
 		if(Globals.currentBobber.is_queued_for_deletion()):
 			
-			#Globals.store_fish_for_respawn()
-			#queue_free()#Replace with minigame transition code
 			print("Minigame before calling leveltransition is " + str(minigame))
 			LevelTransition.minigameDifficulty = currentDifficulty
 			LevelTransition.transition_to_minigame(minigame, self)
@@ -295,7 +216,7 @@ func check_if_biting(areaID):
 	#If they are interested, this will trigger the biting in the INTEREST state
 	
 	print("Check if biting..")
-	couldBeBiting = true
+	inBiteRange = true
 	biteZoneID = areaID
 	print(biteZoneID)
 

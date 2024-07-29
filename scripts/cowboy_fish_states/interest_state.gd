@@ -19,7 +19,7 @@ func _physics_process(delta):
 	
 	actor.rotate_towards_velocity(delta)
 	
-	if(actor.couldBeBiting):
+	if(actor.inBiteRange):
 		
 		if(PlayerStatGlobal.fishCurrentlyBiting.size() != PlayerStatGlobal.numFishPerBait):
 			
@@ -27,7 +27,7 @@ func _physics_process(delta):
 			
 		Globals.disableOtherFishDetectionBox(actor)
 		
-		actor.couldBeBiting = false
+		actor.inBiteRange = false
 		
 		if(PlayerStatGlobal.fishCurrentlyBiting.find(actor) == -1):
 			

@@ -125,6 +125,9 @@ actor = NodePath("../..")
 [node name="cowboy_fish_model" parent="." instance=ExtResource("2_b38by")]
 transform = Transform3D(-1, -1.50996e-07, 6.60023e-15, 0, -4.37114e-08, -1, 1.50996e-07, -1, 4.37114e-08, 0, 0, 0)
 
+[node name="CowboyBoots_Mesh" parent="cowboy_fish_model/Armature/Skeleton3D" index="0"]
+transform = Transform3D(-0.772305, -0.00371478, 0.0113171, -0.0032659, 0.771789, 0.0304638, -0.0114547, 0.0304123, -0.771713, 0.388403, -3.13362, -0.104029)
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_ubyqw")

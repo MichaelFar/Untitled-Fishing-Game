@@ -24,7 +24,9 @@ func _physics_process(delta):
 	var modified_spawn_destination = Vector3(actor.global_position.x, actor.spawnDestination.y, actor.global_position.z)
 	
 	actor.velocity = actor.global_position.direction_to(modified_spawn_destination) * actor.fishSpeed
-
+	
+	actor.move_and_slide()
+	
 func _on_destination_end_area_entered(area):
 	print("Actor is " + str(actor))
 	print("actor.statemachine is " +str(actor.stateMachine))
