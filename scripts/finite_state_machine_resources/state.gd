@@ -3,8 +3,6 @@ extends Node
 
 signal state_finished
 
-@export var state : BasicFish.FISHSTATE
-
 @export var nextState : State
 
 @export var interruptStates : Array[State]
@@ -14,7 +12,7 @@ signal state_finished
 var interruptState : State
 
 func enter_state() -> void: 
-	print("State entered " + str(state))
+	pass
 	
 func exit_state() -> void:
 	pass

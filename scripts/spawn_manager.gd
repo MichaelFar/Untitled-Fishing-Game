@@ -28,17 +28,6 @@ func _ready():
 		spawn_preexisting_fish()
 	else:
 		spawn_loop()
-#func _physics_process(delta):
-	#
-	#if(Input.is_action_just_released("ui_select")):
-		#Globals.store_fish_for_respawn()
-		#for i in Globals.listOfSpawnedFish:
-			#
-			#i.queue_free()
-			#
-		##await get_tree().physics_frame
-		#
-		#spawn_preexisting_fish()
 		
 func spawn_preexisting_fish():
 	print("respawning fish")

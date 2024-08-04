@@ -175,7 +175,7 @@ func _on_detection_box_area_exited(area):
 	
 	#if(area.name != "BobberBiteZone"):#change to non magic string
 	#if(area.owner != bobberReference):#BAD does not do what the above does
-	area.get_parent().disconnect("polling_interest", poll_interest)
+	#area.get_parent().disconnect("polling_interest", poll_interest)
 		
 	#couldBeBiting = false
 		

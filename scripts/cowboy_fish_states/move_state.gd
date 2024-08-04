@@ -7,7 +7,6 @@ func _ready():
 	
 	set_physics_process(false)
 	
-	state = BasicFish.FISHSTATE.MOVE
 	
 	set_interrupt_state(0)
 	

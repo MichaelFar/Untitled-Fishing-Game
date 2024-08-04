@@ -178,7 +178,6 @@ actor = NodePath("../..")
 
 [node name="IdleState" type="Node" parent="FiniteStateMachine" node_paths=PackedStringArray("nextState", "interruptStates", "actor")]
 script = ExtResource("4_hpy3h")
-state = 2
 nextState = NodePath("../MoveState")
 interruptStates = [NodePath("../InterruptState")]
 actor = NodePath("../..")
@@ -190,14 +189,12 @@ actor = NodePath("../..")
 
 [node name="MoveState" type="Node" parent="FiniteStateMachine" node_paths=PackedStringArray("nextState", "interruptStates", "actor")]
 script = ExtResource("6_434j0")
-state = 1
 nextState = NodePath("../IdleState")
 interruptStates = [NodePath("../InterruptState")]
 actor = NodePath("../..")
 
 [node name="InterestState" type="Node" parent="FiniteStateMachine" node_paths=PackedStringArray("actor")]
 script = ExtResource("7_bbrri")
-state = 3
 actor = NodePath("../..")
 
 [node name="Sketchfab_model" type="Node3D" parent="."]

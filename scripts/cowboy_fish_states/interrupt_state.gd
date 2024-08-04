@@ -8,6 +8,6 @@ func _ready() -> void:
 func enter_state() -> void:
 	actor.velocity = Vector3.ZERO
 	actor.isInterested = true
-	#set_movement_target(bobberGlobalPosition)
+	actor.set_movement_target(actor.bobberGlobalPosition)
 	actor.idleTimer.stop()
 	actor.stateMachine.change_state(nextState)

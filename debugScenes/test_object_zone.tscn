@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cjqpk5541erbd"]
 
-[ext_resource type="PackedScene" uid="uid://0tm8pk2l4xpc" path="res://modelScenes/thrown_bottle.tscn" id="1_0qqf8"]
+[ext_resource type="PackedScene" uid="uid://c6l3f1ad0loxl" path="res://gameLogicScenes/tile_manager.tscn" id="1_xispt"]
 
 [node name="TestObjectZone" type="Node3D"]
 
@@ -9,7 +9,8 @@ transform = Transform3D(-0.866024, -0.433016, 0.25, 0.433016, -0.899518, -0.0580
 shadow_enabled = true
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.38759)
+transform = Transform3D(1, 0, 0, 0, 0.899695, 0.436519, 0, -0.436519, 0.899695, -0.127584, 2.05422, 1.56046)
+fov = 71.2103
 
-[node name="thrown_bottle" parent="." instance=ExtResource("1_0qqf8")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, -2, -2.25949)
+[node name="TileManager" parent="." instance=ExtResource("1_xispt")]
+numTiles = 5

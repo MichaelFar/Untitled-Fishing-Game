@@ -4,7 +4,6 @@ extends State
 
 func _ready():
 	set_physics_process(false)
-	state = BasicFish.FISHSTATE.INTEREST
 
 func enter_state():
 	set_physics_process(true)

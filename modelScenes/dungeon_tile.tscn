@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://behysietie8mk"]
+
+[ext_resource type="PackedScene" uid="uid://bopnbqscqx40e" path="res://medievalDungeonModels/testfbximportfolder/floor_003.fbx" id="1_1ir20"]
+[ext_resource type="Script" path="res://scripts/dungeon_tile.gd" id="1_atq8e"]
+
+[node name="dungeon_tile" type="Node3D" node_paths=PackedStringArray("endPoint")]
+script = ExtResource("1_atq8e")
+endPoint = NodePath("EndPoint")
+
+[node name="Root Scene4" parent="." instance=ExtResource("1_1ir20")]
+
+[node name="RootNode" parent="Root Scene4" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.44949)
+
+[node name="floor" parent="Root Scene4/RootNode" index="0"]
+transform = Transform3D(1, 0, 0, 0, 0.799, 0, 0, 0, 0.382, -0.33, 0, 1.23794)
+
+[node name="EndPoint" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.18464)
+
+[editable path="Root Scene4"]

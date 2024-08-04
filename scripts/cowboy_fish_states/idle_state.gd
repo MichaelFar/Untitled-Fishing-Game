@@ -6,8 +6,6 @@ func _ready():
 	
 	set_physics_process(false)
 	
-	state = BasicFish.FISHSTATE.IDLE
-	
 	set_interrupt_state(0)
 	
 func enter_state():

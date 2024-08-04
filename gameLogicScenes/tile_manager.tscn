@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://c6l3f1ad0loxl"]
+
+[ext_resource type="Script" path="res://scripts/tile_manager.gd" id="1_h6wp3"]
+[ext_resource type="PackedScene" uid="uid://behysietie8mk" path="res://modelScenes/dungeon_tile.tscn" id="2_wqfuc"]
+
+[node name="TileManager" type="Node3D" node_paths=PackedStringArray("tilePreloader")]
+script = ExtResource("1_h6wp3")
+tilePreloader = NodePath("TileResources")
+numTiles = 4
+
+[node name="TileResources" type="ResourcePreloader" parent="."]
+resources = [PackedStringArray("dungeon_tile"), [ExtResource("2_wqfuc")]]
