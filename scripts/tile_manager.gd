@@ -53,12 +53,10 @@ func spawn_tiles(to_be_loaded_resource_list : Array):
 		if(previous_child == null):
 			
 			previous_child = tile_instance
-			print("Previous child is null")
 			
 		else:
 			
 			tile_instance.global_position = previous_child.endPoint.global_position
-			print("Position of previous child is " + str(tile_instance.global_position))
 			previous_child = tile_instance
 			tileInstances.append(previous_child)
 		
