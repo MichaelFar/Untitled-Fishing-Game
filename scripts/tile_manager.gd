@@ -59,5 +59,5 @@ func spawn_tiles(to_be_loaded_resource_list : Array):
 			tile_instance.global_position = previous_child.endPoint.global_position
 			previous_child = tile_instance
 			tileInstances.append(previous_child)
-		
+	
 		

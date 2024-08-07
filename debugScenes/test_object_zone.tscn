@@ -1,8 +1,29 @@
-[gd_scene load_steps=2 format=3 uid="uid://cjqpk5541erbd"]
+[gd_scene load_steps=5 format=3 uid="uid://cjqpk5541erbd"]
 
+[ext_resource type="PackedScene" uid="uid://bnl8ukbknotb8" path="res://gameLogicScenes/track_container.tscn" id="1_2oe73"]
 [ext_resource type="PackedScene" uid="uid://c6l3f1ad0loxl" path="res://gameLogicScenes/tile_manager.tscn" id="1_xispt"]
+[ext_resource type="PackedScene" uid="uid://cab0de6e0yqck" path="res://ui scenes/draggable_frame.tscn" id="2_nr47w"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_tvlhn"]
+viewport_path = NodePath("SubViewportContainer/SubViewport")
 
 [node name="TestObjectZone" type="Node3D"]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+offset_right = 128.0
+offset_bottom = 128.0
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(2, 2)
+render_target_update_mode = 4
+
+[node name="track_container" parent="SubViewportContainer" instance=ExtResource("1_2oe73")]
+position = Vector2(301, 456)
+
+[node name="draggable_frame" parent="SubViewportContainer" instance=ExtResource("2_nr47w")]
+position = Vector2(323, 216)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866024, -0.433016, 0.25, 0.433016, -0.899518, -0.0580155, 0.250001, 0.0580111, 0.966506, 0, 0, 0)
@@ -13,4 +34,9 @@ transform = Transform3D(1, 0, 0, 0, 0.899695, 0.436519, 0, -0.436519, 0.899695, 
 fov = 71.2103
 
 [node name="TileManager" parent="." instance=ExtResource("1_xispt")]
-numTiles = 5
+numTiles = 9
+
+[node name="Sprite3d" type="Sprite3D" parent="."]
+billboard = 1
+no_depth_test = true
+texture = SubResource("ViewportTexture_tvlhn")

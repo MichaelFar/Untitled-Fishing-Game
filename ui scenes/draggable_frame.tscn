@@ -4,11 +4,10 @@
 [ext_resource type="Texture2D" uid="uid://d02uywk8rubu" path="res://icon.svg" id="1_15nj4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2yplm"]
-size = Vector2(128, 128)
+size = Vector2(80, 81)
 
-[node name="draggable_frame" type="Node2D"]
+[node name="draggable_frame" type="Node2D" groups=["draggable"]]
 top_level = true
-position = Vector2(635, 327)
 script = ExtResource("1_4oeet")
 
 [node name="Icon" type="Sprite2D" parent="."]

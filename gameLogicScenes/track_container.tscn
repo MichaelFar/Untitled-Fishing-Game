@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://bnl8ukbknotb8"]
+
+[ext_resource type="Script" path="res://scripts/track_container.gd" id="1_x4bw6"]
+[ext_resource type="PackedScene" uid="uid://4m0vh0ofv2f7" path="res://ui scenes/drop_zone.tscn" id="2_2byhu"]
+
+[node name="track_container" type="Node2D" node_paths=PackedStringArray("emptyFrameResources")]
+script = ExtResource("1_x4bw6")
+emptyFrameResources = NodePath("EmptyFrameResources")
+initialTrackFrames = 6
+
+[node name="EmptyFrameResources" type="ResourcePreloader" parent="."]
+resources = [PackedStringArray("drop_zone"), [ExtResource("2_2byhu")]]
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

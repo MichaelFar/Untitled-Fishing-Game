@@ -6,7 +6,7 @@
 [node name="2dDebugTestScene" type="Node2D"]
 
 [node name="draggable_frame" parent="." instance=ExtResource("2_6th3p")]
-position = Vector2(411, 234)
+position = Vector2(412, 214)
 
 [node name="drop_zone" parent="." instance=ExtResource("1_beif2")]
 position = Vector2(144, 231)
