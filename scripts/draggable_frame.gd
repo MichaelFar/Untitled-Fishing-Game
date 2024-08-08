@@ -10,6 +10,8 @@ var offset : Vector2
 
 var initialPosition : Vector2
 
+signal slotted_in_frame
+
 func _ready():
 	pass
 
@@ -20,6 +22,7 @@ func _process(delta):
 			initialPosition = global_position
 			offset = get_global_mouse_position() - global_position
 			UiGlobal.dragging_frame = true
+			slotted_in_frame.emit(false, self)
 			
 		if(Input.is_action_pressed("cast")):
 			
@@ -29,7 +32,7 @@ func _process(delta):
 			
 			UiGlobal.dragging_frame = false
 			var tween = get_tree().create_tween()
-			
+			tween.finished.connect(emit_frame_occupied)
 			if(inside_drop_zone):
 				tween.tween_property(self, "position", 
 				body_ref.global_position, 0.2).set_ease(Tween.EASE_OUT)
@@ -37,6 +40,7 @@ func _process(delta):
 			else:
 				tween.tween_property(self, "global_position", 
 				initialPosition, 0.2).set_ease(Tween.EASE_OUT)
+			
 			
 func _on_area_2d_mouse_entered():
 	
@@ -58,10 +62,11 @@ func _on_area_2d_mouse_exited():
 
 func _on_area_2d_body_entered(body):
 	if body.is_in_group("droppable"):
-		
-		inside_drop_zone = true
-		body.modulate = Color(Color.REBECCA_PURPLE, 1)
-		body_ref = body
+		if(!body.occupied):
+			slotted_in_frame.connect(body.set_occupied)
+			inside_drop_zone = true
+			body.modulate = Color(Color.REBECCA_PURPLE, 1)
+			body_ref = body
 		
 	#print("Body entered")
 	
@@ -73,7 +78,11 @@ func _on_area_2d_body_exited(body):
 		body.modulate = body.originalColor
 		
 	if(body.is_in_group("droppable")):
-		
-		body.modulate = body.originalColor
+		if(!body.occupied):
+			body.modulate = body.originalColor
 		
 	#print("Body exited")
+
+func emit_frame_occupied():
+	await get_tree().physics_frame
+	slotted_in_frame.emit(true, self)

@@ -25,6 +25,9 @@ position = Vector2(301, 456)
 [node name="draggable_frame" parent="SubViewportContainer" instance=ExtResource("2_nr47w")]
 position = Vector2(323, 216)
 
+[node name="draggable_frame2" parent="SubViewportContainer" instance=ExtResource("2_nr47w")]
+position = Vector2(968, 188)
+
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866024, -0.433016, 0.25, 0.433016, -0.899518, -0.0580155, 0.250001, 0.0580111, 0.966506, 0, 0, 0)
 shadow_enabled = true

@@ -17,7 +17,7 @@ offset_bottom = 64.0
 mouse_filter = 2
 
 [node name="NextFrameLocation" type="Marker2D" parent="."]
-position = Vector2(128, 0)
+position = Vector2(160, 0)
 
 [node name="Area2D" type="Area2D" parent="."]
 
