@@ -3,30 +3,24 @@
 [ext_resource type="PackedScene" uid="uid://bnl8ukbknotb8" path="res://gameLogicScenes/track_container.tscn" id="1_2oe73"]
 [ext_resource type="PackedScene" uid="uid://c6l3f1ad0loxl" path="res://gameLogicScenes/tile_manager.tscn" id="1_xispt"]
 [ext_resource type="PackedScene" uid="uid://cab0de6e0yqck" path="res://ui scenes/draggable_frame.tscn" id="2_nr47w"]
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_tvlhn"]
-viewport_path = NodePath("SubViewportContainer/SubViewport")
+[ext_resource type="PackedScene" uid="uid://duv0pcarm8cxd" path="res://ui scenes/draggable_frame_size_3.tscn" id="3_wagxy"]
 
 [node name="TestObjectZone" type="Node3D"]
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
-offset_right = 128.0
-offset_bottom = 128.0
+[node name="UIContainer" type="Node2D" parent="."]
+position = Vector2(50, 19)
 
-[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
-transparent_bg = true
-handle_input_locally = false
-size = Vector2i(2, 2)
-render_target_update_mode = 4
+[node name="draggable_frame" parent="UIContainer" instance=ExtResource("2_nr47w")]
+position = Vector2(360, 210)
 
-[node name="track_container" parent="SubViewportContainer" instance=ExtResource("1_2oe73")]
-position = Vector2(301, 456)
-
-[node name="draggable_frame" parent="SubViewportContainer" instance=ExtResource("2_nr47w")]
-position = Vector2(323, 216)
-
-[node name="draggable_frame2" parent="SubViewportContainer" instance=ExtResource("2_nr47w")]
+[node name="draggable_frame2" parent="UIContainer" instance=ExtResource("2_nr47w")]
 position = Vector2(968, 188)
+
+[node name="track_container" parent="UIContainer" instance=ExtResource("1_2oe73")]
+position = Vector2(406, 370)
+
+[node name="draggable_frame_size_3" parent="UIContainer" instance=ExtResource("3_wagxy")]
+position = Vector2(657, 94)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866024, -0.433016, 0.25, 0.433016, -0.899518, -0.0580155, 0.250001, 0.0580111, 0.966506, 0, 0, 0)
@@ -38,8 +32,3 @@ fov = 71.2103
 
 [node name="TileManager" parent="." instance=ExtResource("1_xispt")]
 numTiles = 9
-
-[node name="Sprite3d" type="Sprite3D" parent="."]
-billboard = 1
-no_depth_test = true
-texture = SubResource("ViewportTexture_tvlhn")

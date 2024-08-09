@@ -1,24 +1,32 @@
-[gd_scene load_steps=5 format=3 uid="uid://cab0de6e0yqck"]
+[gd_scene load_steps=5 format=3 uid="uid://duv0pcarm8cxd"]
 
-[ext_resource type="Script" path="res://scripts/draggable_frame.gd" id="1_4oeet"]
-[ext_resource type="Texture2D" uid="uid://d02uywk8rubu" path="res://icon.svg" id="1_15nj4"]
+[ext_resource type="Script" path="res://scripts/draggable_frame.gd" id="1_tcacx"]
+[ext_resource type="Texture2D" uid="uid://d02uywk8rubu" path="res://icon.svg" id="2_bfwax"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2yplm"]
-size = Vector2(67, 63.25)
+size = Vector2(255, 63.25)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3ox4l"]
-size = Vector2(128, 128)
+size = Vector2(387, 128)
 
-[node name="draggable_frame" type="Node2D" node_paths=PackedStringArray("visualContainer") groups=["draggable"]]
+[node name="draggable_frame_size_3" type="Node2D" node_paths=PackedStringArray("visualContainer") groups=["draggable"]]
 top_level = true
-script = ExtResource("1_4oeet")
-frameSize = 1
+script = ExtResource("1_tcacx")
+frameSize = 3
 visualContainer = NodePath("VisualContainer")
 
 [node name="VisualContainer" type="Node2D" parent="."]
 
 [node name="Icon" type="Sprite2D" parent="VisualContainer"]
-texture = ExtResource("1_15nj4")
+texture = ExtResource("2_bfwax")
+
+[node name="Icon2" type="Sprite2D" parent="VisualContainer"]
+position = Vector2(-129, 0)
+texture = ExtResource("2_bfwax")
+
+[node name="Icon3" type="Sprite2D" parent="VisualContainer"]
+position = Vector2(129, 0)
+texture = ExtResource("2_bfwax")
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 2
@@ -30,6 +38,7 @@ shape = SubResource("RectangleShape2D_2yplm")
 [node name="Area2D2" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
+position = Vector2(-0.5, 0)
 shape = SubResource("RectangleShape2D_3ox4l")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
