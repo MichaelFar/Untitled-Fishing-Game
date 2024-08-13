@@ -45,7 +45,7 @@ func _process(delta):
 			var proper_position = get_proper_position()
 			
 			print("bodyRefArray size is " + str(bodyRefArray.size()))
-			
+			visualContainer.z_index = 0
 			if(bodyRefArray.size() != frameSize):
 				
 				tween.tween_property(self, "global_position", 
@@ -67,6 +67,7 @@ func _on_area_2d_mouse_entered():
 		
 		should_be_dragged = true
 		visualContainer.scale = Vector2(1.05, 1.05)
+		visualContainer.z_index = 1
 		
 func _on_area_2d_mouse_exited():
 	
@@ -115,4 +116,6 @@ func get_proper_position():
 	averaged_position = averaged_position / float(bodyRefArray.size())
 	
 	return averaged_position
-	
+
+func create_effect():#Called when frame becomes active
+	print("Hello")

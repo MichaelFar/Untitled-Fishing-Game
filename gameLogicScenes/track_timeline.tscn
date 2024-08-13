@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://br5spg8ov0qin"]
+
+[ext_resource type="Script" path="res://scripts/track_timeline.gd" id="1_ierts"]
+[ext_resource type="PackedScene" uid="uid://bnl8ukbknotb8" path="res://gameLogicScenes/track_container.tscn" id="1_j71xg"]
+[ext_resource type="PackedScene" uid="uid://cab0de6e0yqck" path="res://ui scenes/draggable_frame.tscn" id="3_7l8j7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mq8rd"]
+
+[node name="TrackTimeline" type="Node2D" node_paths=PackedStringArray("timeLineCursor", "playerTrack")]
+script = ExtResource("1_ierts")
+timeLineCursor = NodePath("TimeLineCursor")
+playerTrack = NodePath("track_container")
+
+[node name="track_container" parent="." instance=ExtResource("1_j71xg")]
+position = Vector2(268, 237)
+
+[node name="TimeLineCursor" type="Line2D" parent="." groups=["cursor"]]
+points = PackedVector2Array(0, -154, 0, 154)
+
+[node name="Area2D" type="Area2D" parent="TimeLineCursor"]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TimeLineCursor/Area2D"]
+shape = SubResource("CircleShape2D_mq8rd")
+
+[node name="draggable_frame" parent="." instance=ExtResource("3_7l8j7")]
+position = Vector2(118, 98)
+
+[connection signal="area_entered" from="TimeLineCursor/Area2D" to="." method="_on_area_2d_area_entered"]

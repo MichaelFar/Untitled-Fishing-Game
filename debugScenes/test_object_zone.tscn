@@ -10,6 +10,9 @@
 [node name="UIContainer" type="Node2D" parent="."]
 position = Vector2(50, 19)
 
+[node name="draggable_frame_size_3" parent="UIContainer" instance=ExtResource("3_wagxy")]
+position = Vector2(657, 94)
+
 [node name="draggable_frame" parent="UIContainer" instance=ExtResource("2_nr47w")]
 position = Vector2(360, 210)
 
@@ -17,10 +20,7 @@ position = Vector2(360, 210)
 position = Vector2(968, 188)
 
 [node name="track_container" parent="UIContainer" instance=ExtResource("1_2oe73")]
-position = Vector2(406, 370)
-
-[node name="draggable_frame_size_3" parent="UIContainer" instance=ExtResource("3_wagxy")]
-position = Vector2(657, 94)
+position = Vector2(76, 382)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866024, -0.433016, 0.25, 0.433016, -0.899518, -0.0580155, 0.250001, 0.0580111, 0.966506, 0, 0, 0)

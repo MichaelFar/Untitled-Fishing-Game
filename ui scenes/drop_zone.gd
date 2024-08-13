@@ -2,11 +2,13 @@ extends StaticBody2D
 
 @export var nextFrameLocation : Marker2D
 
+@export var frameStart : Marker2D
+
+@export var frameEnd : Marker2D
+
 var occupied := false
 
 var originalColor = null
-
-
 
 func _ready():
 	
@@ -19,7 +21,6 @@ func _on_area_2d_area_entered(area):
 	
 	if area.owner.is_in_group("draggable"):
 		
-		
 		modulate = Color(Color.REBECCA_PURPLE, 1)
 			
 func _on_area_2d_area_exited(area):
@@ -29,6 +30,7 @@ func _on_area_2d_area_exited(area):
 		if(area.owner.slotted_in_frame.is_connected(set_occupied)):
 			
 			area.owner.slotted_in_frame.disconnect(set_occupied)
+			
 		modulate = originalColor
 		#occupied = false
 

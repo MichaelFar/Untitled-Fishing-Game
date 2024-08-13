@@ -7,10 +7,11 @@
 size = Vector2(255, 63.25)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3ox4l"]
-size = Vector2(387, 128)
+size = Vector2(352, 128)
 
 [node name="draggable_frame_size_3" type="Node2D" node_paths=PackedStringArray("visualContainer") groups=["draggable"]]
 top_level = true
+z_as_relative = false
 script = ExtResource("1_tcacx")
 frameSize = 3
 visualContainer = NodePath("VisualContainer")
@@ -38,8 +39,9 @@ shape = SubResource("RectangleShape2D_2yplm")
 [node name="Area2D2" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
-position = Vector2(-0.5, 0)
 shape = SubResource("RectangleShape2D_3ox4l")
+
+[node name="FrameEffectResources" type="ResourcePreloader" parent="."]
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
