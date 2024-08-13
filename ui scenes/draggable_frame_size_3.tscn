@@ -9,7 +9,7 @@ size = Vector2(255, 63.25)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3ox4l"]
 size = Vector2(352, 128)
 
-[node name="draggable_frame_size_3" type="Node2D" node_paths=PackedStringArray("visualContainer") groups=["draggable"]]
+[node name="draggable_frame_size_3" type="CharacterBody2D" node_paths=PackedStringArray("visualContainer") groups=["draggable"]]
 top_level = true
 z_as_relative = false
 script = ExtResource("1_tcacx")

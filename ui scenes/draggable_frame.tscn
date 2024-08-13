@@ -9,12 +9,14 @@ size = Vector2(67, 63.25)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3ox4l"]
 size = Vector2(128, 128)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_7h0v7"]
-radius = 16.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_s12vd"]
+radius = 18.4391
 
-[node name="draggable_frame" type="Node2D" node_paths=PackedStringArray("visualContainer") groups=["draggable"]]
+[node name="draggable_frame" type="CharacterBody2D" node_paths=PackedStringArray("visualContainer") groups=["draggable"]]
 top_level = true
 z_as_relative = false
+collision_layer = 4
+collision_mask = 0
 script = ExtResource("1_4oeet")
 frameSize = 1
 visualContainer = NodePath("VisualContainer")
@@ -38,13 +40,9 @@ shape = SubResource("RectangleShape2D_3ox4l")
 
 [node name="FrameEffectResources" type="ResourcePreloader" parent="."]
 
-[node name="ActiveFrame" type="Area2D" parent="."]
-position = Vector2(-48, 0)
-collision_layer = 4
-collision_mask = 4
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ActiveFrame"]
-shape = SubResource("CircleShape2D_7h0v7")
+[node name="ActiveZone" type="CollisionShape2D" parent="."]
+position = Vector2(-45, 0)
+shape = SubResource("CircleShape2D_s12vd")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

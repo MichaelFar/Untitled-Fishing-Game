@@ -6,25 +6,41 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mq8rd"]
 
-[node name="TrackTimeline" type="Node2D" node_paths=PackedStringArray("timeLineCursor", "playerTrack")]
+[node name="TrackTimeline" type="Node2D" node_paths=PackedStringArray("timeLineCursor", "playerTrack", "enemyTrack", "activeFrameShapes")]
 script = ExtResource("1_ierts")
-timeLineCursor = NodePath("TimeLineCursor")
-playerTrack = NodePath("track_container")
+timeLineCursor = NodePath("Area2D")
+playerTrack = NodePath("player_track")
+enemyTrack = NodePath("enemy_track")
+activeFrameShapes = [NodePath("Area2D/CollisionShape2D"), NodePath("Area2D/CollisionShape2D2")]
 
-[node name="track_container" parent="." instance=ExtResource("1_j71xg")]
+[node name="player_track" parent="." instance=ExtResource("1_j71xg")]
 position = Vector2(268, 237)
 
-[node name="TimeLineCursor" type="Line2D" parent="." groups=["cursor"]]
-points = PackedVector2Array(0, -154, 0, 154)
+[node name="enemy_track" parent="." instance=ExtResource("1_j71xg")]
+position = Vector2(268, 500)
 
-[node name="Area2D" type="Area2D" parent="TimeLineCursor"]
+[node name="Area2D" type="Area2D" parent="."]
 collision_layer = 4
 collision_mask = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TimeLineCursor/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -77)
+shape = SubResource("CircleShape2D_mq8rd")
+
+[node name="TimeLineCursor" type="Line2D" parent="Area2D" groups=["cursor"]]
+points = PackedVector2Array(0, -250, 0, 250)
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, 77)
 shape = SubResource("CircleShape2D_mq8rd")
 
 [node name="draggable_frame" parent="." instance=ExtResource("3_7l8j7")]
 position = Vector2(118, 98)
 
-[connection signal="area_entered" from="TimeLineCursor/Area2D" to="." method="_on_area_2d_area_entered"]
+[node name="draggable_frame2" parent="." instance=ExtResource("3_7l8j7")]
+position = Vector2(572, 89)
+
+[node name="draggable_frame3" parent="." instance=ExtResource("3_7l8j7")]
+position = Vector2(356, 79)
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
