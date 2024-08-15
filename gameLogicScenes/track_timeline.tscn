@@ -18,6 +18,7 @@ position = Vector2(268, 237)
 
 [node name="enemy_track" parent="." instance=ExtResource("1_j71xg")]
 position = Vector2(268, 500)
+initialTrackFrames = 3
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 4

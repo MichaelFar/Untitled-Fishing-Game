@@ -22,6 +22,7 @@ PlayerStatGlobal="*res://scripts/player_stat_global.gd"
 LevelTransition="*res://scripts/level_transition.gd"
 FishingPondsStorage="*res://gameLogicScenes/fishing_ponds.tscn"
 UiGlobal="*res://scripts/ui_global.gd"
+CombatGlobal="*res://combat_global.gd"
 
 [display]
 

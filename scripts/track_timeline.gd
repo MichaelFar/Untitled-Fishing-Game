@@ -28,13 +28,13 @@ func tween_cursor_to_end():
 	
 	
 	if(timeLineCursor.global_position.x == playerTrack.startPosition.x 
-	|| timeLineCursor.global_position.x == playerTrack.endPosition.x):
+	|| timeLineCursor.global_position.x == get_farthest_last_frame()):
 		
 		place_cursor()
 		
 		var tween = get_tree().create_tween()
 		
-		tween.tween_property(timeLineCursor, "global_position:x", playerTrack.endPosition.x, 1.5)
+		tween.tween_property(timeLineCursor, "global_position:x", get_farthest_last_frame(), 1.5)
 		
 		return tween
 
@@ -53,3 +53,10 @@ func place_cursor():
 	timeLineCursor.global_position.y = (playerTrack.startPosition.y + enemyTrack.startPosition.y) / 2.0
 		
 	timeLineCursor.global_position.x = playerTrack.startPosition.x
+
+func get_farthest_last_frame():
+	
+	var a = playerTrack.endPosition.x
+	var b = enemyTrack.endPosition.x
+	
+	return a if a > b else b
