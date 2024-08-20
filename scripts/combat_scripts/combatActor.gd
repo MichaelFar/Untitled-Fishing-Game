@@ -6,6 +6,8 @@ class_name CombatActor
 
 @export var armor := 0
 
+@export var framesResources : ResourcePreloader
+
 var currentHP := maxHP
 
 func add_to_HP(hp_change : int):
@@ -14,4 +16,4 @@ func add_to_HP(hp_change : int):
 	
 func add_to_armor(armor_change : int):
 	
-	pass
+	armor = armor + armor_change

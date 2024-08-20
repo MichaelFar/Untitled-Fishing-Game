@@ -11,5 +11,3 @@ var frameCount = 0
 func _ready():
 	
 	Input.set_custom_mouse_cursor(cursor)
-
-

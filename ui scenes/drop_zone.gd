@@ -6,11 +6,17 @@ extends StaticBody2D
 
 @export var frameEnd : Marker2D
 
+@export var colorRect : ColorRect
+
+var frameHeight : int
+
 var occupied := false
 
 var originalColor = null
 
 func _ready():
+	
+	frameHeight = colorRect.size.y
 	
 	modulate = Color(Color.MEDIUM_PURPLE, 0.7)
 	originalColor = modulate

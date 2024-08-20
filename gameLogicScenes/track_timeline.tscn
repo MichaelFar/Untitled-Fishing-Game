@@ -1,17 +1,18 @@
-[gd_scene load_steps=5 format=3 uid="uid://br5spg8ov0qin"]
+[gd_scene load_steps=6 format=3 uid="uid://br5spg8ov0qin"]
 
 [ext_resource type="Script" path="res://scripts/track_timeline.gd" id="1_ierts"]
 [ext_resource type="PackedScene" uid="uid://bnl8ukbknotb8" path="res://gameLogicScenes/track_container.tscn" id="1_j71xg"]
 [ext_resource type="PackedScene" uid="uid://cab0de6e0yqck" path="res://ui scenes/draggable_frame.tscn" id="3_7l8j7"]
+[ext_resource type="PackedScene" uid="uid://duv0pcarm8cxd" path="res://ui scenes/draggable_frame_size_3.tscn" id="4_wl6yj"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mq8rd"]
 
-[node name="TrackTimeline" type="Node2D" node_paths=PackedStringArray("timeLineCursor", "playerTrack", "enemyTrack", "activeFrameShapes")]
+[node name="TrackTimeline" type="Node2D" node_paths=PackedStringArray("timeLineCursor", "activeFrameShapes", "playerTrack", "enemyTrack")]
 script = ExtResource("1_ierts")
 timeLineCursor = NodePath("Area2D")
+activeFrameShapes = [NodePath("Area2D/CollisionShape2D"), NodePath("Area2D/CollisionShape2D2")]
 playerTrack = NodePath("player_track")
 enemyTrack = NodePath("enemy_track")
-activeFrameShapes = [NodePath("Area2D/CollisionShape2D"), NodePath("Area2D/CollisionShape2D2")]
 
 [node name="player_track" parent="." instance=ExtResource("1_j71xg")]
 position = Vector2(268, 237)
@@ -43,5 +44,8 @@ position = Vector2(572, 89)
 
 [node name="draggable_frame3" parent="." instance=ExtResource("3_7l8j7")]
 position = Vector2(356, 79)
+
+[node name="draggable_frame_size_3" parent="." instance=ExtResource("4_wl6yj")]
+position = Vector2(885, 96)
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

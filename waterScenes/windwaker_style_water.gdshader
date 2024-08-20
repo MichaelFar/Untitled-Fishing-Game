@@ -40,21 +40,21 @@ vec4 alphaBlend(vec4 top, vec4 bottom)
 {
 	vec3 color = (top.rgb * top.a) + (bottom.rgb * (1.0 - top.a));
 	float alpha = top.a + bottom.a * (1.0 - top.a);
-	
+
 	return vec4(color, alpha);
 }
 
 float generateOffset(float x, float z, float val1, float val2, float time) {
 	float radiansX = ((mod(x + z * x * val1, amount) / amount) + (time * speed) * mod(x * 0.8 + z, 1.5)) * 2.0 * 3.14;
 	float radiansZ = ((mod(val2 * (z * x + x * z), amount) / amount) + (time * speed) * 2.0 * mod(x, 2.0)) * 2.0 * 3.14;
-	
+
 	return amount * 0.5 * (sin(radiansZ) * cos(radiansX));
 }
 vec3 applyDistortion(vec3 vertex, float time) {
 	float xd = generateOffset(vertex.x, vertex.z, 0.2, 0.1, time);
 	float yd = generateOffset(vertex.x, vertex.z, 0.1, 0.3, time);
 	float zd = generateOffset(vertex.x, vertex.z, 0.15, 0.2, time);
-	
+
 	return vertex + vec3(xd, yd, zd);
 }
 
@@ -63,7 +63,7 @@ void vertex() {
 	viewNormal = (MODELVIEW_MATRIX * vec4(NORMAL, 0.0)).xyz;
 	noiseUV = UV * surface_noise_tiling;
 	distortUV = UV;
-	
+
 }
 
 void fragment(){
@@ -75,35 +75,35 @@ void fragment(){
 		//depth = depth + VERTEX.z;
 		//depth = exp(-depth * beer_factor);
 		//depth = 1.0 - depth;
-		
+
 		// Still unsure how to get properly the NORMAL from the camera
 		// this was my best attempt
 		vec3 existingNormal = vec3(dFdx(depth), dFdy(depth), 0);
-		
+
 		float normalDot = clamp(dot(existingNormal.xyz, viewNormal), 0.0, 1.0);
 		float foamDistance = mix(foam_max_distance, foam_min_distance, normalDot);
-		
+
 		float foamDepth = clamp(depth / foamDistance, 0.0, 1.0);
 		float surfaceNoiseCutoff = foamDepth * surface_noise_cutoff;
-		
+
 		vec4 distortNoiseSample = texture(distortNoise, distortUV);
 		vec2 distortAmount = (distortNoiseSample.xy * 2.0 -1.0) * surface_distortion_amount;
-		
+
 		vec2 noise_uv = vec2(
-			(noiseUV.x + TIME * surface_noise_scroll.x) + distortAmount.x , 
+			(noiseUV.x + TIME * surface_noise_scroll.x) + distortAmount.x ,
 			(noiseUV.y + TIME * surface_noise_scroll.y + distortAmount.y)
 		);
 		float surfaceNoiseSample = texture(surfaceNoise, noise_uv).r;
 		float surfaceNoiseAmount = smoothstep(surfaceNoiseCutoff - SMOOTHSTEP_AA, surfaceNoiseCutoff + SMOOTHSTEP_AA, surfaceNoiseSample);
-		
+
 		float waterDepth = clamp(depth / _DepthMaxDistance, 0.0, 1.0) * _DepthFactor;
 		vec4 waterColor = mix(_DepthGradientShallow, _DepthGradientDeep, waterDepth);
 
 		vec4 surfaceNoiseColor = foam_color;
 	    surfaceNoiseColor.a *= surfaceNoiseAmount;
 		vec4 color = alphaBlend(surfaceNoiseColor, waterColor);
-		
+
 		ALBEDO = color.rgb;
 		ALPHA = color.a;
-		};
+		}
 }

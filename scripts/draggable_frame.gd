@@ -4,6 +4,8 @@ extends CharacterBody2D
 
 @export var visualContainer : Node2D
 
+@export var texture : Sprite2D
+
 var should_be_dragged := false
 
 var insideDropZone := false
@@ -16,10 +18,13 @@ var offset : Vector2
 
 var initialPosition : Vector2
 
+var frameHeight : int
+
 signal slotted_in_frame
 
 func _ready():
-	pass
+	
+	frameHeight = texture.texture.get_height()
 
 func _process(delta):
 	
@@ -50,17 +55,17 @@ func _process(delta):
 				
 				tween.tween_property(self, "global_position", 
 				initialPosition, 0.2).set_ease(Tween.EASE_OUT)
-			
+				print("bodyRefArray size is not framesize")
 			elif(insideDropZone):
 				
 				tween.tween_property(self, "position", 
 				proper_position, 0.2).set_ease(Tween.EASE_OUT)
-				
+				print("bodyRefArray size is framesize and insideDropZone is true")
 			else:
 				
 				tween.tween_property(self, "global_position", 
 				initialPosition, 0.2).set_ease(Tween.EASE_OUT)
-			
+				print("bodyRefArray size is framesize and insideDropZone is false")
 func _on_area_2d_mouse_entered():
 	
 	if (!UiGlobal.dragging_frame):
@@ -91,8 +96,8 @@ func _on_area_2d_body_entered(body):
 func _on_area_2d_body_exited(body):
 	
 	if(body_ref == body):
-		
-		insideDropZone = false
+		pass
+		#insideDropZone = false
 		
 	if(body.is_in_group("droppable")):
 		if(!body.occupied):

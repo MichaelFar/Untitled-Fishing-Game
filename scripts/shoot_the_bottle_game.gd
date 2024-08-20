@@ -159,4 +159,3 @@ func calculate_outro_phrase():
 		
 		if(player_score <= max_score * (i + 1)):
 			return phrase_list[i]
-

@@ -24,4 +24,3 @@ func set_interrupt_state(index : int):
 func get_interrupt_state():
 	
 	return interruptState
-

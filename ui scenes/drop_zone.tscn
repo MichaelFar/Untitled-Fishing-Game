@@ -5,13 +5,14 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4doxv"]
 size = Vector2(128, 128)
 
-[node name="drop_zone" type="StaticBody2D" node_paths=PackedStringArray("nextFrameLocation", "frameStart", "frameEnd") groups=["droppable"]]
+[node name="drop_zone" type="StaticBody2D" node_paths=PackedStringArray("nextFrameLocation", "frameStart", "frameEnd", "colorRect") groups=["droppable"]]
 collision_layer = 3
 collision_mask = 3
 script = ExtResource("1_khyq1")
 nextFrameLocation = NodePath("NextFrameLocation")
 frameStart = NodePath("FrameStart")
 frameEnd = NodePath("FrameEnd")
+colorRect = NodePath("ColorRect")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 offset_left = -64.0

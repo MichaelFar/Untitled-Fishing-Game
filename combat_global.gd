@@ -1,5 +1,5 @@
 extends Node
 
-var enemyObject 
+var enemyObjects : Array[CombatActor] #Enemies during combat
 
-var playerObject
+var playerObjects : Array[CombatActor]#player party

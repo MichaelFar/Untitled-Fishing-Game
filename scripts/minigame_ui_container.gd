@@ -33,7 +33,7 @@ func calculate_position():
 
 	var viewport_rect = get_viewport_rect()
 	
-	position = viewport_rect.get_center() - (textLabel.size * textLabel.scale / 2.0)
+	global_position = viewport_rect.get_center() - (textLabel.size * textLabel.scale / 2.0)
 	
 func convert_phrase_to_list():
 	

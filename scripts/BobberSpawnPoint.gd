@@ -30,4 +30,3 @@ func clear_line():
 	mesh.clear_surfaces()
 
 	
-
