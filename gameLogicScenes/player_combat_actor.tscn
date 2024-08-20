@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://kfrptoovnsmb"]
+
+[ext_resource type="Script" path="res://scripts/combat_scripts/combatActor.gd" id="1_csqxh"]
+
+[node name="PlayerCombatActor" type="Node" node_paths=PackedStringArray("framesResources")]
+script = ExtResource("1_csqxh")
+framesResources = NodePath("FrameResources")
+
+[node name="FrameResources" type="ResourcePreloader" parent="."]

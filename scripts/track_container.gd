@@ -8,6 +8,8 @@ var listOfFrames : Array
 
 var previousTrackFrame = null
 
+var firstTrackFrame = null
+
 var frame_count := 0
 
 var startPosition : Vector2
@@ -19,7 +21,6 @@ var frameHeight : float
 func _ready():
 	
 	spawn_initial_track_frames()
-
 
 func spawn_initial_track_frames():
 	
@@ -38,8 +39,9 @@ func spawn_initial_track_frames():
 		if(previousTrackFrame == null):
 			
 			previousTrackFrame = frame_instance
-			
+			firstTrackFrame = frame_instance
 			startPosition = previousTrackFrame.frameStart.global_position
+			
 			print("Start position is " + str(startPosition))
 			
 		else:
@@ -65,5 +67,7 @@ func get_occupied_frames():
 func _on_timer_timeout():
 	print(get_occupied_frames())
 
-func set_end_position():
+func set_start_and_end_positions():
+	
+	startPosition = firstTrackFrame.frameStart.global_position
 	endPosition = previousTrackFrame.frameEnd.global_position

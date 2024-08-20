@@ -8,6 +8,8 @@ extends Node2D
 
 @export var enemyTrack : Node2D
 
+@export var playButton : TextureButton
+
 signal cursor_reached_end
 
 func _ready():
@@ -17,12 +19,6 @@ func _ready():
 	set_cursor_start(playerTrack.startPosition)
 	
 	place_cursor()
-	
-func _physics_process(delta):
-	
-	if(Input.is_action_just_released("cast")):
-		
-		tween_cursor_to_end()
 
 func set_cursor_start(start_position : Vector2):
 
@@ -46,6 +42,7 @@ func tween_cursor_to_end():
 func emit_cursor_end():
 	
 	print("cursor reached end")
+	playButton.disabled = false
 	cursor_reached_end.emit()
 
 func _on_area_2d_body_entered(body):
@@ -58,34 +55,38 @@ func _on_area_2d_body_entered(body):
 		
 func place_cursor():
 	
-	
 	timeLineCursor.global_position.y = (playerTrack.startPosition.y + enemyTrack.startPosition.y) / 2.0
-		
 	timeLineCursor.global_position.x = playerTrack.startPosition.x
 	activeFrameShapes[0].global_position.y = playerTrack.global_position.y
 	activeFrameShapes[1].global_position.y = enemyTrack.global_position.y
+	
 func get_farthest_last_frame():
 	
-	var a = playerTrack.endPosition.x
-	var b = enemyTrack.endPosition.x
+	var player_end_pos = playerTrack.endPosition.x
+	var enemy_end_pos = enemyTrack.endPosition.x
 	
-	return a if a > b else b
+	return player_end_pos if player_end_pos > enemy_end_pos else enemy_end_pos
 
 func place_tracks():
 	
 	var viewport_rect = get_viewport_rect()
 	
-	var start_position_x = viewport_rect.end.x / 4.0
+	var start_position_x = (viewport_rect.end.x / 2.0) - ((playerTrack.initialTrackFrames * playerTrack.frameHeight * playerTrack.scale.x) / 2.0)
 	
 	var player_start_position_y = viewport_rect.size.y / 3.0
 	
-	var enemy_start_position_y = player_start_position_y + (playerTrack.frameHeight * 1.5)
+	var enemy_start_position_y = (viewport_rect.end.y / 2.0) + playerTrack.frameHeight#player_start_position_y + (playerTrack.frameHeight * 1.5)
 	
 	playerTrack.global_position = Vector2(start_position_x, player_start_position_y)
-	
 	enemyTrack.global_position = Vector2(start_position_x, enemy_start_position_y)
 	
-	playerTrack.set_end_position()
+	playerTrack.set_start_and_end_positions()
+	enemyTrack.set_start_and_end_positions()
 	
-	enemyTrack.set_end_position()
+	playButton.position.x = ((playerTrack.startPosition.x + get_farthest_last_frame()) / 2.0) - (playButton.texture_normal.get_width() / 2.0)
+	playButton.position.y = playerTrack.frameHeight
+
+func _on_pause_play_button_up() -> void:
 	
+	tween_cursor_to_end()
+	playButton.disabled = true

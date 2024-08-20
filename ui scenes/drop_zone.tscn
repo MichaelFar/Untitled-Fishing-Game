@@ -6,6 +6,7 @@
 size = Vector2(128, 128)
 
 [node name="drop_zone" type="StaticBody2D" node_paths=PackedStringArray("nextFrameLocation", "frameStart", "frameEnd", "colorRect") groups=["droppable"]]
+scale = Vector2(0.75, 0.75)
 collision_layer = 3
 collision_mask = 3
 script = ExtResource("1_khyq1")

@@ -42,5 +42,7 @@ func _on_area_2d_area_exited(area):
 
 func set_occupied(value : bool, signal_source):
 	occupied = value
+	if(occupied):
+		modulate = Color(Color.REBECCA_PURPLE, 1)
 	#if(!occupied):
 		#signal_source.slotted_in_frame.disconnect(set_occupied)

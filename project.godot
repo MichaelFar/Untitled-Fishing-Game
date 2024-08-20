@@ -26,7 +26,7 @@ CombatGlobal="*res://combat_global.gd"
 
 [display]
 
-window/size/viewport_width=1280
+window/size/viewport_width=1260
 window/size/viewport_height=720
 window/size/mode=2
 window/stretch/mode="canvas_items"

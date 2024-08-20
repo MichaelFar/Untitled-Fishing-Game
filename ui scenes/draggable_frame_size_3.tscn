@@ -12,6 +12,7 @@ size = Vector2(352, 128)
 [node name="draggable_frame_size_3" type="CharacterBody2D" node_paths=PackedStringArray("visualContainer", "texture") groups=["draggable"]]
 top_level = true
 z_as_relative = false
+scale = Vector2(0.75, 0.75)
 script = ExtResource("1_tcacx")
 frameSize = 3
 visualContainer = NodePath("VisualContainer")
