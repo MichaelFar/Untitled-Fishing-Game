@@ -1,0 +1,3 @@
+extends CombatActor
+
+class_name PlayerCombatActor

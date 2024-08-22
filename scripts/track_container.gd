@@ -2,8 +2,12 @@ extends Node2D
 
 @export var emptyFrameResources : ResourcePreloader
 
-@export var initialTrackFrames : int
-
+@export var initialTrackFrames : int :
+	set(value):
+		initialTrackFrames = value
+		#if(emptyFrameResources):
+			#spawn_initial_track_frames()
+		
 var listOfFrames : Array
 
 var previousTrackFrame = null
@@ -12,6 +16,8 @@ var firstTrackFrame = null
 
 var frame_count := 0
 
+var frame_resource = null#emptyFrameResources.get_resource(emptyFrameResources.get_resource_list()[0])
+
 var startPosition : Vector2
 
 var endPosition : Vector2
@@ -19,39 +25,46 @@ var endPosition : Vector2
 var frameHeight : float
 
 func _ready():
-	
 	spawn_initial_track_frames()
+	
 
 func spawn_initial_track_frames():
 	
 	listOfFrames = []
 	
-	var frame_resource = emptyFrameResources.get_resource(emptyFrameResources.get_resource_list()[0])
-	
 	for i in range(initialTrackFrames):
 		
-		var frame_instance = frame_resource.instantiate()
+		listOfFrames.append(spawn_frame())
 		
-		add_child(frame_instance)
+
+func spawn_frame():
+	
+	frame_resource = emptyFrameResources.get_resource(emptyFrameResources.get_resource_list()[0])
+	
+	var frame_instance = frame_resource.instantiate()
+	
+	#listOfFrames.append(frame_instance)
+	
+	add_child(frame_instance)
+	print("Spawning frame")
+	if(previousTrackFrame == null):
 		
-		listOfFrames.append(frame_instance)
+		previousTrackFrame = frame_instance
+		firstTrackFrame = frame_instance
+		startPosition = previousTrackFrame.frameStart.global_position
 		
-		if(previousTrackFrame == null):
-			
-			previousTrackFrame = frame_instance
-			firstTrackFrame = frame_instance
-			startPosition = previousTrackFrame.frameStart.global_position
-			
-			print("Start position is " + str(startPosition))
-			
-		else:
-			
-			frame_instance.global_position = previousTrackFrame.nextFrameLocation.global_position
-			
-			previousTrackFrame = frame_instance
+		print("Start position is " + str(startPosition))
 		
-		endPosition = previousTrackFrame.frameEnd.global_position
-		frameHeight = previousTrackFrame.frameHeight
+	else:
+		
+		frame_instance.global_position = previousTrackFrame.nextFrameLocation.global_position
+		
+		previousTrackFrame = frame_instance
+	
+	endPosition = previousTrackFrame.frameEnd.global_position
+	frameHeight = previousTrackFrame.frameHeight
+	
+	return frame_instance
 
 func get_occupied_frames():
 	
@@ -71,3 +84,6 @@ func set_start_and_end_positions():
 	
 	startPosition = firstTrackFrame.frameStart.global_position
 	endPosition = previousTrackFrame.frameEnd.global_position
+
+func get_center():
+	pass

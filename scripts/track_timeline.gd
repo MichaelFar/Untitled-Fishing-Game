@@ -10,16 +10,20 @@ extends Node2D
 
 @export var playButton : TextureButton
 
+var longerTrackObject = null
+
 signal cursor_reached_end
 
 func _ready():
+	
+	get_farthest_last_frame()
 	
 	place_tracks()
 	
 	set_cursor_start(playerTrack.startPosition)
 	
 	place_cursor()
-
+	
 func set_cursor_start(start_position : Vector2):
 
 	timeLineCursor.global_position = start_position
@@ -65,19 +69,22 @@ func get_farthest_last_frame():
 	var player_end_pos = playerTrack.endPosition.x
 	var enemy_end_pos = enemyTrack.endPosition.x
 	
+	longerTrackObject = playerTrack if player_end_pos > enemy_end_pos else enemyTrack
+	
 	return player_end_pos if player_end_pos > enemy_end_pos else enemy_end_pos
 
 func place_tracks():
 	
 	var viewport_rect = get_viewport_rect()
 	
-	var start_position_x = (viewport_rect.end.x / 2.0) - ((playerTrack.initialTrackFrames * playerTrack.frameHeight * playerTrack.scale.x) / 2.0)
+	var start_position_x = (viewport_rect.end.x / 2.0) - ((longerTrackObject.initialTrackFrames * longerTrackObject.frameHeight) / 3.0)
 	
-	var player_start_position_y = viewport_rect.size.y / 3.0
-	
-	var enemy_start_position_y = (viewport_rect.end.y / 2.0) + playerTrack.frameHeight#player_start_position_y + (playerTrack.frameHeight * 1.5)
+	var player_start_position_y = viewport_rect.size.y / 1.5
 	
 	playerTrack.global_position = Vector2(start_position_x, player_start_position_y)
+	
+	var enemy_start_position_y = (playerTrack.global_position.y) + playerTrack.frameHeight#player_start_position_y + (playerTrack.frameHeight * 1.5)
+	
 	enemyTrack.global_position = Vector2(start_position_x, enemy_start_position_y)
 	
 	playerTrack.set_start_and_end_positions()

@@ -1,26 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://cjqpk5541erbd"]
+[gd_scene load_steps=3 format=3 uid="uid://cjqpk5541erbd"]
 
-[ext_resource type="PackedScene" uid="uid://bnl8ukbknotb8" path="res://gameLogicScenes/track_container.tscn" id="1_2oe73"]
 [ext_resource type="PackedScene" uid="uid://c6l3f1ad0loxl" path="res://gameLogicScenes/tile_manager.tscn" id="1_xispt"]
-[ext_resource type="PackedScene" uid="uid://cab0de6e0yqck" path="res://ui scenes/draggable_frame.tscn" id="2_nr47w"]
-[ext_resource type="PackedScene" uid="uid://duv0pcarm8cxd" path="res://ui scenes/draggable_frame_size_3.tscn" id="3_wagxy"]
+[ext_resource type="PackedScene" uid="uid://br5spg8ov0qin" path="res://gameLogicScenes/track_timeline.tscn" id="2_usm2n"]
 
 [node name="TestObjectZone" type="Node3D"]
-
-[node name="UIContainer" type="Node2D" parent="."]
-position = Vector2(50, 19)
-
-[node name="draggable_frame_size_3" parent="UIContainer" instance=ExtResource("3_wagxy")]
-position = Vector2(657, 94)
-
-[node name="draggable_frame" parent="UIContainer" instance=ExtResource("2_nr47w")]
-position = Vector2(360, 210)
-
-[node name="draggable_frame2" parent="UIContainer" instance=ExtResource("2_nr47w")]
-position = Vector2(968, 188)
-
-[node name="track_container" parent="UIContainer" instance=ExtResource("1_2oe73")]
-position = Vector2(76, 382)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866024, -0.433016, 0.25, 0.433016, -0.899518, -0.0580155, 0.250001, 0.0580111, 0.966506, 0, 0, 0)
@@ -32,3 +15,5 @@ fov = 71.2103
 
 [node name="TileManager" parent="." instance=ExtResource("1_xispt")]
 numTiles = 9
+
+[node name="TrackTimeline" parent="." instance=ExtResource("2_usm2n")]

@@ -24,7 +24,7 @@ signal slotted_in_frame
 
 func _ready():
 	
-	frameHeight = texture.texture.get_height()
+	frameHeight = texture.texture.get_height() * scale.x
 
 func _process(delta):
 	

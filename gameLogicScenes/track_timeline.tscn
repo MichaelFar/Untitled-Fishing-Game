@@ -19,9 +19,10 @@ enemyTrack = NodePath("enemy_track")
 playButton = NodePath("PausePlay")
 
 [node name="player_track" parent="." instance=ExtResource("1_j71xg")]
+initialTrackFrames = 3
 
 [node name="enemy_track" parent="." instance=ExtResource("1_j71xg")]
-initialTrackFrames = 3
+initialTrackFrames = 8
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 4
