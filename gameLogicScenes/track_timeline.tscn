@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://br5spg8ov0qin"]
+[gd_scene load_steps=11 format=3 uid="uid://br5spg8ov0qin"]
 
 [ext_resource type="Script" path="res://scripts/track_timeline.gd" id="1_ierts"]
 [ext_resource type="PackedScene" uid="uid://bnl8ukbknotb8" path="res://gameLogicScenes/track_container.tscn" id="1_j71xg"]
@@ -7,6 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://c6qstfkbln20c" path="res://ui scenes/draggable_frame_size_2.tscn" id="5_wt72t"]
 [ext_resource type="Texture2D" uid="uid://c1c4gubs4p613" path="res://textures/Play.png" id="6_r626e"]
 [ext_resource type="Texture2D" uid="uid://bjqquklkujsrv" path="res://textures/Pause.png" id="7_cmvao"]
+[ext_resource type="PackedScene" uid="uid://mrpbp5sdthi2" path="res://ui scenes/player_attack_frame.tscn" id="8_717pi"]
+[ext_resource type="PackedScene" uid="uid://ok862jrlf5bx" path="res://ui scenes/player_defense_frame.tscn" id="9_hpftm"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mq8rd"]
 
@@ -63,6 +65,12 @@ offset_bottom = 70.0
 toggle_mode = true
 texture_normal = ExtResource("6_r626e")
 texture_disabled = ExtResource("7_cmvao")
+
+[node name="draggable_frame5" parent="." instance=ExtResource("8_717pi")]
+position = Vector2(232, 188)
+
+[node name="draggable_frame6" parent="." instance=ExtResource("9_hpftm")]
+position = Vector2(537, 193)
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="button_up" from="PausePlay" to="." method="_on_pause_play_button_up"]

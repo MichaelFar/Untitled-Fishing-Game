@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dhjcoswixwnky"]
 
-[ext_resource type="PackedScene" uid="uid://4m0vh0ofv2f7" path="res://ui scenes/drop_zone.tscn" id="1_beif2"]
+[ext_resource type="PackedScene" uid="uid://bnl8ukbknotb8" path="res://gameLogicScenes/track_container.tscn" id="2_1rio1"]
 [ext_resource type="PackedScene" uid="uid://cab0de6e0yqck" path="res://ui scenes/draggable_frame.tscn" id="2_6th3p"]
 
 [node name="2dDebugTestScene" type="Node2D"]
@@ -8,11 +8,5 @@
 [node name="draggable_frame" parent="." instance=ExtResource("2_6th3p")]
 position = Vector2(412, 214)
 
-[node name="drop_zone" parent="." instance=ExtResource("1_beif2")]
-position = Vector2(144, 231)
-
-[node name="drop_zone2" parent="." instance=ExtResource("1_beif2")]
-position = Vector2(660, 231)
-
-[node name="drop_zone3" parent="." instance=ExtResource("1_beif2")]
-position = Vector2(421, 427)
+[node name="track_container" parent="." instance=ExtResource("2_1rio1")]
+position = Vector2(135, 440)

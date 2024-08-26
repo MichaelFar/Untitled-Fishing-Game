@@ -11,6 +11,7 @@ class_name CombatActor
 var currentHP := maxHP
 
 signal healed_hp
+
 signal taken_damage
 
 func add_to_HP(hp_change : int):

@@ -23,8 +23,6 @@ func _ready():
 
 func _on_area_2d_area_entered(area):
 	
-	print("entered")
-	
 	if area.owner.is_in_group("draggable"):
 		
 		modulate = Color(Color.REBECCA_PURPLE, 1)

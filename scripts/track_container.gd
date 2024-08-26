@@ -3,10 +3,10 @@ extends Node2D
 @export var emptyFrameResources : ResourcePreloader
 
 @export var initialTrackFrames : int :
+	
 	set(value):
+		
 		initialTrackFrames = value
-		#if(emptyFrameResources):
-			#spawn_initial_track_frames()
 		
 var listOfFrames : Array
 
@@ -25,9 +25,9 @@ var endPosition : Vector2
 var frameHeight : float
 
 func _ready():
+	
 	spawn_initial_track_frames()
 	
-
 func spawn_initial_track_frames():
 	
 	listOfFrames = []
@@ -42,8 +42,6 @@ func spawn_frame():
 	frame_resource = emptyFrameResources.get_resource(emptyFrameResources.get_resource_list()[0])
 	
 	var frame_instance = frame_resource.instantiate()
-	
-	#listOfFrames.append(frame_instance)
 	
 	add_child(frame_instance)
 	print("Spawning frame")
@@ -75,7 +73,6 @@ func get_occupied_frames():
 		occupied_array.append(i.occupied)
 		
 	return occupied_array
-
 
 func _on_timer_timeout():
 	print(get_occupied_frames())
