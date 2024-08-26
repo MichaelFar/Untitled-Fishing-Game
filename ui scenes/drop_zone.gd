@@ -8,6 +8,10 @@ extends StaticBody2D
 
 @export var colorRect : ColorRect
 
+@export var staticCollider : CollisionShape2D
+
+@export var area : Area2D
+
 var frameHeight : int
 
 var occupied := false
@@ -38,9 +42,14 @@ func _on_area_2d_area_exited(area):
 		modulate = originalColor
 		#occupied = false
 
-func set_occupied(value : bool, signal_source):
+func set_occupied(value : bool):
 	occupied = value
 	if(occupied):
 		modulate = Color(Color.REBECCA_PURPLE, 1)
 	#if(!occupied):
 		#signal_source.slotted_in_frame.disconnect(set_occupied)
+
+func toggle_collision_bodies():
+	
+	staticCollider.disabled = !staticCollider.disabled
+	area.monitoring = !area.monitoring

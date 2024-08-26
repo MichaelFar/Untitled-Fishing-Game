@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://dwolkeq3tmchj"]
+
+[ext_resource type="Script" path="res://scripts/combat_scripts/enemy_combat_actor.gd" id="1_0jpo6"]
+[ext_resource type="PackedScene" uid="uid://cab0de6e0yqck" path="res://ui scenes/draggable_frame.tscn" id="2_8swfn"]
+[ext_resource type="PackedScene" uid="uid://duv0pcarm8cxd" path="res://ui scenes/draggable_frame_size_3.tscn" id="4_akidd"]
+
+[node name="EnemyCombatActor" type="Node" node_paths=PackedStringArray("framesResources")]
+script = ExtResource("1_0jpo6")
+numMovesPerRound = 6
+framesResources = NodePath("FrameResources")
+
+[node name="FrameResources" type="ResourcePreloader" parent="."]
+resources = [PackedStringArray("draggable_frame", "draggable_frame_size_3"), [ExtResource("2_8swfn"), ExtResource("4_akidd")]]

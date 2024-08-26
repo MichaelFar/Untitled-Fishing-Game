@@ -2,6 +2,7 @@ extends Node2D
 
 @export var emptyFrameResources : ResourcePreloader
 
+
 @export var initialTrackFrames : int :
 	
 	set(value):
@@ -36,7 +37,6 @@ func spawn_initial_track_frames():
 		
 		listOfFrames.append(spawn_frame())
 		
-
 func spawn_frame():
 	
 	frame_resource = emptyFrameResources.get_resource(emptyFrameResources.get_resource_list()[0])
@@ -75,6 +75,7 @@ func get_occupied_frames():
 	return occupied_array
 
 func _on_timer_timeout():
+	
 	print(get_occupied_frames())
 
 func set_start_and_end_positions():
@@ -82,5 +83,8 @@ func set_start_and_end_positions():
 	startPosition = firstTrackFrame.frameStart.global_position
 	endPosition = previousTrackFrame.frameEnd.global_position
 
-func get_center():
-	pass
+func disable_children():
+	
+	for i in get_children():
+		if i.is_in_group("droppable"):
+			i.toggle_collision_bodies()

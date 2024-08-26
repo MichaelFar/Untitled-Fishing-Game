@@ -14,6 +14,8 @@ var longerTrackObject = null
 
 signal cursor_reached_end
 
+signal tracks_placed
+
 func _ready():
 	
 	get_farthest_last_frame()
@@ -23,6 +25,8 @@ func _ready():
 	set_cursor_start(playerTrack.startPosition)
 	
 	place_cursor()
+	
+	enemyTrack.disable_children()
 	
 func set_cursor_start(start_position : Vector2):
 
@@ -92,7 +96,9 @@ func place_tracks():
 	
 	playButton.position.x = ((playerTrack.startPosition.x + get_farthest_last_frame()) / 2.0) - (playButton.texture_normal.get_width() / 2.0)
 	playButton.position.y = playerTrack.frameHeight
-
+	
+	tracks_placed.emit()
+	
 func _on_pause_play_button_up() -> void:
 	
 	tween_cursor_to_end()

@@ -35,7 +35,7 @@ func _process(delta):
 			initialPosition = global_position
 			offset = get_global_mouse_position() - global_position
 			UiGlobal.dragging_frame = true
-			slotted_in_frame.emit(false, self)
+			slotted_in_frame.emit(false)
 			#bodyRefArray = []
 		if(Input.is_action_pressed("cast")):
 			
@@ -49,23 +49,23 @@ func _process(delta):
 			
 			var proper_position = get_proper_position()
 			
-			print("bodyRefArray size is " + str(bodyRefArray.size()))
+			#print("bodyRefArray size is " + str(bodyRefArray.size()))
 			visualContainer.z_index = 0
 			if(bodyRefArray.size() != frameSize):
 				
 				tween.tween_property(self, "global_position", 
 				initialPosition, 0.2).set_ease(Tween.EASE_OUT)
-				print("bodyRefArray size is not framesize")
+				#print("bodyRefArray size is not framesize")
 			elif(insideDropZone):
 				
 				tween.tween_property(self, "position", 
 				proper_position, 0.2).set_ease(Tween.EASE_OUT)
-				print("bodyRefArray size is framesize and insideDropZone is true")
+				#print("bodyRefArray size is framesize and insideDropZone is true")
 			else:
 				
 				tween.tween_property(self, "global_position", 
 				initialPosition, 0.2).set_ease(Tween.EASE_OUT)
-				print("bodyRefArray size is framesize and insideDropZone is false")
+				#print("bodyRefArray size is framesize and insideDropZone is false")
 func _on_area_2d_mouse_entered():
 	
 	if (!UiGlobal.dragging_frame):
@@ -84,9 +84,9 @@ func _on_area_2d_mouse_exited():
 func _on_area_2d_body_entered(body):
 	
 	if body.is_in_group("droppable"):
-		
+		print("body is droppable")
 		if(!body.occupied):
-			print("body not occupied")
+			#print("body not occupied")
 			slotted_in_frame.connect(body.set_occupied)
 			insideDropZone = true
 			body_ref = body
@@ -101,14 +101,14 @@ func _on_area_2d_body_exited(body):
 		
 	if(body.is_in_group("droppable")):
 		if(!body.occupied):
-			print("Popping body ref")
+			#print("Popping body ref")
 			bodyRefArray.pop_at(bodyRefArray.find(body))
 	
 func emit_frame_occupied():
 	
 	await get_tree().physics_frame
 	
-	slotted_in_frame.emit(true, self)
+	slotted_in_frame.emit(true)
 
 func get_proper_position():
 	

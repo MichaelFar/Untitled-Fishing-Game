@@ -5,7 +5,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4doxv"]
 size = Vector2(128, 128)
 
-[node name="drop_zone" type="StaticBody2D" node_paths=PackedStringArray("nextFrameLocation", "frameStart", "frameEnd", "colorRect") groups=["droppable"]]
+[node name="drop_zone" type="StaticBody2D" node_paths=PackedStringArray("nextFrameLocation", "frameStart", "frameEnd", "colorRect", "staticCollider", "area") groups=["droppable"]]
 scale = Vector2(0.75, 0.75)
 collision_layer = 3
 collision_mask = 3
@@ -14,6 +14,8 @@ nextFrameLocation = NodePath("NextFrameLocation")
 frameStart = NodePath("FrameStart")
 frameEnd = NodePath("FrameEnd")
 colorRect = NodePath("ColorRect")
+staticCollider = NodePath("CollisionShape2D")
+area = NodePath("Area2D")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 offset_left = -64.0

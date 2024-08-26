@@ -8,6 +8,8 @@ class_name CombatActor
 
 @export var framesResources : ResourcePreloader
 
+@export var track : Node2D
+
 var currentHP := maxHP
 
 signal healed_hp

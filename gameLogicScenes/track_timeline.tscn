@@ -1,8 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://br5spg8ov0qin"]
+[gd_scene load_steps=13 format=3 uid="uid://br5spg8ov0qin"]
 
 [ext_resource type="Script" path="res://scripts/track_timeline.gd" id="1_ierts"]
 [ext_resource type="PackedScene" uid="uid://bnl8ukbknotb8" path="res://gameLogicScenes/track_container.tscn" id="1_j71xg"]
 [ext_resource type="PackedScene" uid="uid://cab0de6e0yqck" path="res://ui scenes/draggable_frame.tscn" id="3_7l8j7"]
+[ext_resource type="PackedScene" uid="uid://kfrptoovnsmb" path="res://gameLogicScenes/player_combat_actor.tscn" id="3_ka1vr"]
+[ext_resource type="PackedScene" uid="uid://dwolkeq3tmchj" path="res://gameLogicScenes/enemy_combat_actor.tscn" id="4_iyvc6"]
 [ext_resource type="PackedScene" uid="uid://duv0pcarm8cxd" path="res://ui scenes/draggable_frame_size_3.tscn" id="4_wl6yj"]
 [ext_resource type="PackedScene" uid="uid://c6qstfkbln20c" path="res://ui scenes/draggable_frame_size_2.tscn" id="5_wt72t"]
 [ext_resource type="Texture2D" uid="uid://c1c4gubs4p613" path="res://textures/Play.png" id="6_r626e"]
@@ -21,10 +23,15 @@ enemyTrack = NodePath("enemy_track")
 playButton = NodePath("PausePlay")
 
 [node name="player_track" parent="." instance=ExtResource("1_j71xg")]
-initialTrackFrames = 3
+
+[node name="PlayerCombatActor" parent="player_track" node_paths=PackedStringArray("track") instance=ExtResource("3_ka1vr")]
+track = NodePath("..")
 
 [node name="enemy_track" parent="." instance=ExtResource("1_j71xg")]
 initialTrackFrames = 8
+
+[node name="EnemyCombatActor" parent="enemy_track" node_paths=PackedStringArray("track") instance=ExtResource("4_iyvc6")]
+track = NodePath("..")
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 4
@@ -46,10 +53,10 @@ shape = SubResource("CircleShape2D_mq8rd")
 position = Vector2(94, 73)
 
 [node name="draggable_frame2" parent="." instance=ExtResource("3_7l8j7")]
-position = Vector2(352, 71)
+position = Vector2(341, 73)
 
 [node name="draggable_frame3" parent="." instance=ExtResource("3_7l8j7")]
-position = Vector2(224, 71)
+position = Vector2(213, 73)
 
 [node name="draggable_frame_size_3" parent="." instance=ExtResource("4_wl6yj")]
 position = Vector2(615, 69)

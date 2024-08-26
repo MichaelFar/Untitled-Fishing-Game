@@ -2,7 +2,8 @@
 
 [ext_resource type="Script" path="res://scripts/combat_scripts/player_combat_actor.gd" id="1_33ayp"]
 
-[node name="CombatActor" type="Node" groups=["CombatActor"]]
+[node name="PlayerCombatActor" type="Node" node_paths=PackedStringArray("framesResources") groups=["CombatActor"]]
 script = ExtResource("1_33ayp")
+framesResources = NodePath("FrameResources")
 
 [node name="FrameResources" type="ResourcePreloader" parent="."]
