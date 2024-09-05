@@ -6,6 +6,8 @@ extends CharacterBody2D
 
 @export var texture : Sprite2D
 
+@export var mouseInteractableAreaArray : Array[Area2D]
+
 var should_be_dragged := false
 
 var insideDropZone := false
@@ -55,17 +57,17 @@ func _process(delta):
 				
 				tween.tween_property(self, "global_position", 
 				initialPosition, 0.2).set_ease(Tween.EASE_OUT)
-				#print("bodyRefArray size is not framesize")
+				print("bodyRefArray size is not framesize")
 			elif(insideDropZone):
 				
 				tween.tween_property(self, "position", 
 				proper_position, 0.2).set_ease(Tween.EASE_OUT)
-				#print("bodyRefArray size is framesize and insideDropZone is true")
+				print("bodyRefArray size is framesize and insideDropZone is true")
 			else:
 				
 				tween.tween_property(self, "global_position", 
 				initialPosition, 0.2).set_ease(Tween.EASE_OUT)
-				#print("bodyRefArray size is framesize and insideDropZone is false")
+				print("bodyRefArray size is framesize and insideDropZone is false")
 func _on_area_2d_mouse_entered():
 	
 	if (!UiGlobal.dragging_frame):
@@ -86,7 +88,7 @@ func _on_area_2d_body_entered(body):
 	if body.is_in_group("droppable"):
 		print("body is droppable")
 		if(!body.occupied):
-			#print("body not occupied")
+			print("body not occupied")
 			slotted_in_frame.connect(body.set_occupied)
 			insideDropZone = true
 			body_ref = body
@@ -115,7 +117,7 @@ func get_proper_position():
 	var averaged_position : Vector2
 	
 	for i in bodyRefArray:
-	
+		
 		averaged_position += i.global_position
 		
 	averaged_position = averaged_position / float(bodyRefArray.size())
@@ -123,4 +125,8 @@ func get_proper_position():
 	return averaged_position
 
 func create_effect():#Called when frame becomes active
-	print("Hello")
+	print("Effect triggered " + " and I am " + str(self))
+
+func disable_mouse_areas():
+	for i in mouseInteractableAreaArray:
+		i.get_children()[0].disabled = true

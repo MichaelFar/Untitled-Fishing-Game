@@ -30,12 +30,14 @@ func _on_area_2d_area_entered(area):
 	if area.owner.is_in_group("draggable"):
 		
 		modulate = Color(Color.REBECCA_PURPLE, 1)
-			
+		
 func _on_area_2d_area_exited(area):
 	
 	if area.owner.is_in_group("draggable"):
 		
 		if(area.owner.slotted_in_frame.is_connected(set_occupied)):
+			
+			print("Disconnecting slotted_in_frame")
 			
 			area.owner.slotted_in_frame.disconnect(set_occupied)
 			
@@ -43,11 +45,12 @@ func _on_area_2d_area_exited(area):
 		#occupied = false
 
 func set_occupied(value : bool):
+	
 	occupied = value
+	
 	if(occupied):
 		modulate = Color(Color.REBECCA_PURPLE, 1)
-	#if(!occupied):
-		#signal_source.slotted_in_frame.disconnect(set_occupied)
+	
 
 func toggle_collision_bodies():
 	

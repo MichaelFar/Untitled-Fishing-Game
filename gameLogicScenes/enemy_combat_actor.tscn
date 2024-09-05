@@ -1,13 +1,43 @@
-[gd_scene load_steps=4 format=3 uid="uid://dwolkeq3tmchj"]
+[gd_scene load_steps=8 format=3 uid="uid://dwolkeq3tmchj"]
 
 [ext_resource type="Script" path="res://scripts/combat_scripts/enemy_combat_actor.gd" id="1_0jpo6"]
 [ext_resource type="PackedScene" uid="uid://cab0de6e0yqck" path="res://ui scenes/draggable_frame.tscn" id="2_8swfn"]
+[ext_resource type="PackedScene" uid="uid://c6qstfkbln20c" path="res://ui scenes/draggable_frame_size_2.tscn" id="3_58grc"]
 [ext_resource type="PackedScene" uid="uid://duv0pcarm8cxd" path="res://ui scenes/draggable_frame_size_3.tscn" id="4_akidd"]
 
-[node name="EnemyCombatActor" type="Node" node_paths=PackedStringArray("framesResources")]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b6hgh"]
+bg_color = Color(0.6, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uwjg6"]
+bg_color = Color(0, 1, 0, 1)
+
+[sub_resource type="Theme" id="Theme_p3nxn"]
+ProgressBar/styles/background = SubResource("StyleBoxFlat_b6hgh")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_uwjg6")
+
+[node name="EnemyCombatActor" type="Node" node_paths=PackedStringArray("healthBar", "healthLabel", "framesResources")]
 script = ExtResource("1_0jpo6")
 numMovesPerRound = 6
+healthBar = NodePath("HealthBar")
+healthLabel = NodePath("HealthBar/HealthLabel")
 framesResources = NodePath("FrameResources")
 
 [node name="FrameResources" type="ResourcePreloader" parent="."]
-resources = [PackedStringArray("draggable_frame", "draggable_frame_size_3"), [ExtResource("2_8swfn"), ExtResource("4_akidd")]]
+resources = [PackedStringArray("draggable_frame", "draggable_frame_size_2", "draggable_frame_size_3"), [ExtResource("2_8swfn"), ExtResource("3_58grc"), ExtResource("4_akidd")]]
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+offset_right = 144.0
+offset_bottom = 27.0
+theme = SubResource("Theme_p3nxn")
+max_value = 10.0
+step = 1.0
+value = 10.0
+show_percentage = false
+
+[node name="HealthLabel" type="RichTextLabel" parent="HealthBar"]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 1.0
+offset_right = 85.0
+offset_bottom = 25.0
+bbcode_enabled = true

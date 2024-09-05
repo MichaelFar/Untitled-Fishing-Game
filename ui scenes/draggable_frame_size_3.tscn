@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://duv0pcarm8cxd"]
+[gd_scene load_steps=6 format=3 uid="uid://duv0pcarm8cxd"]
 
 [ext_resource type="Script" path="res://scripts/draggable_frame.gd" id="1_tcacx"]
 [ext_resource type="Texture2D" uid="uid://d02uywk8rubu" path="res://icon.svg" id="2_bfwax"]
@@ -9,14 +9,20 @@ size = Vector2(255, 63.25)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3ox4l"]
 size = Vector2(352, 128)
 
-[node name="draggable_frame_size_3" type="CharacterBody2D" node_paths=PackedStringArray("visualContainer", "texture") groups=["draggable"]]
+[sub_resource type="CircleShape2D" id="CircleShape2D_abla8"]
+radius = 18.4391
+
+[node name="draggable_frame_size_3" type="CharacterBody2D" node_paths=PackedStringArray("visualContainer", "texture", "mouseInteractableAreaArray") groups=["draggable"]]
 top_level = true
 z_as_relative = false
 scale = Vector2(0.75, 0.75)
+collision_layer = 4
+collision_mask = 0
 script = ExtResource("1_tcacx")
 frameSize = 3
 visualContainer = NodePath("VisualContainer")
 texture = NodePath("VisualContainer/Icon")
+mouseInteractableAreaArray = [NodePath("Area2D"), NodePath("Area2D2")]
 
 [node name="VisualContainer" type="Node2D" parent="."]
 
@@ -44,6 +50,10 @@ shape = SubResource("RectangleShape2D_2yplm")
 shape = SubResource("RectangleShape2D_3ox4l")
 
 [node name="FrameEffectResources" type="ResourcePreloader" parent="."]
+
+[node name="ActiveZone" type="CollisionShape2D" parent="."]
+position = Vector2(-174.667, 0)
+shape = SubResource("CircleShape2D_abla8")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

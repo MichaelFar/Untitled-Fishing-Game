@@ -1,9 +1,41 @@
-[gd_scene load_steps=2 format=3 uid="uid://kfrptoovnsmb"]
+[gd_scene load_steps=7 format=3 uid="uid://kfrptoovnsmb"]
 
 [ext_resource type="Script" path="res://scripts/combat_scripts/player_combat_actor.gd" id="1_33ayp"]
+[ext_resource type="PackedScene" uid="uid://mrpbp5sdthi2" path="res://ui scenes/player_attack_frame.tscn" id="2_tb150"]
+[ext_resource type="PackedScene" uid="uid://ok862jrlf5bx" path="res://ui scenes/player_defense_frame.tscn" id="3_68cbw"]
 
-[node name="PlayerCombatActor" type="Node" node_paths=PackedStringArray("framesResources") groups=["CombatActor"]]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yvbol"]
+bg_color = Color(0.6, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_as868"]
+bg_color = Color(0, 1, 0, 1)
+
+[sub_resource type="Theme" id="Theme_45t0r"]
+ProgressBar/styles/background = SubResource("StyleBoxFlat_yvbol")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_as868")
+
+[node name="PlayerCombatActor" type="Node" node_paths=PackedStringArray("healthBar", "healthLabel", "framesResources") groups=["CombatActor"]]
 script = ExtResource("1_33ayp")
+healthBar = NodePath("HealthBar")
+healthLabel = NodePath("HealthBar/HealthLabel")
 framesResources = NodePath("FrameResources")
 
 [node name="FrameResources" type="ResourcePreloader" parent="."]
+resources = [PackedStringArray("player_attack_frame", "player_defense_frame"), [ExtResource("2_tb150"), ExtResource("3_68cbw")]]
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+offset_right = 144.0
+offset_bottom = 27.0
+theme = SubResource("Theme_45t0r")
+max_value = 10.0
+step = 1.0
+value = 10.0
+show_percentage = false
+
+[node name="HealthLabel" type="RichTextLabel" parent="HealthBar"]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 1.0
+offset_right = 85.0
+offset_bottom = 25.0
+bbcode_enabled = true

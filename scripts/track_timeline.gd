@@ -4,6 +4,8 @@ extends Node2D
 
 @export var activeFrameShapes : Array[CollisionShape2D]
 
+@export var playerFramePool : Node2D#Used for positioning, for frame population see PlayerCombatActor
+
 @export var playerTrack : Node2D
 
 @export var enemyTrack : Node2D
@@ -16,6 +18,9 @@ signal cursor_reached_end
 
 signal tracks_placed
 
+func _init() -> void:
+	CombatGlobal.trackTimeline = self
+	
 func _ready():
 	
 	get_farthest_last_frame()
@@ -44,7 +49,7 @@ func tween_cursor_to_end():
 		tween.tween_property(timeLineCursor, "global_position:x", get_farthest_last_frame(), 1.5)
 		
 		tween.finished.connect(emit_cursor_end)
-		
+				
 		return tween
 
 func emit_cursor_end():
@@ -52,6 +57,10 @@ func emit_cursor_end():
 	print("cursor reached end")
 	playButton.disabled = false
 	cursor_reached_end.emit()
+	
+	for i in activeFrameShapes:
+		
+		i.disabled = true
 
 func _on_area_2d_body_entered(body):
 	
@@ -87,6 +96,8 @@ func place_tracks():
 	
 	playerTrack.global_position = Vector2(start_position_x, player_start_position_y)
 	
+	playerFramePool.global_position = Vector2(start_position_x, player_start_position_y - playerFramePool.frameHeight)
+	
 	var enemy_start_position_y = (playerTrack.global_position.y) + playerTrack.frameHeight#player_start_position_y + (playerTrack.frameHeight * 1.5)
 	
 	enemyTrack.global_position = Vector2(start_position_x, enemy_start_position_y)
@@ -102,4 +113,9 @@ func place_tracks():
 func _on_pause_play_button_up() -> void:
 	
 	tween_cursor_to_end()
+	
+	for i in activeFrameShapes:
+		
+		i.disabled = false
+		
 	playButton.disabled = true
