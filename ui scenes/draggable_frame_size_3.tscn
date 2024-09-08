@@ -12,7 +12,7 @@ size = Vector2(352, 128)
 [sub_resource type="CircleShape2D" id="CircleShape2D_abla8"]
 radius = 18.4391
 
-[node name="draggable_frame_size_3" type="CharacterBody2D" node_paths=PackedStringArray("visualContainer", "texture", "mouseInteractableAreaArray") groups=["draggable"]]
+[node name="draggable_frame_size_3" type="CharacterBody2D" node_paths=PackedStringArray("visualContainer", "texture", "frameEffectResources", "mouseInteractableAreaArray") groups=["draggable"]]
 top_level = true
 z_as_relative = false
 scale = Vector2(0.75, 0.75)
@@ -22,6 +22,7 @@ script = ExtResource("1_tcacx")
 frameSize = 3
 visualContainer = NodePath("VisualContainer")
 texture = NodePath("VisualContainer/Icon")
+frameEffectResources = NodePath("FrameEffectResources")
 mouseInteractableAreaArray = [NodePath("Area2D"), NodePath("Area2D2")]
 
 [node name="VisualContainer" type="Node2D" parent="."]

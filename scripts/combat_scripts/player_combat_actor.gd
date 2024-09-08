@@ -6,6 +6,8 @@ class_name PlayerCombatActor
 
 var listOfEmptyFrames := []
 
+var listOfSpawnedFrames := []
+
 func _ready() -> void:
 	
 	CombatGlobal.playerObjects.append(self)
@@ -20,7 +22,6 @@ func get_proper_position(frame_instance, list_of_empty_frames):
 	print("Placing frames")
 	
 	for i in list_of_empty_frames:
-		
 		print("Averaging position")
 		
 		averaged_position += i.global_position
@@ -28,6 +29,7 @@ func get_proper_position(frame_instance, list_of_empty_frames):
 		frame_instance.insideDropZone = true
 		frame_instance.body_ref = i
 		frame_instance.bodyRefArray.append(i)
+		
 	averaged_position = averaged_position / float(list_of_empty_frames.size())
 	print(averaged_position)
 	return averaged_position
@@ -58,9 +60,8 @@ func check_for_space(frame_size : int):
 			listOfEmptyFrames = list_of_empty_frames
 			
 			for j in listOfEmptyFrames:
-				pass
-				j.set_occupied(true)#When this line needs to be expanded because the corresponding frame becomes permanently unusable
-				#If this line is disabled, the frames work, but the will all spawn overlapped
+				
+				j.set_occupied(true)
 				
 			print(track.get_occupied_frames())
 			
@@ -83,18 +84,23 @@ func populate_track():
 		
 		frame_instance = frame_instance.instantiate()
 		
-		frame_instance.disable_mouse_areas()
+		#frame_instance.disable_mouse_areas()
 		print("Frame size of instance is " + str(frame_instance.frameSize))
 		if(check_for_space(frame_instance.frameSize)):
 			
 			print("space found for spawned frames")
 			add_child(frame_instance)
 			frame_instance.global_position = get_proper_position(frame_instance, listOfEmptyFrames)
-			#for j in listOfEmptyFrames:
-				#if(j.global_position == frame_instance.global_position):
-					#frame_instance.slotted_in_frame.connect(j.set_occupied)
-				#j.slotted_in_frame.connect(j.set_occupied)#Refactor the signal to not be tied to the draggable_frame script
+			listOfSpawnedFrames.append(frame_instance)
+			frame_instance.dragging_frame.connect(set_other_pickable)
 		else:
 			
 			frame_instance.queue_free()
 		
+func set_other_pickable(draggable_frame, new_value : bool):
+	
+	var exception_index = listOfSpawnedFrames.find(draggable_frame)
+	
+	for i in listOfSpawnedFrames:
+		if(listOfSpawnedFrames[exception_index] != i):
+			i.set_mouse_areas(new_value)

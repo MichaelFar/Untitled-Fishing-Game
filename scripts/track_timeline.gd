@@ -6,6 +6,10 @@ extends Node2D
 
 @export var playerFramePool : Node2D#Used for positioning, for frame population see PlayerCombatActor
 
+@export var playerCombatActor : CombatActor
+
+@export var enemyCombatActor : CombatActor
+
 @export var playerTrack : Node2D
 
 @export var enemyTrack : Node2D
@@ -49,7 +53,7 @@ func tween_cursor_to_end():
 		tween.tween_property(timeLineCursor, "global_position:x", get_farthest_last_frame(), 1.5)
 		
 		tween.finished.connect(emit_cursor_end)
-				
+		
 		return tween
 
 func emit_cursor_end():
@@ -61,7 +65,12 @@ func emit_cursor_end():
 	for i in activeFrameShapes:
 		
 		i.disabled = true
-
+	
+	enemyCombatActor.clear_track_frames()
+	enemyCombatActor.repopulate_track()
+	for i in playerCombatActor.listOfSpawnedFrames:
+		i.set_mouse_areas(true)
+		
 func _on_area_2d_body_entered(body):
 	
 	print("Body entered")
@@ -118,4 +127,8 @@ func _on_pause_play_button_up() -> void:
 		
 		i.disabled = false
 		
+	for i in playerCombatActor.listOfSpawnedFrames:
+		
+		i.set_mouse_areas(false)
+	
 	playButton.disabled = true

@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://kfrptoovnsmb"]
+[gd_scene load_steps=8 format=3 uid="uid://kfrptoovnsmb"]
 
 [ext_resource type="Script" path="res://scripts/combat_scripts/player_combat_actor.gd" id="1_33ayp"]
+[ext_resource type="PackedScene" uid="uid://duv0pcarm8cxd" path="res://ui scenes/draggable_frame_size_3.tscn" id="2_1wkph"]
 [ext_resource type="PackedScene" uid="uid://mrpbp5sdthi2" path="res://ui scenes/player_attack_frame.tscn" id="2_tb150"]
 [ext_resource type="PackedScene" uid="uid://ok862jrlf5bx" path="res://ui scenes/player_defense_frame.tscn" id="3_68cbw"]
 
@@ -21,7 +22,7 @@ healthLabel = NodePath("HealthBar/HealthLabel")
 framesResources = NodePath("FrameResources")
 
 [node name="FrameResources" type="ResourcePreloader" parent="."]
-resources = [PackedStringArray("player_attack_frame", "player_defense_frame"), [ExtResource("2_tb150"), ExtResource("3_68cbw")]]
+resources = [PackedStringArray("draggable_frame_size_3", "player_attack_frame", "player_defense_frame"), [ExtResource("2_1wkph"), ExtResource("2_tb150"), ExtResource("3_68cbw")]]
 
 [node name="HealthBar" type="ProgressBar" parent="."]
 offset_right = 144.0

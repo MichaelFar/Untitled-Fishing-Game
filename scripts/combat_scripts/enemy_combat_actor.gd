@@ -4,23 +4,22 @@ class_name EnemyCombatActor
 
 var listOfEmptyFrames = []
 
+var listOfSpawnedFrames := []
+
 @export var numMovesPerRound : int
 
-
-
 func _ready():
-	
+	CombatGlobal.enemyObjects.append(self)
 	CombatGlobal.trackTimeline.tracks_placed.connect(place_ui)
 	CombatGlobal.trackTimeline.tracks_placed.connect(populate_track)
 	update_text()
 	
 func populate_track():
+	
 	print("Populating track")
 	var frame_list = framesResources.get_resource_list()
 	
 	var rand_obj = RandomNumberGenerator.new()
-	
-	#place_ui()
 	
 	for i in range(numMovesPerRound):
 		
@@ -30,14 +29,15 @@ func populate_track():
 		
 		frame_instance = frame_instance.instantiate()
 		
-		frame_instance.disable_mouse_areas()
+		frame_instance.set_mouse_areas(false)
+		
 		print("Frame size of instance is " + str(frame_instance.frameSize))
 		if(check_for_space(frame_instance.frameSize)):
 			
 			print("space found for spawned frames")
 			add_child(frame_instance)
 			frame_instance.global_position = get_proper_position(listOfEmptyFrames)
-			
+			listOfSpawnedFrames.append(frame_instance)
 		else:
 			
 			frame_instance.queue_free()
@@ -96,3 +96,16 @@ func get_proper_position(list_of_empty_frames):
 	averaged_position = averaged_position / float(list_of_empty_frames.size())
 	print(averaged_position)
 	return averaged_position
+	
+func clear_track_frames():#Called in track_timeline
+	
+	for i in listOfSpawnedFrames:
+		i.queue_free()
+		
+	listOfSpawnedFrames = []
+	
+	for i in track.listOfFrames:
+		i.set_occupied(false)
+
+func repopulate_track():
+	populate_track()

@@ -27,7 +27,9 @@ func add_to_HP(hp_change : int):
 func add_to_armor(armor_change : int):
 	
 	armor = armor + armor_change
-
+	
+	update_text()
+	
 func take_damage(damage : int):
 	
 	taken_damage.emit()
@@ -37,16 +39,18 @@ func take_damage(damage : int):
 	temp_damage = clamp(temp_damage - armor, 0, temp_damage)
 	
 	armor = clamp(armor - damage, 0, armor)
+	print("Damage taken is " + str(temp_damage))
+	add_to_HP(-temp_damage)
 	
-	add_to_HP(temp_damage)
-
+	update_text()
+	
 func place_ui():
 	
 	healthBar.position = track.global_position
 	
-	healthBar.position.y += track.frameHeight / 2.0
+	healthBar.position.y -= track.frameHeight / 4
 	healthBar.position.x -= track.frameHeight * 2.0
 
 func update_text():
-	
+	healthBar.value = currentHP
 	healthLabel.text = "[center]" + str(currentHP) + "[/center]"

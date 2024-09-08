@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dwolkeq3tmchj"]
+[gd_scene load_steps=11 format=3 uid="uid://dwolkeq3tmchj"]
 
 [ext_resource type="Script" path="res://scripts/combat_scripts/enemy_combat_actor.gd" id="1_0jpo6"]
 [ext_resource type="PackedScene" uid="uid://cab0de6e0yqck" path="res://ui scenes/draggable_frame.tscn" id="2_8swfn"]
@@ -15,6 +15,15 @@ bg_color = Color(0, 1, 0, 1)
 ProgressBar/styles/background = SubResource("StyleBoxFlat_b6hgh")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_uwjg6")
 
+[sub_resource type="Theme" id="Theme_xpqyq"]
+/colors/color = Color(0.109944, 0.571049, 0.607597, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mar4k"]
+bg_color = Color(0.109804, 0.572549, 0.607843, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mcexy"]
+bg_color = Color(0.109804, 0.572549, 0.607843, 1)
+
 [node name="EnemyCombatActor" type="Node" node_paths=PackedStringArray("healthBar", "healthLabel", "framesResources")]
 script = ExtResource("1_0jpo6")
 numMovesPerRound = 6
@@ -29,12 +38,32 @@ resources = [PackedStringArray("draggable_frame", "draggable_frame_size_2", "dra
 offset_right = 144.0
 offset_bottom = 27.0
 theme = SubResource("Theme_p3nxn")
+max_value = 5.0
+step = 1.0
+value = 5.0
+show_percentage = false
+
+[node name="HealthLabel" type="RichTextLabel" parent="HealthBar"]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 1.0
+offset_right = 85.0
+offset_bottom = 25.0
+bbcode_enabled = true
+
+[node name="ArmorBar" type="ProgressBar" parent="HealthBar"]
+offset_top = 35.0
+offset_right = 144.0
+offset_bottom = 62.0
+theme = SubResource("Theme_xpqyq")
+theme_override_styles/background = SubResource("StyleBoxFlat_mar4k")
+theme_override_styles/fill = SubResource("StyleBoxFlat_mcexy")
 max_value = 10.0
 step = 1.0
 value = 10.0
 show_percentage = false
 
-[node name="HealthLabel" type="RichTextLabel" parent="HealthBar"]
+[node name="ArmorLabel" type="RichTextLabel" parent="HealthBar/ArmorBar"]
 layout_mode = 0
 offset_left = 45.0
 offset_top = 1.0

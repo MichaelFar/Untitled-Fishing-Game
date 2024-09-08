@@ -6,6 +6,8 @@ extends CharacterBody2D
 
 @export var texture : Sprite2D
 
+@export var frameEffectResources : ResourcePreloader
+
 @export var mouseInteractableAreaArray : Array[Area2D]
 
 var should_be_dragged := false
@@ -24,13 +26,15 @@ var frameHeight : int
 
 signal slotted_in_frame
 
+signal dragging_frame
+
 func _ready():
 	
 	frameHeight = texture.texture.get_height() * scale.x
 
 func _process(delta):
 	
-	if (should_be_dragged):
+	if (should_be_dragged && UiGlobal.ableToDragFrame):
 		
 		if(Input.is_action_just_pressed("cast")):
 			
@@ -38,8 +42,9 @@ func _process(delta):
 			offset = get_global_mouse_position() - global_position
 			UiGlobal.dragging_frame = true
 			slotted_in_frame.emit(false)
+			#dragging_frame.emit(self, false)
 			#bodyRefArray = []
-		if(Input.is_action_pressed("cast")):
+		if(Input.is_action_pressed("cast") && UiGlobal.dragging_frame):
 			
 			global_position = get_global_mouse_position() - offset
 		
@@ -47,27 +52,31 @@ func _process(delta):
 			
 			UiGlobal.dragging_frame = false
 			var tween = get_tree().create_tween()
-			tween.finished.connect(emit_frame_occupied)
-			
+			tween.finished.connect(run_end_of_tween)
+			UiGlobal.ableToDragFrame = false
 			var proper_position = get_proper_position()
 			
 			#print("bodyRefArray size is " + str(bodyRefArray.size()))
 			visualContainer.z_index = 0
+			
 			if(bodyRefArray.size() != frameSize):
 				
 				tween.tween_property(self, "global_position", 
 				initialPosition, 0.2).set_ease(Tween.EASE_OUT)
 				print("bodyRefArray size is not framesize")
+				
 			elif(insideDropZone):
 				
 				tween.tween_property(self, "position", 
 				proper_position, 0.2).set_ease(Tween.EASE_OUT)
 				print("bodyRefArray size is framesize and insideDropZone is true")
+				
 			else:
 				
 				tween.tween_property(self, "global_position", 
 				initialPosition, 0.2).set_ease(Tween.EASE_OUT)
 				print("bodyRefArray size is framesize and insideDropZone is false")
+				
 func _on_area_2d_mouse_entered():
 	
 	if (!UiGlobal.dragging_frame):
@@ -106,10 +115,10 @@ func _on_area_2d_body_exited(body):
 			#print("Popping body ref")
 			bodyRefArray.pop_at(bodyRefArray.find(body))
 	
-func emit_frame_occupied():
+func run_end_of_tween():
 	
 	await get_tree().physics_frame
-	
+	UiGlobal.ableToDragFrame = true
 	slotted_in_frame.emit(true)
 
 func get_proper_position():
@@ -125,8 +134,16 @@ func get_proper_position():
 	return averaged_position
 
 func create_effect():#Called when frame becomes active
-	print("Effect triggered " + " and I am " + str(self))
+	print("Effect triggered " + " and I am " + name)
+	if(frameEffectResources.get_resource_list().size() > 0):
+		var effect_resource = frameEffectResources.get_resource(frameEffectResources.get_resource_list()[0])
+		
+		var effect_instance = effect_resource.new()
+		
+		add_child(effect_instance)
+		
+		print(effect_instance)
 
-func disable_mouse_areas():
+func set_mouse_areas(new_value : bool):
 	for i in mouseInteractableAreaArray:
-		i.get_children()[0].disabled = true
+		i.input_pickable = new_value

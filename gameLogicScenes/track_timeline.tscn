@@ -12,11 +12,13 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mq8rd"]
 
-[node name="TrackTimeline" type="Node2D" node_paths=PackedStringArray("timeLineCursor", "activeFrameShapes", "playerFramePool", "playerTrack", "enemyTrack", "playButton")]
+[node name="TrackTimeline" type="Node2D" node_paths=PackedStringArray("timeLineCursor", "activeFrameShapes", "playerFramePool", "playerCombatActor", "enemyCombatActor", "playerTrack", "enemyTrack", "playButton")]
 script = ExtResource("1_ierts")
 timeLineCursor = NodePath("Area2D")
 activeFrameShapes = [NodePath("Area2D/CollisionShape2D"), NodePath("Area2D/CollisionShape2D2")]
 playerFramePool = NodePath("player_frame_pool")
+playerCombatActor = NodePath("player_track/PlayerCombatActor")
+enemyCombatActor = NodePath("enemy_track/EnemyCombatActor")
 playerTrack = NodePath("player_track")
 enemyTrack = NodePath("enemy_track")
 playButton = NodePath("PausePlay")

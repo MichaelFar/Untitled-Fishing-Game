@@ -41,15 +41,19 @@ func _on_area_2d_area_exited(area):
 			
 			area.owner.slotted_in_frame.disconnect(set_occupied)
 			
-		modulate = originalColor
-		#occupied = false
-
+		if(!occupied):
+			
+			modulate = originalColor
+			
 func set_occupied(value : bool):
 	
 	occupied = value
 	
 	if(occupied):
+		
 		modulate = Color(Color.REBECCA_PURPLE, 1)
+	else:
+		modulate = originalColor
 	
 
 func toggle_collision_bodies():
