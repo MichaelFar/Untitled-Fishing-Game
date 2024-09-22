@@ -1,7 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://ok862jrlf5bx"]
+[gd_scene load_steps=8 format=3 uid="uid://ok862jrlf5bx"]
 
 [ext_resource type="Script" path="res://scripts/draggable_frame.gd" id="1_dtbkm"]
+[ext_resource type="Texture2D" uid="uid://ba2e86jl0i0i8" path="res://textures/pixil-frame-0(5).png" id="2_0fhje"]
 [ext_resource type="Texture2D" uid="uid://124ksj1bras1" path="res://textures/icons/CoatOfArms1.png" id="2_xyqj0"]
+[ext_resource type="Script" path="res://scripts/combat_scripts/player_frame_effects/prototype_effects/player_armor_effect.gd" id="3_ge601"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2yplm"]
 size = Vector2(67, 63.25)
@@ -10,7 +12,7 @@ size = Vector2(67, 63.25)
 size = Vector2(128, 128)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_s12vd"]
-radius = 18.4391
+radius = 18.0
 
 [node name="draggable_frame" type="CharacterBody2D" node_paths=PackedStringArray("visualContainer", "texture", "frameEffectResources", "mouseInteractableAreaArray") groups=["draggable"]]
 top_level = true
@@ -24,6 +26,10 @@ visualContainer = NodePath("VisualContainer")
 texture = NodePath("VisualContainer/Icon")
 frameEffectResources = NodePath("FrameEffectResources")
 mouseInteractableAreaArray = [NodePath("Area2D"), NodePath("Area2D2")]
+
+[node name="Pixil-frame-0(2)" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_0fhje")
 
 [node name="VisualContainer" type="Node2D" parent="."]
 
@@ -44,9 +50,10 @@ shape = SubResource("RectangleShape2D_2yplm")
 shape = SubResource("RectangleShape2D_3ox4l")
 
 [node name="FrameEffectResources" type="ResourcePreloader" parent="."]
+resources = [PackedStringArray("player_armor_effect"), [ExtResource("3_ge601")]]
 
 [node name="ActiveZone" type="CollisionShape2D" parent="."]
-position = Vector2(-45, 0)
+position = Vector2(-46, 0)
 shape = SubResource("CircleShape2D_s12vd")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

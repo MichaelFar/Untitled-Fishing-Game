@@ -10,7 +10,7 @@ size = Vector2(255, 63.25)
 size = Vector2(352, 128)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_abla8"]
-radius = 18.4391
+radius = 18.0
 
 [node name="draggable_frame_size_3" type="CharacterBody2D" node_paths=PackedStringArray("visualContainer", "texture", "frameEffectResources", "mouseInteractableAreaArray") groups=["draggable"]]
 top_level = true
@@ -53,7 +53,7 @@ shape = SubResource("RectangleShape2D_3ox4l")
 [node name="FrameEffectResources" type="ResourcePreloader" parent="."]
 
 [node name="ActiveZone" type="CollisionShape2D" parent="."]
-position = Vector2(-174.667, 0)
+position = Vector2(-174, 0)
 shape = SubResource("CircleShape2D_abla8")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

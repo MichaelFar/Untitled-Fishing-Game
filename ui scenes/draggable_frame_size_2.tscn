@@ -10,7 +10,7 @@ size = Vector2(128, 63.25)
 size = Vector2(256, 128)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_s12vd"]
-radius = 18.4391
+radius = 18.0
 
 [node name="draggable_frame" type="CharacterBody2D" node_paths=PackedStringArray("visualContainer", "texture", "frameEffectResources", "mouseInteractableAreaArray") groups=["draggable"]]
 top_level = true

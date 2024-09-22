@@ -2,20 +2,33 @@ extends Node
 
 class_name CombatActor
 
-@export var maxHP := 5
-
-@export var armor := 0
-
 @export var healthBar : ProgressBar
 
 @export var healthLabel : RichTextLabel
 
+@export var armorBar : ProgressBar
+
+@export var armorLabel : RichTextLabel
+
 @export var framesResources : ResourcePreloader
 
-@export var track : Node2D
+@export var track : Node2D #Do not assign this in the EnemyCombatActor scene, assign in track_timeline
 
-var currentHP := maxHP
 
+@export var maxHP := 5 :
+	set(value):
+		maxHP = value
+		update_text()
+
+@export var armor := 0 :
+	set(value):
+		armor = value
+		update_text()
+		
+var currentHP := maxHP:
+	set(value):
+		currentHP = value
+		update_text()		
 signal healed_hp
 
 signal taken_damage
@@ -28,9 +41,9 @@ func add_to_armor(armor_change : int):
 	
 	armor = armor + armor_change
 	
-	update_text()
-	
 func take_damage(damage : int):
+	
+	await get_tree().process_frame
 	
 	taken_damage.emit()
 	
@@ -42,8 +55,6 @@ func take_damage(damage : int):
 	print("Damage taken is " + str(temp_damage))
 	add_to_HP(-temp_damage)
 	
-	update_text()
-	
 func place_ui():
 	
 	healthBar.position = track.global_position
@@ -52,5 +63,16 @@ func place_ui():
 	healthBar.position.x -= track.frameHeight * 2.0
 
 func update_text():
+	
 	healthBar.value = currentHP
 	healthLabel.text = "[center]" + str(currentHP) + "[/center]"
+	armorBar.value = armor
+	armorLabel.text = "[center]" + str(armor) + "[/center]"
+
+func reset_armor():
+	
+	armor = 0
+	
+func set_health_to_full():
+	
+	currentHP = maxHP

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://br5spg8ov0qin"]
+[gd_scene load_steps=10 format=3 uid="uid://br5spg8ov0qin"]
 
 [ext_resource type="Script" path="res://scripts/track_timeline.gd" id="1_ierts"]
 [ext_resource type="PackedScene" uid="uid://bnl8ukbknotb8" path="res://gameLogicScenes/track_container.tscn" id="1_j71xg"]
@@ -6,15 +6,15 @@
 [ext_resource type="PackedScene" uid="uid://dwolkeq3tmchj" path="res://gameLogicScenes/enemy_combat_actor.tscn" id="4_iyvc6"]
 [ext_resource type="Texture2D" uid="uid://c1c4gubs4p613" path="res://textures/Play.png" id="6_r626e"]
 [ext_resource type="Texture2D" uid="uid://bjqquklkujsrv" path="res://textures/Pause.png" id="7_cmvao"]
-[ext_resource type="PackedScene" uid="uid://mrpbp5sdthi2" path="res://ui scenes/player_attack_frame.tscn" id="8_717pi"]
-[ext_resource type="PackedScene" uid="uid://ok862jrlf5bx" path="res://ui scenes/player_defense_frame.tscn" id="9_hpftm"]
-[ext_resource type="PackedScene" uid="uid://c6qstfkbln20c" path="res://ui scenes/draggable_frame_size_2.tscn" id="9_lnx4b"]
+[ext_resource type="Texture2D" uid="uid://bipm4koi5l32f" path="res://textures/pixil-frame-0(11).png" id="7_ekydp"]
+[ext_resource type="Texture2D" uid="uid://cwx1iha6cil3h" path="res://textures/goldfishforgame-pixilart.png" id="8_xb0vk"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mq8rd"]
 
-[node name="TrackTimeline" type="Node2D" node_paths=PackedStringArray("timeLineCursor", "activeFrameShapes", "playerFramePool", "playerCombatActor", "enemyCombatActor", "playerTrack", "enemyTrack", "playButton")]
+[node name="TrackTimeline" type="Node2D" node_paths=PackedStringArray("timeLineCursor", "cursorLine", "activeFrameShapes", "playerFramePool", "playerCombatActor", "enemyCombatActor", "playerTrack", "enemyTrack", "playButton")]
 script = ExtResource("1_ierts")
 timeLineCursor = NodePath("Area2D")
+cursorLine = NodePath("Area2D/TimeLineCursor")
 activeFrameShapes = [NodePath("Area2D/CollisionShape2D"), NodePath("Area2D/CollisionShape2D2")]
 playerFramePool = NodePath("player_frame_pool")
 playerCombatActor = NodePath("player_track/PlayerCombatActor")
@@ -42,7 +42,7 @@ playerFramePool = NodePath("../../player_frame_pool")
 track = NodePath("..")
 
 [node name="enemy_track" parent="." instance=ExtResource("1_j71xg")]
-initialTrackFrames = 8
+initialTrackFrames = 4
 
 [node name="EnemyCombatActor" parent="enemy_track" node_paths=PackedStringArray("track") instance=ExtResource("4_iyvc6")]
 numMovesPerRound = 5
@@ -52,28 +52,38 @@ track = NodePath("..")
 collision_layer = 4
 collision_mask = 4
 
+[node name="TimeLineCursor" type="Line2D" parent="Area2D" groups=["cursor"]]
+z_index = 3
+texture_filter = 1
+points = PackedVector2Array(0, -250, 0, 250)
+width = 20.0
+texture = ExtResource("7_ekydp")
+texture_mode = 2
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(0, -77)
 shape = SubResource("CircleShape2D_mq8rd")
 disabled = true
 
-[node name="TimeLineCursor" type="Line2D" parent="Area2D" groups=["cursor"]]
-z_index = 3
-points = PackedVector2Array(0, -250, 0, 250)
+[node name="Polygon2D" type="Polygon2D" parent="Area2D/CollisionShape2D"]
+z_index = 4
+color = Color(1, 0.94902, 0, 1)
+polygon = PackedVector2Array(-10, -9, -10, 8, 10, 8, 10, -9)
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(0, 77)
 shape = SubResource("CircleShape2D_mq8rd")
 disabled = true
 
-[node name="draggable_frame5" parent="." instance=ExtResource("8_717pi")]
-position = Vector2(232, 188)
+[node name="Polygon2D" type="Polygon2D" parent="Area2D/CollisionShape2D2"]
+z_index = 4
+color = Color(1, 0.94902, 0, 1)
+polygon = PackedVector2Array(-10, -9, -10, 8, 10, 8, 10, -9)
 
-[node name="draggable_frame6" parent="." instance=ExtResource("9_hpftm")]
-position = Vector2(537, 193)
-
-[node name="draggable_frame" parent="." instance=ExtResource("9_lnx4b")]
-position = Vector2(170, 83)
+[node name="Goldfishforgame-pixilart" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(136, 156)
+texture = ExtResource("8_xb0vk")
 
 [connection signal="button_up" from="PausePlay" to="." method="_on_pause_play_button_up"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

@@ -10,6 +10,8 @@ extends CharacterBody2D
 
 @export var mouseInteractableAreaArray : Array[Area2D]
 
+@onready var originalIconScale = texture.scale
+
 var should_be_dragged := false
 
 var insideDropZone := false
@@ -31,7 +33,7 @@ signal dragging_frame
 func _ready():
 	
 	frameHeight = texture.texture.get_height() * scale.x
-
+	wibble_the_icon()
 func _process(delta):
 	
 	if (should_be_dragged && UiGlobal.ableToDragFrame):
@@ -105,10 +107,6 @@ func _on_area_2d_body_entered(body):
 			print(bodyRefArray)
 			
 func _on_area_2d_body_exited(body):
-	
-	if(body_ref == body):
-		pass
-		#insideDropZone = false
 		
 	if(body.is_in_group("droppable")):
 		if(!body.occupied):
@@ -136,14 +134,26 @@ func get_proper_position():
 func create_effect():#Called when frame becomes active
 	print("Effect triggered " + " and I am " + name)
 	if(frameEffectResources.get_resource_list().size() > 0):
-		var effect_resource = frameEffectResources.get_resource(frameEffectResources.get_resource_list()[0])
-		
-		var effect_instance = effect_resource.new()
-		
-		add_child(effect_instance)
-		
-		print(effect_instance)
+		for i in frameEffectResources.get_resource_list():
+			var effect_resource = frameEffectResources.get_resource(i)
+			
+			var effect_instance = effect_resource.new()
+			
+			add_child(effect_instance)
+			
+			print(effect_instance)
 
 func set_mouse_areas(new_value : bool):
 	for i in mouseInteractableAreaArray:
 		i.input_pickable = new_value
+
+func wibble_the_icon():
+	
+	var scene_tree_timer = get_tree().create_timer(0.1)
+	
+	var rand_obj = RandomNumberGenerator.new()
+	
+	scene_tree_timer.timeout.connect(wibble_the_icon)
+	
+	texture.scale.x = originalIconScale.x + rand_obj.randf_range(-originalIconScale.x * .05, originalIconScale.x * .05)
+	texture.scale.y = originalIconScale.y + rand_obj.randf_range(-originalIconScale.y * .05, originalIconScale.y * .05)

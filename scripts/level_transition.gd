@@ -11,11 +11,7 @@ enum DIFFICULTY { #This set based on size of the fish
 	HARD
 }
 
-func _process(delta):
-	
-	if(Input.is_action_just_released("ui_select")):
-		
-		transition_to_fishing_game(FishingPondsStorage.get_pond_resource(0))
+
 
 func transition_to_minigame(packed_minigame_scene, fish_to_ignore):
 	Globals.store_fish_for_respawn(fish_to_ignore)

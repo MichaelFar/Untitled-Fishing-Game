@@ -9,9 +9,11 @@ var listOfSpawnedFrames := []
 @export var numMovesPerRound : int
 
 func _ready():
+	
 	CombatGlobal.enemyObjects.append(self)
 	CombatGlobal.trackTimeline.tracks_placed.connect(place_ui)
 	CombatGlobal.trackTimeline.tracks_placed.connect(populate_track)
+	
 	update_text()
 	
 func populate_track():
@@ -20,6 +22,9 @@ func populate_track():
 	var frame_list = framesResources.get_resource_list()
 	
 	var rand_obj = RandomNumberGenerator.new()
+	
+	var origin_point := Vector2.ZERO
+	
 	
 	for i in range(numMovesPerRound):
 		
@@ -32,12 +37,15 @@ func populate_track():
 		frame_instance.set_mouse_areas(false)
 		
 		print("Frame size of instance is " + str(frame_instance.frameSize))
+		
 		if(check_for_space(frame_instance.frameSize)):
-			
+			var tween = get_tree().create_tween()
 			print("space found for spawned frames")
 			add_child(frame_instance)
-			frame_instance.global_position = get_proper_position(listOfEmptyFrames)
+			frame_instance.global_position = origin_point
+			tween.tween_property(frame_instance, "global_position", get_proper_position(listOfEmptyFrames), 0.5) 
 			listOfSpawnedFrames.append(frame_instance)
+			
 		else:
 			
 			frame_instance.queue_free()
@@ -49,11 +57,10 @@ func check_for_space(frame_size : int):
 	var list_of_empty_frames := []
 	
 	for i in track.listOfFrames:
-		print("Looking at occupied list")
+		
 		if !i.occupied:
 			
 			empty_frame_counter += 1
-			#print("Appended frame is " + str(i))
 			
 			if(i not in list_of_empty_frames):
 				
@@ -64,7 +71,7 @@ func check_for_space(frame_size : int):
 			list_of_empty_frames = []
 			empty_frame_counter = 0
 			
-		if (empty_frame_counter == frame_size):
+		if(empty_frame_counter == frame_size):
 			
 			listOfEmptyFrames = list_of_empty_frames
 			
@@ -73,8 +80,6 @@ func check_for_space(frame_size : int):
 				j.set_occupied(true)
 				
 			print(track.get_occupied_frames())
-			
-			#print("List of empty frames is " + str(listOfEmptyFrames))
 			
 			return true
 			

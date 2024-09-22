@@ -2,6 +2,8 @@ extends Node2D
 
 @export var timeLineCursor : Area2D
 
+@export var cursorLine : Line2D
+
 @export var activeFrameShapes : Array[CollisionShape2D]
 
 @export var playerFramePool : Node2D#Used for positioning, for frame population see PlayerCombatActor
@@ -23,6 +25,7 @@ signal cursor_reached_end
 signal tracks_placed
 
 func _init() -> void:
+	
 	CombatGlobal.trackTimeline = self
 	
 func _ready():
@@ -36,7 +39,10 @@ func _ready():
 	place_cursor()
 	
 	enemyTrack.disable_children()
-	
+
+func _physics_process(delta: float) -> void:
+	pass
+
 func set_cursor_start(start_position : Vector2):
 
 	timeLineCursor.global_position = start_position
@@ -68,7 +74,12 @@ func emit_cursor_end():
 	
 	enemyCombatActor.clear_track_frames()
 	enemyCombatActor.repopulate_track()
+	
+	playerCombatActor.reset_armor()
+	enemyCombatActor.reset_armor()
+	
 	for i in playerCombatActor.listOfSpawnedFrames:
+		
 		i.set_mouse_areas(true)
 		
 func _on_area_2d_body_entered(body):
@@ -85,10 +96,14 @@ func place_cursor():
 	timeLineCursor.global_position.x = playerTrack.startPosition.x
 	activeFrameShapes[0].global_position.y = playerTrack.global_position.y
 	activeFrameShapes[1].global_position.y = enemyTrack.global_position.y
+	cursorLine.points[0].y = -playerTrack.global_position.y / 3.0
+	print("Cursor line location is " + str(cursorLine.points[0]))
+	cursorLine.points[1].y = enemyTrack.global_position.y / 4.0
 	
 func get_farthest_last_frame():
 	
 	var player_end_pos = playerTrack.endPosition.x
+	
 	var enemy_end_pos = enemyTrack.endPosition.x
 	
 	longerTrackObject = playerTrack if player_end_pos > enemy_end_pos else enemyTrack
