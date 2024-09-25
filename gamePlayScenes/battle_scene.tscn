@@ -1,0 +1,43 @@
+[gd_scene load_steps=8 format=3 uid="uid://dbctjovlwwvvm"]
+
+[ext_resource type="Script" path="res://scripts/battle_scene.gd" id="1_0ywdm"]
+[ext_resource type="PackedScene" uid="uid://br5spg8ov0qin" path="res://gameLogicScenes/track_timeline.tscn" id="1_okhfq"]
+[ext_resource type="Texture2D" uid="uid://dl1g8obaqlp4y" path="res://textures/BlackBoard.png" id="2_u05n0"]
+[ext_resource type="PackedScene" uid="uid://bt7rj6mok518s" path="res://visualHandlerScenes/combat_visual_handler.tscn" id="4_o7cwc"]
+[ext_resource type="Texture2D" uid="uid://e5seeju1gbrn" path="res://textures/PlayerFish.png" id="5_8n2rd"]
+[ext_resource type="PackedScene" uid="uid://8qbkm1u5ggq4" path="res://visualHandlerScenes/bubble_particle.tscn" id="6_ewx2w"]
+[ext_resource type="Texture2D" uid="uid://htdgy4eqydw" path="res://textures/EnemyFish.png" id="7_v4777"]
+
+[node name="battle_scene" type="Node2D" node_paths=PackedStringArray("backgroundPolygon")]
+script = ExtResource("1_0ywdm")
+backgroundPolygon = NodePath("BackgroundPlygon")
+
+[node name="BlackBoard" type="Sprite2D" parent="."]
+position = Vector2(633, 369)
+scale = Vector2(1.00469, 1.02778)
+texture = ExtResource("2_u05n0")
+
+[node name="TrackTimeline" parent="." instance=ExtResource("1_okhfq")]
+
+[node name="BackgroundPlygon" type="Polygon2D" parent="."]
+
+[node name="VisualCombatActor" parent="." node_paths=PackedStringArray("playerSpriteArray", "enemySpriteArray") instance=ExtResource("4_o7cwc")]
+playerSpriteArray = [NodePath("../Goldfishforgame-pixilart")]
+enemySpriteArray = [NodePath("../EnemyFish")]
+
+[node name="Goldfishforgame-pixilart" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(355, 191)
+texture = ExtResource("5_8n2rd")
+
+[node name="BubbleParticle" parent="Goldfishforgame-pixilart" instance=ExtResource("6_ewx2w")]
+position = Vector2(110, 4)
+
+[node name="EnemyFish" type="Sprite2D" parent="."]
+position = Vector2(858, 196)
+rotation = 3.14159
+scale = Vector2(1, -1)
+texture = ExtResource("7_v4777")
+
+[node name="BubbleParticle" parent="EnemyFish" instance=ExtResource("6_ewx2w")]
+position = Vector2(116, 17)

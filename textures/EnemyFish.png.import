@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cwx1iha6cil3h"
-path="res://.godot/imported/goldfishforgame-pixilart.png-29dbdbb817d26cd157142fa74c20da88.ctex"
+uid="uid://htdgy4eqydw"
+path="res://.godot/imported/EnemyFish.png-ecdcd93986dcbfb8f94476c3920b26e6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/goldfishforgame-pixilart.png"
-dest_files=["res://.godot/imported/goldfishforgame-pixilart.png-29dbdbb817d26cd157142fa74c20da88.ctex"]
+source_file="res://textures/EnemyFish.png"
+dest_files=["res://.godot/imported/EnemyFish.png-ecdcd93986dcbfb8f94476c3920b26e6.ctex"]
 
 [params]
 

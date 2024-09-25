@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://br5spg8ov0qin"]
+[gd_scene load_steps=9 format=3 uid="uid://br5spg8ov0qin"]
 
 [ext_resource type="Script" path="res://scripts/track_timeline.gd" id="1_ierts"]
 [ext_resource type="PackedScene" uid="uid://bnl8ukbknotb8" path="res://gameLogicScenes/track_container.tscn" id="1_j71xg"]
@@ -7,7 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://c1c4gubs4p613" path="res://textures/Play.png" id="6_r626e"]
 [ext_resource type="Texture2D" uid="uid://bjqquklkujsrv" path="res://textures/Pause.png" id="7_cmvao"]
 [ext_resource type="Texture2D" uid="uid://bipm4koi5l32f" path="res://textures/pixil-frame-0(11).png" id="7_ekydp"]
-[ext_resource type="Texture2D" uid="uid://cwx1iha6cil3h" path="res://textures/goldfishforgame-pixilart.png" id="8_xb0vk"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mq8rd"]
 
@@ -36,6 +35,7 @@ texture_disabled = ExtResource("7_cmvao")
 initialTrackFrames = 10
 
 [node name="player_track" parent="." instance=ExtResource("1_j71xg")]
+initialTrackFrames = 3
 
 [node name="PlayerCombatActor" parent="player_track" node_paths=PackedStringArray("playerFramePool", "track") instance=ExtResource("3_ka1vr")]
 playerFramePool = NodePath("../../player_frame_pool")
@@ -80,10 +80,7 @@ z_index = 4
 color = Color(1, 0.94902, 0, 1)
 polygon = PackedVector2Array(-10, -9, -10, 8, 10, 8, 10, -9)
 
-[node name="Goldfishforgame-pixilart" type="Sprite2D" parent="."]
-texture_filter = 1
-position = Vector2(136, 156)
-texture = ExtResource("8_xb0vk")
+[node name="Polygon2D" type="Polygon2D" parent="."]
 
 [connection signal="button_up" from="PausePlay" to="." method="_on_pause_play_button_up"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

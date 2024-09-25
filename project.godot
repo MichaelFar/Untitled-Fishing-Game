@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Fishing Game Prototyping"
-run/main_scene="res://gameLogicScenes/track_timeline.tscn"
+run/main_scene="res://gamePlayScenes/battle_scene.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 

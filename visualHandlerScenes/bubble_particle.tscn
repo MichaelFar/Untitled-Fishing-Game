@@ -1,0 +1,42 @@
+[gd_scene load_steps=7 format=3 uid="uid://8qbkm1u5ggq4"]
+
+[ext_resource type="Texture2D" uid="uid://dyh7fb5bxcd0p" path="res://textures/bubble.png" id="1_e1ddh"]
+
+[sub_resource type="Curve" id="Curve_yhtnp"]
+_data = [Vector2(0.00216685, 0.0501366), 0.0, 0.171264, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_qmt77"]
+curve = SubResource("Curve_yhtnp")
+
+[sub_resource type="Curve" id="Curve_raim2"]
+_data = [Vector2(0.0105597, 0.542383), 0.0, 0.0, 0, 0, Vector2(0.898627, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_d6mq4"]
+curve = SubResource("Curve_raim2")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_uwsyy"]
+lifetime_randomness = 0.33
+particle_flag_disable_z = true
+gravity = Vector3(0, -98, 0)
+scale_max = 2.0
+scale_curve = SubResource("CurveTexture_qmt77")
+turbulence_enabled = true
+turbulence_noise_strength = 13.98
+turbulence_noise_scale = 1.054
+turbulence_influence_min = 0.0
+turbulence_influence_max = 0.213
+turbulence_initial_displacement_min = 1.9
+turbulence_initial_displacement_max = 8.9
+turbulence_influence_over_life = SubResource("CurveTexture_d6mq4")
+
+[node name="BubbleParticle" type="GPUParticles2D"]
+texture_filter = 1
+process_material = SubResource("ParticleProcessMaterial_uwsyy")
+texture = ExtResource("1_e1ddh")
+lifetime = 4.0
+speed_scale = 1.25
+explosiveness = 0.09
+trail_sections = 3
+trail_section_subdivisions = 1
