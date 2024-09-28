@@ -2,7 +2,7 @@ extends Node2D
 
 @export var timeLineCursor : Area2D
 
-@export var cursorLine : Line2D
+@export var cursorLine : Sprite2D
 
 @export var activeFrameShapes : Array[CollisionShape2D]
 
@@ -49,8 +49,11 @@ func set_cursor_start(start_position : Vector2):
 
 func tween_cursor_to_end():
 	
-	if(timeLineCursor.global_position.x == playerTrack.startPosition.x 
-	|| timeLineCursor.global_position.x == get_farthest_last_frame()):
+	if(timeLineCursor.global_position.x == playerTrack.startPosition.x):
+		
+		for i in activeFrameShapes:
+		
+			i.disabled = false
 		
 		place_cursor()
 		
@@ -60,7 +63,22 @@ func tween_cursor_to_end():
 		
 		tween.finished.connect(emit_cursor_end)
 		
-		return tween
+		return tween 
+	elif (timeLineCursor.global_position.x == get_farthest_last_frame()):
+		
+		#place_cursor()
+		for i in activeFrameShapes:
+		
+			i.disabled = true
+			
+		var tween = get_tree().create_tween()
+		
+		tween.tween_property(timeLineCursor, "global_position:x", playerTrack.startPosition.x, 0.2)
+		
+		tween.finished.connect(tween_cursor_to_end)
+		
+		
+		#return tween
 
 func emit_cursor_end():
 	
@@ -96,9 +114,10 @@ func place_cursor():
 	timeLineCursor.global_position.x = playerTrack.startPosition.x
 	activeFrameShapes[0].global_position.y = playerTrack.global_position.y
 	activeFrameShapes[1].global_position.y = enemyTrack.global_position.y
-	cursorLine.points[0].y = -playerTrack.global_position.y / 3.0
-	print("Cursor line location is " + str(cursorLine.points[0]))
-	cursorLine.points[1].y = enemyTrack.global_position.y / 4.0
+	#cursorLine.scale.y = 3
+	#cursorLine.scale.x = 3
+	#print("Cursor line location is " + str(cursorLine.points[0]))
+	
 	
 func get_farthest_last_frame():
 	
@@ -138,9 +157,7 @@ func _on_pause_play_button_up() -> void:
 	
 	tween_cursor_to_end()
 	
-	for i in activeFrameShapes:
-		
-		i.disabled = false
+	
 		
 	for i in playerCombatActor.listOfSpawnedFrames:
 		

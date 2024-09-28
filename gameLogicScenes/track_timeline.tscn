@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://br5spg8ov0qin"]
+[gd_scene load_steps=11 format=3 uid="uid://br5spg8ov0qin"]
 
 [ext_resource type="Script" path="res://scripts/track_timeline.gd" id="1_ierts"]
 [ext_resource type="PackedScene" uid="uid://bnl8ukbknotb8" path="res://gameLogicScenes/track_container.tscn" id="1_j71xg"]
@@ -6,14 +6,18 @@
 [ext_resource type="PackedScene" uid="uid://dwolkeq3tmchj" path="res://gameLogicScenes/enemy_combat_actor.tscn" id="4_iyvc6"]
 [ext_resource type="Texture2D" uid="uid://c1c4gubs4p613" path="res://textures/Play.png" id="6_r626e"]
 [ext_resource type="Texture2D" uid="uid://bjqquklkujsrv" path="res://textures/Pause.png" id="7_cmvao"]
-[ext_resource type="Texture2D" uid="uid://bipm4koi5l32f" path="res://textures/pixil-frame-0(11).png" id="7_ekydp"]
+[ext_resource type="Shader" uid="uid://c744eonj5pp50" path="res://shaders/track_timeline.tres" id="7_rgnf6"]
+[ext_resource type="Texture2D" uid="uid://c4ikpdgchpigf" path="res://textures/TimelineCursor.png" id="7_wjkab"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tcdmg"]
+shader = ExtResource("7_rgnf6")
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mq8rd"]
 
 [node name="TrackTimeline" type="Node2D" node_paths=PackedStringArray("timeLineCursor", "cursorLine", "activeFrameShapes", "playerFramePool", "playerCombatActor", "enemyCombatActor", "playerTrack", "enemyTrack", "playButton")]
 script = ExtResource("1_ierts")
 timeLineCursor = NodePath("Area2D")
-cursorLine = NodePath("Area2D/TimeLineCursor")
+cursorLine = NodePath("Area2D/TimelineCursor")
 activeFrameShapes = [NodePath("Area2D/CollisionShape2D"), NodePath("Area2D/CollisionShape2D2")]
 playerFramePool = NodePath("player_frame_pool")
 playerCombatActor = NodePath("player_track/PlayerCombatActor")
@@ -52,33 +56,21 @@ track = NodePath("..")
 collision_layer = 4
 collision_mask = 4
 
-[node name="TimeLineCursor" type="Line2D" parent="Area2D" groups=["cursor"]]
+[node name="TimelineCursor" type="Sprite2D" parent="Area2D"]
 z_index = 3
 texture_filter = 1
-points = PackedVector2Array(0, -250, 0, 250)
-width = 20.0
-texture = ExtResource("7_ekydp")
-texture_mode = 2
+material = SubResource("ShaderMaterial_tcdmg")
+texture = ExtResource("7_wjkab")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(0, -77)
 shape = SubResource("CircleShape2D_mq8rd")
 disabled = true
 
-[node name="Polygon2D" type="Polygon2D" parent="Area2D/CollisionShape2D"]
-z_index = 4
-color = Color(1, 0.94902, 0, 1)
-polygon = PackedVector2Array(-10, -9, -10, 8, 10, 8, 10, -9)
-
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(0, 77)
 shape = SubResource("CircleShape2D_mq8rd")
 disabled = true
-
-[node name="Polygon2D" type="Polygon2D" parent="Area2D/CollisionShape2D2"]
-z_index = 4
-color = Color(1, 0.94902, 0, 1)
-polygon = PackedVector2Array(-10, -9, -10, 8, 10, 8, 10, -9)
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
 

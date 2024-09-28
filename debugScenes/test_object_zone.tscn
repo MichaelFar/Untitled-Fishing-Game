@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://cjqpk5541erbd"]
+[gd_scene load_steps=2 format=3 uid="uid://cjqpk5541erbd"]
 
 [ext_resource type="PackedScene" uid="uid://c6l3f1ad0loxl" path="res://gameLogicScenes/tile_manager.tscn" id="1_xispt"]
-[ext_resource type="PackedScene" uid="uid://br5spg8ov0qin" path="res://gameLogicScenes/track_timeline.tscn" id="2_usm2n"]
 
 [node name="TestObjectZone" type="Node3D"]
 
@@ -15,5 +14,3 @@ fov = 71.2103
 
 [node name="TileManager" parent="." instance=ExtResource("1_xispt")]
 numTiles = 9
-
-[node name="TrackTimeline" parent="." instance=ExtResource("2_usm2n")]

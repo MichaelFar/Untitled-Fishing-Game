@@ -10,7 +10,7 @@
 
 [node name="battle_scene" type="Node2D" node_paths=PackedStringArray("backgroundPolygon")]
 script = ExtResource("1_0ywdm")
-backgroundPolygon = NodePath("BackgroundPlygon")
+backgroundPolygon = NodePath("")
 
 [node name="BlackBoard" type="Sprite2D" parent="."]
 position = Vector2(633, 369)
@@ -19,11 +19,10 @@ texture = ExtResource("2_u05n0")
 
 [node name="TrackTimeline" parent="." instance=ExtResource("1_okhfq")]
 
-[node name="BackgroundPlygon" type="Polygon2D" parent="."]
-
-[node name="VisualCombatActor" parent="." node_paths=PackedStringArray("playerSpriteArray", "enemySpriteArray") instance=ExtResource("4_o7cwc")]
+[node name="VisualCombatActor" parent="." node_paths=PackedStringArray("playerSpriteArray", "enemySpriteArray", "nonCombatSpriteWibbleArray") instance=ExtResource("4_o7cwc")]
 playerSpriteArray = [NodePath("../Goldfishforgame-pixilart")]
 enemySpriteArray = [NodePath("../EnemyFish")]
+nonCombatSpriteWibbleArray = [NodePath("../TrackTimeline/Area2D/TimelineCursor")]
 
 [node name="Goldfishforgame-pixilart" type="Sprite2D" parent="."]
 texture_filter = 1
@@ -41,3 +40,5 @@ texture = ExtResource("7_v4777")
 
 [node name="BubbleParticle" parent="EnemyFish" instance=ExtResource("6_ewx2w")]
 position = Vector2(116, 17)
+
+[editable path="TrackTimeline"]

@@ -4,6 +4,8 @@ extends Node2D
 
 @export var enemySpriteArray : Array[Sprite2D] # Array of enemy sprites
 
+@export var nonCombatSpriteWibbleArray : Array[Sprite2D]
+
 var playerSpriteSizeArray : Array[Vector2]
 
 var enemySpriteSizeArray : Array[Vector2]
@@ -19,8 +21,10 @@ func _ready():
 	
 	initialize_sprite_scales()
 	initialize_wibble_effect()
+	
 	bob_the_player_sprites(1.0)
 	bob_the_enemy_sprites(1.0)
+	
 func initialize_sprite_scales():
 	for i in playerSpriteArray:
 		
@@ -31,6 +35,10 @@ func initialize_sprite_scales():
 		enemySpriteSizeArray.append(i.scale)
 		enemySpritePositionArray.append(i.global_position)
 func initialize_wibble_effect():
+	
+	for i in nonCombatSpriteWibbleArray:
+		wibble_the_icon(i, i.scale)
+	
 	for i in playerSpriteArray.size():
 		
 		wibble_the_icon(playerSpriteArray[i], playerSpriteSizeArray[i])
@@ -63,7 +71,7 @@ func bob_the_player_sprites(direction : float = 1.0):
 		var sprite_object = playerSpriteArray[i]
 		var bob_location = sprite_object.global_position.y + direction * rand_obj.randf_range(1.0, movement_limit)
 		var tween = get_tree().create_tween()
-		tween.set_ease(tween.EASE_OUT)
+		tween.set_ease(tween.EASE_IN)
 		tween.tween_property(sprite_object, 
 			"global_position:y", 
 			clamp(sprite_object.global_position.y + direction * rand_obj.randf_range(1.0, movement_limit), 
@@ -83,9 +91,11 @@ func bob_the_enemy_sprites(direction : float = 1.0):
 	for i in enemySpriteArray.size():
 		
 		var sprite_object = enemySpriteArray[i]
+		
 		var bob_location = sprite_object.global_position.y + direction * rand_obj.randf_range(1.0, movement_limit)
+		
 		var tween = get_tree().create_tween()
-		tween.set_ease(tween.EASE_OUT)
+		tween.set_ease(tween.EASE_IN)
 		tween.tween_property(sprite_object, 
 			"global_position:y", 
 			clamp(sprite_object.global_position.y + direction * rand_obj.randf_range(1.0, movement_limit), 
