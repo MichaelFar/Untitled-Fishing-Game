@@ -1,10 +1,12 @@
 extends Node2D
 
+class_name VisualCombatActor
+
 @export var playerSpriteArray : Array[Sprite2D] # Array of player sprites
 
 @export var enemySpriteArray : Array[Sprite2D] # Array of enemy sprites
 
-@export var nonCombatSpriteWibbleArray : Array[Sprite2D]
+@export var nonCombatSpriteWibbleArray : Array[Node]
 
 var playerSpriteSizeArray : Array[Vector2]
 
@@ -14,8 +16,6 @@ var playerSpritePositionArray : Array[Vector2]
 
 var enemySpritePositionArray : Array[Vector2]
 
-#This scene controls the visual combat effects that occur to the combat participants, which as of 9/23 only affects the player sprite and the enemy sprite (not implemented)
-@onready var originalIconScale : Vector2
 
 func _ready():
 	
@@ -37,17 +37,17 @@ func initialize_sprite_scales():
 func initialize_wibble_effect():
 	
 	for i in nonCombatSpriteWibbleArray:
-		wibble_the_icon(i, i.scale)
+		wibble_the_icon(i, i.scale, 0.05)
 	
 	for i in playerSpriteArray.size():
 		
-		wibble_the_icon(playerSpriteArray[i], playerSpriteSizeArray[i])
+		wibble_the_icon(playerSpriteArray[i], playerSpriteSizeArray[i], 0.015)
 		
 	for i in enemySpriteArray.size():
 		
-		wibble_the_icon(enemySpriteArray[i], enemySpriteSizeArray[i])
+		wibble_the_icon(enemySpriteArray[i], enemySpriteSizeArray[i], 0.015)
 
-func wibble_the_icon(sprite : Sprite2D, original_size : Vector2):
+func wibble_the_icon(sprite, original_size : Vector2, limit : float):
 	
 	var scene_tree_timer = get_tree().create_timer(0.1)
 	
@@ -55,10 +55,10 @@ func wibble_the_icon(sprite : Sprite2D, original_size : Vector2):
 	
 	var scale_coefficent := 0.05
 	
-	scene_tree_timer.timeout.connect(wibble_the_icon.bind(sprite, original_size))
+	scene_tree_timer.timeout.connect(wibble_the_icon.bind(sprite, original_size, limit))
 	
-	sprite.scale.x = original_size.x + rand_obj.randf_range(-original_size.x * .015, original_size.x * .015)
-	sprite.scale.y = original_size.y + rand_obj.randf_range(-original_size.y * .015, original_size.y * .015)
+	sprite.scale.x = original_size.x + rand_obj.randf_range(-original_size.x * limit, original_size.x * limit)
+	sprite.scale.y = original_size.y + rand_obj.randf_range(-original_size.y * limit, original_size.y * limit)
 
 func bob_the_player_sprites(direction : float = 1.0):
 	
@@ -79,7 +79,6 @@ func bob_the_player_sprites(direction : float = 1.0):
 			movement_limit + playerSpritePositionArray[i].y) , 
 			playerSpritePositionArray[i].y / bob_location)
 		tween.finished.connect(bob_the_player_sprites.bind(direction * -1.0)) 
-	
 	
 func bob_the_enemy_sprites(direction : float = 1.0):
 

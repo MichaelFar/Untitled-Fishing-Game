@@ -8,9 +8,10 @@
 [ext_resource type="PackedScene" uid="uid://8qbkm1u5ggq4" path="res://visualHandlerScenes/bubble_particle.tscn" id="6_ewx2w"]
 [ext_resource type="Texture2D" uid="uid://htdgy4eqydw" path="res://textures/EnemyFish.png" id="7_v4777"]
 
-[node name="battle_scene" type="Node2D" node_paths=PackedStringArray("backgroundPolygon")]
+[node name="battle_scene" type="Node2D" node_paths=PackedStringArray("visualCombatActor", "cursorSprite")]
 script = ExtResource("1_0ywdm")
-backgroundPolygon = NodePath("")
+visualCombatActor = NodePath("VisualCombatActor")
+cursorSprite = NodePath("TrackTimeline/Area2D/TimelineCursor")
 
 [node name="BlackBoard" type="Sprite2D" parent="."]
 position = Vector2(633, 369)

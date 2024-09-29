@@ -132,9 +132,13 @@ func get_proper_position():
 	return averaged_position
 
 func create_effect():#Called when frame becomes active
+	
 	print("Effect triggered " + " and I am " + name)
+	
 	if(frameEffectResources.get_resource_list().size() > 0):
+		
 		for i in frameEffectResources.get_resource_list():
+			
 			var effect_resource = frameEffectResources.get_resource(i)
 			
 			var effect_instance = effect_resource.new()
@@ -144,7 +148,9 @@ func create_effect():#Called when frame becomes active
 			print(effect_instance)
 
 func set_mouse_areas(new_value : bool):
+	
 	for i in mouseInteractableAreaArray:
+		
 		i.input_pickable = new_value
 
 func wibble_the_icon():

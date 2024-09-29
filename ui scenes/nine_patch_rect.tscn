@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://hhog7beh2wt0"]
+
+[ext_resource type="Texture2D" uid="uid://cr45uci5hjcx0" path="res://textures/NinePatchRectFrame.png" id="1_wpr55"]
+
+[node name="NinePatchRect" type="NinePatchRect"]
+texture_filter = 1
+offset_left = -128.0
+offset_top = -64.0
+offset_right = 128.0
+offset_bottom = 64.0
+pivot_offset = Vector2(128, 64)
+texture = ExtResource("1_wpr55")
+patch_margin_left = 9
+patch_margin_top = 10
+patch_margin_right = 9
+patch_margin_bottom = 8
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
