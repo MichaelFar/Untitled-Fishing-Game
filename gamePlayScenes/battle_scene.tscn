@@ -20,6 +20,12 @@ texture = ExtResource("2_u05n0")
 
 [node name="TrackTimeline" parent="." instance=ExtResource("1_okhfq")]
 
+[node name="player_frame_pool" parent="TrackTimeline" index="1"]
+initialTrackFrames = 7
+
+[node name="player_track" parent="TrackTimeline" index="2"]
+initialTrackFrames = 4
+
 [node name="VisualCombatActor" parent="." node_paths=PackedStringArray("playerSpriteArray", "enemySpriteArray", "nonCombatSpriteWibbleArray") instance=ExtResource("4_o7cwc")]
 playerSpriteArray = [NodePath("../Goldfishforgame-pixilart")]
 enemySpriteArray = [NodePath("../EnemyFish")]

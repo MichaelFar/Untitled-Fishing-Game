@@ -1,16 +1,31 @@
-[gd_scene load_steps=3 format=3 uid="uid://bnl8ukbknotb8"]
+[gd_scene load_steps=5 format=3 uid="uid://bnl8ukbknotb8"]
 
 [ext_resource type="Script" path="res://scripts/track_container.gd" id="1_x4bw6"]
 [ext_resource type="PackedScene" uid="uid://4m0vh0ofv2f7" path="res://ui scenes/drop_zone.tscn" id="2_2byhu"]
+[ext_resource type="PackedScene" uid="uid://hhog7beh2wt0" path="res://ui scenes/nine_patch_rect.tscn" id="3_jam06"]
+[ext_resource type="Texture2D" uid="uid://wjd7f3631d6c" path="res://textures/drop_zone_9_slice_draft_2.png" id="4_2ve8t"]
 
-[node name="track_container" type="Node2D" node_paths=PackedStringArray("emptyFrameResources")]
+[node name="track_container" type="Node2D" node_paths=PackedStringArray("emptyFrameResources", "PatchRect")]
 script = ExtResource("1_x4bw6")
 emptyFrameResources = NodePath("EmptyFrameResources")
+PatchRect = NodePath("NinePatchRect")
 initialTrackFrames = 6
 
 [node name="EmptyFrameResources" type="ResourcePreloader" parent="."]
 resources = [PackedStringArray("drop_zone"), [ExtResource("2_2byhu")]]
 
 [node name="Timer" type="Timer" parent="."]
+
+[node name="NinePatchRect" parent="." instance=ExtResource("3_jam06")]
+z_index = 5
+offset_left = -48.0
+offset_top = -48.0
+offset_right = 80.0
+offset_bottom = 80.0
+scale = Vector2(0.75, 0.75)
+pivot_offset = Vector2(0, 0)
+texture = ExtResource("4_2ve8t")
+patch_margin_left = 42
+patch_margin_right = 24
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

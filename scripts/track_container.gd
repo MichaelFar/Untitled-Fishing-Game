@@ -2,6 +2,7 @@ extends Node2D
 
 @export var emptyFrameResources : ResourcePreloader
 
+@export var PatchRect : NinePatchRect
 
 @export var initialTrackFrames : int :
 	
@@ -36,7 +37,9 @@ func spawn_initial_track_frames():
 	for i in range(initialTrackFrames):
 		
 		listOfFrames.append(spawn_frame())
-		
+	
+	PatchRect.size.x = (frameHeight) * initialTrackFrames
+	
 func spawn_frame():
 	
 	frame_resource = emptyFrameResources.get_resource(emptyFrameResources.get_resource_list()[0])

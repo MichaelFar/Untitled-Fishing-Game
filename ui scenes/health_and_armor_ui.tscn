@@ -1,0 +1,59 @@
+[gd_scene load_steps=7 format=3 uid="uid://cp3waihyxcmgf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yvbol"]
+bg_color = Color(0.6, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_as868"]
+bg_color = Color(0, 1, 0, 1)
+
+[sub_resource type="Theme" id="Theme_45t0r"]
+ProgressBar/styles/background = SubResource("StyleBoxFlat_yvbol")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_as868")
+
+[sub_resource type="Theme" id="Theme_nqahd"]
+/colors/color = Color(0.109944, 0.571049, 0.607597, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a5psu"]
+bg_color = Color(0.109804, 0.572549, 0.607843, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4oxmu"]
+bg_color = Color(0.109804, 0.572549, 0.607843, 1)
+
+[node name="HealthBar" type="ProgressBar"]
+offset_right = 144.0
+offset_bottom = 27.0
+theme = SubResource("Theme_45t0r")
+max_value = 10.0
+step = 1.0
+value = 10.0
+show_percentage = false
+indeterminate = true
+editor_preview_indeterminate = false
+
+[node name="HealthLabel" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 1.0
+offset_right = 85.0
+offset_bottom = 25.0
+bbcode_enabled = true
+
+[node name="ArmorBar" type="ProgressBar" parent="."]
+layout_mode = 0
+offset_top = 35.0
+offset_right = 144.0
+offset_bottom = 62.0
+theme = SubResource("Theme_nqahd")
+theme_override_styles/background = SubResource("StyleBoxFlat_a5psu")
+theme_override_styles/fill = SubResource("StyleBoxFlat_4oxmu")
+max_value = 10.0
+step = 1.0
+show_percentage = false
+
+[node name="ArmorLabel" type="RichTextLabel" parent="ArmorBar"]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 1.0
+offset_right = 85.0
+offset_bottom = 25.0
+bbcode_enabled = true

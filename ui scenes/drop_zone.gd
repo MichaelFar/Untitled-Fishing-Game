@@ -12,6 +12,8 @@ extends StaticBody2D
 
 @export var area : Area2D
 
+@export var hoverColor : Color
+
 var frameHeight : int
 
 var occupied := false
@@ -22,14 +24,14 @@ func _ready():
 	
 	frameHeight = colorRect.size.y
 	
-	modulate = Color(Color.MEDIUM_PURPLE, 0.7)
-	originalColor = modulate
+	#modulate = Color(Color.MEDIUM_PURPLE, 0.7)
+	originalColor = colorRect.color
 
 func _on_area_2d_area_entered(area):
 	
 	if area.owner.is_in_group("draggable"):
 		
-		modulate = Color(Color.REBECCA_PURPLE, 1)
+		colorRect.color = hoverColor
 		
 func _on_area_2d_area_exited(area):
 	
@@ -43,7 +45,7 @@ func _on_area_2d_area_exited(area):
 			
 		if(!occupied):
 			
-			modulate = originalColor
+			colorRect.color = originalColor
 			
 func set_occupied(value : bool):
 	
@@ -51,9 +53,9 @@ func set_occupied(value : bool):
 	
 	if(occupied):
 		
-		modulate = Color(Color.REBECCA_PURPLE, 1)
+		colorRect.color = hoverColor
 	else:
-		modulate = originalColor
+		colorRect.color = originalColor
 	
 
 func toggle_collision_bodies():

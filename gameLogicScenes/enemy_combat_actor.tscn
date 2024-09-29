@@ -1,27 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://dwolkeq3tmchj"]
+[gd_scene load_steps=5 format=3 uid="uid://dwolkeq3tmchj"]
 
 [ext_resource type="Script" path="res://scripts/combat_scripts/enemy_combat_actor.gd" id="1_0jpo6"]
 [ext_resource type="PackedScene" uid="uid://ntihisjbsehn" path="res://ui scenes/enemy_defense_frame.tscn" id="3_af457"]
+[ext_resource type="PackedScene" uid="uid://cp3waihyxcmgf" path="res://ui scenes/health_and_armor_ui.tscn" id="4_dwgko"]
 [ext_resource type="PackedScene" uid="uid://bxaohky1mfrmx" path="res://ui scenes/enemy_attack_frame.tscn" id="4_qtkyb"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b6hgh"]
-bg_color = Color(0.6, 0, 0, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uwjg6"]
-bg_color = Color(0, 1, 0, 1)
-
-[sub_resource type="Theme" id="Theme_p3nxn"]
-ProgressBar/styles/background = SubResource("StyleBoxFlat_b6hgh")
-ProgressBar/styles/fill = SubResource("StyleBoxFlat_uwjg6")
-
-[sub_resource type="Theme" id="Theme_e4nde"]
-/colors/color = Color(0.109944, 0.571049, 0.607597, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_us6to"]
-bg_color = Color(0.109804, 0.572549, 0.607843, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_shskf"]
-bg_color = Color(0.109804, 0.572549, 0.607843, 1)
 
 [node name="EnemyCombatActor" type="Node" node_paths=PackedStringArray("healthBar", "healthLabel", "armorBar", "armorLabel", "framesResources")]
 script = ExtResource("1_0jpo6")
@@ -35,41 +17,11 @@ framesResources = NodePath("FrameResources")
 [node name="FrameResources" type="ResourcePreloader" parent="."]
 resources = [PackedStringArray("enemy_attack_frame", "enemy_defense_frame"), [ExtResource("4_qtkyb"), ExtResource("3_af457")]]
 
-[node name="HealthBar" type="ProgressBar" parent="."]
-offset_right = 144.0
-offset_bottom = 27.0
-theme = SubResource("Theme_p3nxn")
-max_value = 5.0
-step = 1.0
-value = 5.0
-show_percentage = false
-indeterminate = true
-editor_preview_indeterminate = false
+[node name="HealthBar" parent="." instance=ExtResource("4_dwgko")]
 
-[node name="HealthLabel" type="RichTextLabel" parent="HealthBar"]
+[node name="TextureProgressBar" type="TextureProgressBar" parent="HealthBar"]
 layout_mode = 0
-offset_left = 45.0
-offset_top = 1.0
-offset_right = 85.0
-offset_bottom = 25.0
-bbcode_enabled = true
+offset_right = 40.0
+offset_bottom = 40.0
 
-[node name="ArmorBar" type="ProgressBar" parent="HealthBar"]
-layout_mode = 0
-offset_top = 35.0
-offset_right = 144.0
-offset_bottom = 62.0
-theme = SubResource("Theme_e4nde")
-theme_override_styles/background = SubResource("StyleBoxFlat_us6to")
-theme_override_styles/fill = SubResource("StyleBoxFlat_shskf")
-max_value = 10.0
-step = 1.0
-show_percentage = false
-
-[node name="ArmorLabel" type="RichTextLabel" parent="HealthBar/ArmorBar"]
-layout_mode = 0
-offset_left = 45.0
-offset_top = 1.0
-offset_right = 85.0
-offset_bottom = 25.0
-bbcode_enabled = true
+[editable path="HealthBar"]

@@ -55,7 +55,7 @@ shape = SubResource("CircleShape2D_s12vd")
 resources = [PackedStringArray("enemy_damage_effect"), [ExtResource("3_ysxo0")]]
 
 [node name="VisualCombatActor" parent="." node_paths=PackedStringArray("nonCombatSpriteWibbleArray") instance=ExtResource("5_7xtcp")]
-nonCombatSpriteWibbleArray = [NodePath("../NinePatchRect"), NodePath("../VisualContainer/Icon")]
+nonCombatSpriteWibbleArray = [NodePath("../VisualContainer/Icon")]
 
 [node name="NinePatchRect" parent="." instance=ExtResource("5_raqeb")]
 

@@ -1,74 +1,21 @@
-[gd_scene load_steps=10 format=3 uid="uid://kfrptoovnsmb"]
+[gd_scene load_steps=5 format=3 uid="uid://kfrptoovnsmb"]
 
 [ext_resource type="Script" path="res://scripts/combat_scripts/player_combat_actor.gd" id="1_33ayp"]
 [ext_resource type="PackedScene" uid="uid://mrpbp5sdthi2" path="res://ui scenes/player_attack_frame.tscn" id="2_tb150"]
 [ext_resource type="PackedScene" uid="uid://ok862jrlf5bx" path="res://ui scenes/player_defense_frame.tscn" id="3_68cbw"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yvbol"]
-bg_color = Color(0.6, 0, 0, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_as868"]
-bg_color = Color(0, 1, 0, 1)
-
-[sub_resource type="Theme" id="Theme_45t0r"]
-ProgressBar/styles/background = SubResource("StyleBoxFlat_yvbol")
-ProgressBar/styles/fill = SubResource("StyleBoxFlat_as868")
-
-[sub_resource type="Theme" id="Theme_nqahd"]
-/colors/color = Color(0.109944, 0.571049, 0.607597, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a5psu"]
-bg_color = Color(0.109804, 0.572549, 0.607843, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4oxmu"]
-bg_color = Color(0.109804, 0.572549, 0.607843, 1)
+[ext_resource type="PackedScene" uid="uid://cp3waihyxcmgf" path="res://ui scenes/health_and_armor_ui.tscn" id="4_waxw0"]
 
 [node name="PlayerCombatActor" type="Node" node_paths=PackedStringArray("healthBar", "healthLabel", "armorBar", "armorLabel", "framesResources") groups=["CombatActor"]]
 script = ExtResource("1_33ayp")
 healthBar = NodePath("HealthBar")
 healthLabel = NodePath("HealthBar/HealthLabel")
-armorBar = NodePath("HealthBar")
+armorBar = NodePath("HealthBar/ArmorBar")
 armorLabel = NodePath("HealthBar/ArmorBar/ArmorLabel")
 framesResources = NodePath("FrameResources")
 
 [node name="FrameResources" type="ResourcePreloader" parent="."]
 resources = [PackedStringArray("player_attack_frame", "player_attack_frame 2", "player_defense_frame", "player_defense_frame 2"), [ExtResource("2_tb150"), ExtResource("2_tb150"), ExtResource("3_68cbw"), ExtResource("3_68cbw")]]
 
-[node name="HealthBar" type="ProgressBar" parent="."]
-offset_right = 144.0
-offset_bottom = 27.0
-theme = SubResource("Theme_45t0r")
-max_value = 10.0
-step = 1.0
-value = 10.0
-show_percentage = false
-indeterminate = true
-editor_preview_indeterminate = false
+[node name="HealthBar" parent="." instance=ExtResource("4_waxw0")]
 
-[node name="HealthLabel" type="RichTextLabel" parent="HealthBar"]
-layout_mode = 0
-offset_left = 45.0
-offset_top = 1.0
-offset_right = 85.0
-offset_bottom = 25.0
-bbcode_enabled = true
-
-[node name="ArmorBar" type="ProgressBar" parent="HealthBar"]
-layout_mode = 0
-offset_top = 35.0
-offset_right = 144.0
-offset_bottom = 62.0
-theme = SubResource("Theme_nqahd")
-theme_override_styles/background = SubResource("StyleBoxFlat_a5psu")
-theme_override_styles/fill = SubResource("StyleBoxFlat_4oxmu")
-max_value = 10.0
-step = 1.0
-show_percentage = false
-
-[node name="ArmorLabel" type="RichTextLabel" parent="HealthBar/ArmorBar"]
-layout_mode = 0
-offset_left = 45.0
-offset_top = 1.0
-offset_right = 85.0
-offset_bottom = 25.0
-bbcode_enabled = true
+[editable path="HealthBar"]
