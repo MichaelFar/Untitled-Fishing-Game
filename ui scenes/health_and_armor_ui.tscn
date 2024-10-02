@@ -1,4 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://cp3waihyxcmgf"]
+[gd_scene load_steps=8 format=3 uid="uid://cp3waihyxcmgf"]
+
+[ext_resource type="Texture2D" uid="uid://c368qs2kge1r2" path="res://textures/FillHealthBarTexture.png" id="1_ask2n"]
+[ext_resource type="PackedScene" uid="uid://hhog7beh2wt0" path="res://ui scenes/nine_patch_rect.tscn" id="1_u20cm"]
+[ext_resource type="Script" path="res://scripts/health_and_armor_ui.gd" id="2_24jbx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yvbol"]
 bg_color = Color(0.6, 0, 0, 1)
@@ -13,24 +17,20 @@ ProgressBar/styles/fill = SubResource("StyleBoxFlat_as868")
 [sub_resource type="Theme" id="Theme_nqahd"]
 /colors/color = Color(0.109944, 0.571049, 0.607597, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a5psu"]
-bg_color = Color(0.109804, 0.572549, 0.607843, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4oxmu"]
-bg_color = Color(0.109804, 0.572549, 0.607843, 1)
-
-[node name="HealthBar" type="ProgressBar"]
-offset_right = 144.0
-offset_bottom = 27.0
+[node name="HealthBar" type="TextureProgressBar" node_paths=PackedStringArray("HealthBarBorder", "ArmorBarBorder")]
+texture_filter = 1
+offset_right = 179.0
+offset_bottom = 128.0
 theme = SubResource("Theme_45t0r")
 max_value = 10.0
-step = 1.0
 value = 10.0
-show_percentage = false
-indeterminate = true
-editor_preview_indeterminate = false
+texture_progress = ExtResource("1_ask2n")
+script = ExtResource("2_24jbx")
+HealthBarBorder = NodePath("HealthBarBorder")
+ArmorBarBorder = NodePath("ArmorBarBorder")
 
 [node name="HealthLabel" type="RichTextLabel" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 45.0
 offset_top = 1.0
@@ -38,17 +38,15 @@ offset_right = 85.0
 offset_bottom = 25.0
 bbcode_enabled = true
 
-[node name="ArmorBar" type="ProgressBar" parent="."]
+[node name="ArmorBar" type="TextureProgressBar" parent="."]
+modulate = Color(0.281187, 0.281187, 0.281187, 1)
 layout_mode = 0
-offset_top = 35.0
+offset_top = 67.0
 offset_right = 144.0
-offset_bottom = 62.0
+offset_bottom = 94.0
 theme = SubResource("Theme_nqahd")
-theme_override_styles/background = SubResource("StyleBoxFlat_a5psu")
-theme_override_styles/fill = SubResource("StyleBoxFlat_4oxmu")
 max_value = 10.0
-step = 1.0
-show_percentage = false
+texture_progress = ExtResource("1_ask2n")
 
 [node name="ArmorLabel" type="RichTextLabel" parent="ArmorBar"]
 layout_mode = 0
@@ -57,3 +55,23 @@ offset_top = 1.0
 offset_right = 85.0
 offset_bottom = 25.0
 bbcode_enabled = true
+
+[node name="HealthBarBorder" parent="." instance=ExtResource("1_u20cm")]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 144.0
+offset_bottom = 65.0
+patch_margin_left = 8
+patch_margin_top = 8
+patch_margin_bottom = 11
+
+[node name="ArmorBarBorder" parent="." instance=ExtResource("1_u20cm")]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 65.0
+offset_right = 144.0
+offset_bottom = 130.0
+patch_margin_left = 8
+patch_margin_top = 8
+patch_margin_bottom = 11

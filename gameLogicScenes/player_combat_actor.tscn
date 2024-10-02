@@ -18,4 +18,12 @@ resources = [PackedStringArray("player_attack_frame", "player_attack_frame 2", "
 
 [node name="HealthBar" parent="." instance=ExtResource("4_waxw0")]
 
+[node name="ArmorBar" parent="HealthBar" index="1"]
+offset_top = 66.0
+offset_bottom = 93.0
+
+[node name="ArmorBarBorder" parent="HealthBar" index="3"]
+offset_top = 0.0
+offset_bottom = 65.0
+
 [editable path="HealthBar"]

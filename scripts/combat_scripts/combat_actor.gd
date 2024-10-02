@@ -2,18 +2,17 @@ extends Node
 
 class_name CombatActor
 
-@export var healthBar : ProgressBar
+@export var healthBar : TextureProgressBar
 
 @export var healthLabel : RichTextLabel
 
-@export var armorBar : ProgressBar
+@export var armorBar : TextureProgressBar
 
 @export var armorLabel : RichTextLabel
 
 @export var framesResources : ResourcePreloader
 
 @export var track : Node2D #Do not assign this in the EnemyCombatActor scene, assign in track_timeline
-
 
 @export var maxHP := 5 :
 	set(value):
@@ -28,7 +27,8 @@ class_name CombatActor
 var currentHP := maxHP:
 	set(value):
 		currentHP = value
-		update_text()		
+		update_text()
+
 signal healed_hp
 
 signal taken_damage
@@ -61,7 +61,9 @@ func place_ui():
 	
 	healthBar.position.y -= track.frameHeight / 4
 	healthBar.position.x -= track.frameHeight * 2.0
-
+	
+	healthBar.max_value = maxHP
+	
 func update_text():
 	
 	healthBar.value = currentHP

@@ -78,7 +78,6 @@ func populate_track():
 	var rand_obj = RandomNumberGenerator.new()
 	
 	var origin_point := Vector2.ZERO
-
 	
 	for i in range(PlayerStatGlobal.numPlayerFrames):
 		

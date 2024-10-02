@@ -82,7 +82,6 @@ func bob_the_player_sprites(direction : float = 1.0):
 	
 func bob_the_enemy_sprites(direction : float = 1.0):
 
-	
 	var rand_obj = RandomNumberGenerator.new()
 	
 	var movement_limit = 20.0

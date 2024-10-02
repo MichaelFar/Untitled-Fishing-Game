@@ -19,9 +19,8 @@ resources = [PackedStringArray("enemy_attack_frame", "enemy_defense_frame"), [Ex
 
 [node name="HealthBar" parent="." instance=ExtResource("4_dwgko")]
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="HealthBar"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="ArmorBarBorder" parent="HealthBar" index="3"]
+offset_top = 0.0
+offset_bottom = 65.0
 
 [editable path="HealthBar"]
