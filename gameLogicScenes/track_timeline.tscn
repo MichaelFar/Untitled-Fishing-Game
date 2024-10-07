@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://br5spg8ov0qin"]
+[gd_scene load_steps=12 format=3 uid="uid://br5spg8ov0qin"]
 
 [ext_resource type="Script" path="res://scripts/track_timeline.gd" id="1_ierts"]
 [ext_resource type="PackedScene" uid="uid://bnl8ukbknotb8" path="res://gameLogicScenes/track_container.tscn" id="1_j71xg"]
+[ext_resource type="PackedScene" uid="uid://fnjc7ums7bdg" path="res://ui scenes/frame_bubble.tscn" id="2_8bi6o"]
 [ext_resource type="PackedScene" uid="uid://kfrptoovnsmb" path="res://gameLogicScenes/player_combat_actor.tscn" id="3_ka1vr"]
 [ext_resource type="PackedScene" uid="uid://dwolkeq3tmchj" path="res://gameLogicScenes/enemy_combat_actor.tscn" id="4_iyvc6"]
 [ext_resource type="Texture2D" uid="uid://c1c4gubs4p613" path="res://textures/Play.png" id="6_r626e"]
@@ -25,6 +26,7 @@ enemyCombatActor = NodePath("enemy_track/EnemyCombatActor")
 playerTrack = NodePath("player_track")
 enemyTrack = NodePath("enemy_track")
 playButton = NodePath("PausePlay")
+bubbleScene = ExtResource("2_8bi6o")
 
 [node name="PausePlay" type="TextureButton" parent="."]
 offset_left = 407.0

@@ -18,6 +18,12 @@ extends Node2D
 
 @export var playButton : TextureButton
 
+@export var bubbleScene : PackedScene
+
+@export var bubbleOdds := 2 #Represents the odds that a bubble will spawn, rolled against a d10
+
+
+
 var longerTrackObject = null
 
 signal cursor_reached_end
@@ -85,6 +91,12 @@ func emit_cursor_end():
 	print("cursor reached end")
 	playButton.disabled = false
 	cursor_reached_end.emit()
+	var rand_obj = RandomNumberGenerator.new()
+	
+	if(rand_obj.randi_range(0, 10) <= bubbleOdds):
+		var bubble_instance = bubbleScene.instantiate()
+		Globals.currentLevel.add_child(bubble_instance)
+		bubble_instance.global_position = Vector2(0, -200)
 	
 	for i in activeFrameShapes:
 		
@@ -157,8 +169,6 @@ func _on_pause_play_button_up() -> void:
 	
 	tween_cursor_to_end()
 	
-	
-		
 	for i in playerCombatActor.listOfSpawnedFrames:
 		
 		i.set_mouse_areas(false)

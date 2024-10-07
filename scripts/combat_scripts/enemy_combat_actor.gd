@@ -25,7 +25,6 @@ func populate_track():
 	
 	var origin_point := Vector2.ZERO
 	
-	
 	for i in range(numMovesPerRound):
 		
 		var rand_index := rand_obj.randi_range(0, frame_list.size() - 1)

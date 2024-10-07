@@ -1,0 +1,36 @@
+[gd_scene load_steps=7 format=3 uid="uid://fnjc7ums7bdg"]
+
+[ext_resource type="Script" path="res://scripts/frame_bubble.gd" id="1_nk08h"]
+[ext_resource type="Texture2D" uid="uid://8evi4suchkbd" path="res://textures/framebubble.png" id="1_ym1cc"]
+[ext_resource type="PackedScene" uid="uid://ctvy4v8ii2ar7" path="res://visualHandlerScenes/bubble_explosion_particle.tscn" id="2_7mykm"]
+[ext_resource type="Texture2D" uid="uid://ca34gfh5x2nvb" path="res://textures/bubble_details.png" id="4_6hr1s"]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_6nt4j"]
+polygon = PackedVector2Array(-67, -27, -73, 7, -3, 62, 70, 7, 54, -30, 15, -61, -20, -58)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jdcxs"]
+radius = 68.1175
+
+[node name="frame_bubble" type="CharacterBody2D" node_paths=PackedStringArray("bubbleSprite", "bubbleDetails") groups=["frame_bubble"]]
+script = ExtResource("1_nk08h")
+bubbleSprite = NodePath("Framebubble")
+bubbleDetails = NodePath("BubbleDetails")
+bubbleParticleExplosion = ExtResource("2_7mykm")
+
+[node name="Framebubble" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("1_ym1cc")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_6nt4j")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_jdcxs")
+
+[node name="BubbleDetails" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("4_6hr1s")
+
+[connection signal="input_event" from="Area2D" to="." method="_on_input_event"]

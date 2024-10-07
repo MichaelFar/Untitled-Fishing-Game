@@ -5,8 +5,9 @@
 [ext_resource type="PackedScene" uid="uid://ok862jrlf5bx" path="res://ui scenes/player_defense_frame.tscn" id="3_68cbw"]
 [ext_resource type="PackedScene" uid="uid://cp3waihyxcmgf" path="res://ui scenes/health_and_armor_ui.tscn" id="4_waxw0"]
 
-[node name="PlayerCombatActor" type="Node" node_paths=PackedStringArray("healthBar", "healthLabel", "armorBar", "armorLabel", "framesResources") groups=["CombatActor"]]
+[node name="PlayerCombatActor" type="Node" node_paths=PackedStringArray("originMarker", "healthBar", "healthLabel", "armorBar", "armorLabel", "framesResources") groups=["CombatActor"]]
 script = ExtResource("1_33ayp")
+originMarker = NodePath("OriginMarker")
 healthBar = NodePath("HealthBar")
 healthLabel = NodePath("HealthBar/HealthLabel")
 armorBar = NodePath("HealthBar/ArmorBar")
@@ -25,5 +26,7 @@ offset_bottom = 93.0
 [node name="ArmorBarBorder" parent="HealthBar" index="3"]
 offset_top = 0.0
 offset_bottom = 65.0
+
+[node name="OriginMarker" type="Marker2D" parent="."]
 
 [editable path="HealthBar"]

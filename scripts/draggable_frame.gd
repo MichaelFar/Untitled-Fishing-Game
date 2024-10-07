@@ -12,6 +12,8 @@ extends CharacterBody2D
 
 @onready var originalIconScale = texture.scale
 
+var debugStringMessage = "I am not in a bubble"
+
 var should_be_dragged := false
 
 var insideDropZone := false
@@ -65,11 +67,11 @@ func _process(delta):
 				
 				tween.tween_property(self, "global_position", 
 				initialPosition, 0.2).set_ease(Tween.EASE_OUT)
-				print("bodyRefArray size is not framesize")
+				print("bodyRefArray size is not framesize and frame size is " + str(frameSize) + " while bodyRefArray is " + str(bodyRefArray.size()))
 				
 			elif(insideDropZone):
 				
-				tween.tween_property(self, "position", 
+				tween.tween_property(self, "global_position", 
 				proper_position, 0.2).set_ease(Tween.EASE_OUT)
 				print("bodyRefArray size is framesize and insideDropZone is true")
 				
@@ -100,19 +102,25 @@ func _on_area_2d_body_entered(body):
 		print("body is droppable")
 		if(!body.occupied):
 			print("body not occupied")
+			#for i in slotted_in_frame.get_connections():
+				#slotted_in_frame.disconnect(i.callable)
 			slotted_in_frame.connect(body.set_occupied)
 			insideDropZone = true
 			body_ref = body
 			bodyRefArray.append(body_ref)
-			print(bodyRefArray)
-			
+			print(str(bodyRefArray) + debugStringMessage)
+	if (body.is_in_group("frame_bubble")):
+		set_mouse_areas(false)
+	
+	
 func _on_area_2d_body_exited(body):
 		
 	if(body.is_in_group("droppable")):
 		if(!body.occupied):
 			#print("Popping body ref")
 			bodyRefArray.pop_at(bodyRefArray.find(body))
-	
+	if (body.is_in_group("frame_bubble")):
+		set_mouse_areas(true)
 func run_end_of_tween():
 	
 	await get_tree().physics_frame

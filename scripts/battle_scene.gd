@@ -9,4 +9,4 @@ extends Node2D
 func _ready():
 	
 	visualCombatActor.wibble_the_icon(cursorSprite, cursorSprite.scale, 0.015)
-	
+	Globals.currentLevel = self

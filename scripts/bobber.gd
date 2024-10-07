@@ -1,6 +1,6 @@
 class_name Bobber
 extends RigidBody3D
-
+#This scene is a bobber, the bobber has baits that are supplied by an enumerator
 @export var animationPlayer : AnimationPlayer
 @export var topOfBobber : Marker3D #Marker for the fishing line mesh
 @export var interestTimer : Timer #Sends a signal gauging interest in the current equiped bait

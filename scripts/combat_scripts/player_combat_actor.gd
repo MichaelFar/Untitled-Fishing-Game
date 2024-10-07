@@ -4,11 +4,19 @@ class_name PlayerCombatActor
 
 @export var playerFramePool : Node2D
 
+@export var originMarker : Marker2D
+
+var listOfFrameResources := []
+
 var listOfEmptyFrames := []
 
 var listOfSpawnedFrames := []
 
+var listOfFrameIcons := []
+
 func _ready() -> void:
+	
+	listOfFrameResources = framesResources.get_resource_list()
 	
 	CombatGlobal.playerObjects.append(self)
 	CombatGlobal.trackTimeline.tracks_placed.connect(place_ui)
@@ -16,7 +24,7 @@ func _ready() -> void:
 	PlayerStatGlobal.numPlayerFrames = framesResources.get_resource_list().size()
 	update_text()
 	
-func get_proper_position(frame_instance, list_of_empty_frames):
+func get_proper_position(frame_instance, list_of_empty_frames, is_bubble_frame : bool = false):
 	#For spawned draggable frames, this is where we must connect the signals and such
 	var averaged_position : Vector2
 	
@@ -35,7 +43,7 @@ func get_proper_position(frame_instance, list_of_empty_frames):
 	print(averaged_position)
 	return averaged_position
 	
-func check_for_space(frame_size : int):
+func check_for_space(frame_size : int, should_set_occupied : bool = true):
 	
 	var empty_frame_counter : int
 	
@@ -60,9 +68,10 @@ func check_for_space(frame_size : int):
 			
 			listOfEmptyFrames = list_of_empty_frames
 			
-			for j in listOfEmptyFrames:
-				
-				j.set_occupied(true)
+			if(should_set_occupied):
+				for j in listOfEmptyFrames:
+					
+					j.set_occupied(true)
 				
 			print(track.get_occupied_frames())
 			
@@ -73,7 +82,7 @@ func check_for_space(frame_size : int):
 func populate_track():
 	
 	print("Populating track")
-	var frame_list = framesResources.get_resource_list()
+	
 	
 	var rand_obj = RandomNumberGenerator.new()
 	
@@ -81,26 +90,37 @@ func populate_track():
 	
 	for i in range(PlayerStatGlobal.numPlayerFrames):
 		
-		var index = clamp(i, 0, frame_list.size() - 1)
+		var index = clamp(i, 0, listOfFrameResources.size() - 1)
 		
-		var frame_instance = framesResources.get_resource(frame_list[index])
+		add_new_frame_to_current_battle(index, origin_point)
 		
-		frame_instance = frame_instance.instantiate()
+
+func add_new_frame_to_current_battle(index : int, origin_point : Vector2 = Vector2(0,0), should_tween = true):
+	
+	var frame_instance = framesResources.get_resource(listOfFrameResources[index])
+
+	frame_instance = frame_instance.instantiate()
+	
+	print("Frame size of instance is " + str(frame_instance.frameSize))
+	
+	if(check_for_space(frame_instance.frameSize, should_tween)):
 		
-		print("Frame size of instance is " + str(frame_instance.frameSize))
-		if(check_for_space(frame_instance.frameSize)):
+		
+		print("space found for spawned frames")
+		add_child(frame_instance)
+		frame_instance.global_position = origin_point
+		if(should_tween):
 			var tween = get_tree().create_tween()
-			print("space found for spawned frames")
-			add_child(frame_instance)
-			frame_instance.global_position = origin_point
 			tween.tween_property(frame_instance, "global_position", get_proper_position(frame_instance, listOfEmptyFrames), 0.5) 
-			listOfSpawnedFrames.append(frame_instance)
-			frame_instance.dragging_frame.connect(set_other_pickable)
-			
-		else:
-			
-			frame_instance.queue_free()
+		listOfSpawnedFrames.append(frame_instance)
+		frame_instance.dragging_frame.connect(set_other_pickable)
+		listOfFrameIcons.append(frame_instance.texture.texture)
+	else:
 		
+		frame_instance.queue_free()
+		
+	return frame_instance
+	
 func set_other_pickable(draggable_frame, new_value : bool):
 	
 	var exception_index = listOfSpawnedFrames.find(draggable_frame)
@@ -109,4 +129,10 @@ func set_other_pickable(draggable_frame, new_value : bool):
 		
 		if(listOfSpawnedFrames[exception_index] != i):
 			
+			i.set_mouse_areas(new_value)
+
+func set_frames_clickable(new_value : bool):
+	
+	for i in listOfSpawnedFrames:
+		
 			i.set_mouse_areas(new_value)
