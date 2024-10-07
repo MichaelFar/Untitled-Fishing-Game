@@ -35,17 +35,18 @@ func _on_area_2d_area_entered(area):
 		
 func _on_area_2d_area_exited(area):
 	
-	if area.owner.is_in_group("draggable"):
-		
-		if(area.owner.slotted_in_frame.is_connected(set_occupied)):
+	if area.owner != null:
+		if area.owner.is_in_group("draggable"):
 			
-			print("Disconnecting slotted_in_frame")
-			
-			area.owner.slotted_in_frame.disconnect(set_occupied)
-			
-		if(!occupied):
-			
-			colorRect.color = originalColor
+			if(area.owner.slotted_in_frame.is_connected(set_occupied)):
+				
+				print("Disconnecting slotted_in_frame")
+				
+				area.owner.slotted_in_frame.disconnect(set_occupied)
+				
+			if(!occupied):
+				
+				colorRect.color = originalColor
 			
 func set_occupied(value : bool):
 	

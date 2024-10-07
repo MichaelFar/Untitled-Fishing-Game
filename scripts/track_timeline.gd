@@ -22,7 +22,7 @@ extends Node2D
 
 @export var bubbleOdds := 2 #Represents the odds that a bubble will spawn, rolled against a d10
 
-
+var hasSpawnedBubble = false
 
 var longerTrackObject = null
 
@@ -47,8 +47,11 @@ func _ready():
 	enemyTrack.disable_children()
 
 func _physics_process(delta: float) -> void:
-	pass
-
+	
+	if(Input.is_action_just_released("Debug")):
+		
+		spawn_bubble()
+		
 func set_cursor_start(start_position : Vector2):
 
 	timeLineCursor.global_position = start_position
@@ -94,9 +97,7 @@ func emit_cursor_end():
 	var rand_obj = RandomNumberGenerator.new()
 	
 	if(rand_obj.randi_range(0, 10) <= bubbleOdds):
-		var bubble_instance = bubbleScene.instantiate()
-		Globals.currentLevel.add_child(bubble_instance)
-		bubble_instance.global_position = Vector2(0, -200)
+		spawn_bubble()
 	
 	for i in activeFrameShapes:
 		
@@ -111,7 +112,15 @@ func emit_cursor_end():
 	for i in playerCombatActor.listOfSpawnedFrames:
 		
 		i.set_mouse_areas(true)
-		
+
+func spawn_bubble():
+	
+	if(!hasSpawnedBubble):
+		var bubble_instance = bubbleScene.instantiate()
+		Globals.currentLevel.add_child(bubble_instance)
+		bubble_instance.global_position = Vector2(0, -200)
+		hasSpawnedBubble = true
+
 func _on_area_2d_body_entered(body):
 	
 	print("Body entered")

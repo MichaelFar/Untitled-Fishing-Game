@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://kfrptoovnsmb"]
+
+[ext_resource type="Script" path="res://scripts/combat_scripts/player_combat_actor.gd" id="1_33ayp"]
+[ext_resource type="PackedScene" uid="uid://mrpbp5sdthi2" path="res://ui scenes/player_attack_frame.tscn" id="2_tb150"]
+[ext_resource type="PackedScene" uid="uid://ok862jrlf5bx" path="res://ui scenes/player_defense_frame.tscn" id="3_68cbw"]
+[ext_resource type="PackedScene" uid="uid://cp3waihyxcmgf" path="res://ui scenes/health_and_armor_ui.tscn" id="4_waxw0"]
+
+[node name="PlayerCombatActor" type="Node" node_paths=PackedStringArray("originMarker", "healthBar", "healthLabel", "armorBar", "armorLabel", "framesResources") groups=["CombatActor"]]
+script = ExtResource("1_33ayp")
+originMarker = NodePath("OriginMarker")
+healthBar = NodePath("HealthBar")
+healthLabel = NodePath("HealthBar/HealthLabel")
+armorBar = NodePath("HealthBar/ArmorBar")
+armorLabel = NodePath("HealthBar/ArmorBar/ArmorLabel")
+framesResources = NodePath("FrameResources")
+
+[node name="FrameResources" type="ResourcePreloader" parent="."]
+resources = [PackedStringArray("player_attack_frame", "player_attack_frame 2", "player_defense_frame", "player_defense_frame 2"), [ExtResource("2_tb150"), ExtResource("2_tb150"), ExtResource("3_68cbw"), ExtResource("3_68cbw")]]
+
+[node name="HealthBar" parent="." instance=ExtResource("4_waxw0")]
+
+[node name="ArmorBar" parent="HealthBar" index="1"]
+offset_top = 66.0
+offset_bottom = 93.0
+
+[node name="ArmorBarBorder" parent="HealthBar" index="3"]
+offset_top = 0.0
+offset_bottom = 65.0
+
+[node name="OriginMarker" type="Marker2D" parent="."]
+
+[editable path="HealthBar"]

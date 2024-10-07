@@ -43,7 +43,7 @@ func get_proper_position(frame_instance, list_of_empty_frames, is_bubble_frame :
 	print(averaged_position)
 	return averaged_position
 	
-func check_for_space(frame_size : int, should_set_occupied : bool = true):
+func check_for_space(frame_size : int):
 	
 	var empty_frame_counter : int
 	
@@ -68,12 +68,12 @@ func check_for_space(frame_size : int, should_set_occupied : bool = true):
 			
 			listOfEmptyFrames = list_of_empty_frames
 			
-			if(should_set_occupied):
-				for j in listOfEmptyFrames:
-					
-					j.set_occupied(true)
+			
+			for j in listOfEmptyFrames:
 				
-			print(track.get_occupied_frames())
+				j.set_occupied(true)
+				
+			print("Occupied frames: " + str(track.get_occupied_frames()))
 			
 			return true
 			
@@ -95,7 +95,7 @@ func populate_track():
 		add_new_frame_to_current_battle(index, origin_point)
 		
 
-func add_new_frame_to_current_battle(index : int, origin_point : Vector2 = Vector2(0,0), should_tween = true):
+func add_new_frame_to_current_battle(index : int, origin_point : Vector2 = Vector2(0,0)):
 	
 	var frame_instance = framesResources.get_resource(listOfFrameResources[index])
 
@@ -103,7 +103,7 @@ func add_new_frame_to_current_battle(index : int, origin_point : Vector2 = Vecto
 	
 	print("Frame size of instance is " + str(frame_instance.frameSize))
 	
-	if(check_for_space(frame_instance.frameSize, should_tween)):
+	if(check_for_space(frame_instance.frameSize)):
 		
 		
 		print("space found for spawned frames")

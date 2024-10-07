@@ -18,6 +18,7 @@ z_as_relative = false
 scale = Vector2(0.75, 0.75)
 collision_layer = 4
 collision_mask = 0
+input_pickable = true
 script = ExtResource("1_4oeet")
 frameSize = 1
 visualContainer = NodePath("VisualContainer")
@@ -33,6 +34,7 @@ texture = ExtResource("1_15nj4")
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 2
 collision_mask = 2
+input_pickable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_2yplm")
@@ -50,5 +52,6 @@ shape = SubResource("CircleShape2D_s12vd")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
+[connection signal="input_event" from="Area2D2" to="." method="_on_area_2d_2_input_event"]
 [connection signal="mouse_entered" from="Area2D2" to="." method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D2" to="." method="_on_area_2d_mouse_exited"]

@@ -14,7 +14,7 @@ extends CharacterBody2D
 
 var debugStringMessage = "I am not in a bubble"
 
-var should_be_dragged := false
+var can_be_dragged := false
 
 var insideDropZone := false
 
@@ -36,9 +36,10 @@ func _ready():
 	
 	frameHeight = texture.texture.get_height() * scale.x
 	wibble_the_icon()
+	mouseInteractableAreaArray[1].input_event.connect(_on_area_2d_2_input_event)
 func _process(delta):
 	
-	if (should_be_dragged && UiGlobal.ableToDragFrame):
+	if (can_be_dragged && UiGlobal.ableToDragFrame):
 		
 		if(Input.is_action_just_pressed("cast")):
 			
@@ -58,9 +59,9 @@ func _process(delta):
 			var tween = get_tree().create_tween()
 			tween.finished.connect(run_end_of_tween)
 			UiGlobal.ableToDragFrame = false
+			can_be_dragged = false
 			var proper_position = get_proper_position()
 			
-			#print("bodyRefArray size is " + str(bodyRefArray.size()))
 			visualContainer.z_index = 0
 			
 			if(bodyRefArray.size() != frameSize):
@@ -84,48 +85,61 @@ func _process(delta):
 func _on_area_2d_mouse_entered():
 	
 	if (!UiGlobal.dragging_frame):
-		
-		should_be_dragged = true
+		print("Mouse entered frame")
+		can_be_dragged = true
 		visualContainer.scale = Vector2(1.05, 1.05)
 		visualContainer.z_index = 1
 		
 func _on_area_2d_mouse_exited():
 	
 	if (!UiGlobal.dragging_frame):
-		
-		should_be_dragged = false
+		print("Mouse exited frame")
+		can_be_dragged = false
 		visualContainer.scale = Vector2(1.0, 1.0)
 		
 func _on_area_2d_body_entered(body):
-	
+	if (body.is_in_group("frame_bubble")):
+		print("Bubble entered drop zone")
+		set_mouse_areas(false)
 	if body.is_in_group("droppable"):
 		print("body is droppable")
 		if(!body.occupied):
+			
 			print("body not occupied")
-			for i in slotted_in_frame.get_connections():
-				slotted_in_frame.disconnect(i.callable)
+			
+			#for i in slotted_in_frame.get_connections():
+				#
+				#slotted_in_frame.disconnect(i.callable)
+				
 			slotted_in_frame.connect(body.set_occupied)
+			
 			insideDropZone = true
 			body_ref = body
 			bodyRefArray.append(body_ref)
 			print(str(bodyRefArray) + debugStringMessage)
-	if (body.is_in_group("frame_bubble")):
-		set_mouse_areas(false)
-	
+			
 	
 func _on_area_2d_body_exited(body):
-		
+	if (body.is_in_group("frame_bubble")):
+		print("Bubble exited drop zone")
+		set_mouse_areas(true)
+	
+	
 	if(body.is_in_group("droppable")):
 		if(!body.occupied):
 			#print("Popping body ref")
 			bodyRefArray.pop_at(bodyRefArray.find(body))
-	if (body.is_in_group("frame_bubble")):
-		set_mouse_areas(true)
+			
 func run_end_of_tween():
 	
 	await get_tree().physics_frame
 	UiGlobal.ableToDragFrame = true
+	#UiGlobal.dragging_frame = false
+	
 	slotted_in_frame.emit(true)
+	
+	
+	#should_be_dragged = false
 
 func get_proper_position():
 	
@@ -171,3 +185,8 @@ func wibble_the_icon():
 	
 	texture.scale.x = originalIconScale.x + rand_obj.randf_range(-originalIconScale.x * .05, originalIconScale.x * .05)
 	texture.scale.y = originalIconScale.y + rand_obj.randf_range(-originalIconScale.y * .05, originalIconScale.y * .05)
+
+
+func _on_area_2d_2_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+	if(!UiGlobal.dragging_frame):
+		can_be_dragged = true

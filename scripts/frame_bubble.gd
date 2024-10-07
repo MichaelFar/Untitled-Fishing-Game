@@ -6,6 +6,8 @@ extends CharacterBody2D
 
 @export var bubbleParticleExplosion : PackedScene
 
+@export var ClickArea : Area2D
+
 var newFrame = null
 
 var newFrameIconIndex := 0
@@ -16,9 +18,11 @@ var scaleModifer := .1
 
 func _ready():
 	var rand_obj = RandomNumberGenerator.new()
-	
-	bubbleDetails.texture = CombatGlobal.playerObjects[0].listOfFrameIcons[rand_obj.randi_range(0, CombatGlobal.playerObjects[0].listOfSpawnedFrames.size() - 1)]
-	
+	newFrameIconIndex = rand_obj.randi_range(0, CombatGlobal.playerObjects[0].listOfFrameResources.size() - 1)
+	bubbleDetails.texture = CombatGlobal.playerObjects[0].listOfFrameIcons[newFrameIconIndex]
+	#for i in CombatGlobal.playerObjects[0].listOfSpawnedFrames:
+		#
+		#i.set_mouse_areas(false)
 	animate_bubble()
 	
 	tween_bubble_to_random_position()
@@ -33,7 +37,7 @@ func tween_bubble_to_random_position():
 	
 	var view_port_rect = get_viewport_rect()
 	
-	var destination := Vector2(rand_obj.randf_range(0, view_port_rect.size.x), (rand_obj.randf_range(0, view_port_rect.size.y / 5)))
+	var destination := Vector2(rand_obj.randf_range(0, view_port_rect.size.x), (rand_obj.randf_range(0, view_port_rect.size.y)))
 	
 	var tween = get_tree().create_tween()
 	
@@ -61,7 +65,6 @@ func animate_bubble():
 	
 	xTween.finished.connect(animate_bubble)
 
-
 func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	
 	
@@ -71,10 +74,28 @@ func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 		
 		bubble_instance.one_shot = true
 		Globals.currentLevel.add_child(bubble_instance)
-		#var tween = get_tree().create_tween()
+		
+		bubble_instance.global_position = global_position
+		
 		newFrame = CombatGlobal.playerObjects[0].add_new_frame_to_current_battle(newFrameIconIndex, global_position)
 		newFrame.debugStringMessage = "I'm the bubble boy"
-		#newFrame.global_position = global_position
-		#tween.tween_property(newFrame, "global_position", CombatGlobal.playerObjects[0].get_proper_position(newFrame, CombatGlobal.playerObjects[0].listOfEmptyFrames), 0.5) 
-		#bubble_instance.global_position = global_position
+		CombatGlobal.trackTimeline.hasSpawnedBubble = false
+		
+		#for i in CombatGlobal.playerObjects[0].listOfSpawnedFrames:
+		#
+			#i.set_mouse_areas(true)
+			
 		queue_free()
+
+
+func _on_area_2d_area_entered(area: Area2D) -> void:
+	if (area.owner.is_in_group("draggable")):
+		
+		ClickArea.input_pickable = false
+		
+
+func _on_area_2d_area_exited(area: Area2D) -> void:
+	if (area.owner.is_in_group("draggable")):
+		
+		ClickArea.input_pickable = true
+		

@@ -1,15 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://coowdyhalseww"]
+[gd_scene load_steps=3 format=3 uid="uid://coowdyhalseww"]
 
 [ext_resource type="Script" path="res://scripts/mouse_collision.gd" id="1_gj841"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_eei32"]
 polygon = PackedVector2Array(-14, -4, -14, 17, 15, 18, 1, -22)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_of3qe"]
-
 [node name="MouseCollision" type="LightOccluder2D"]
 occluder = SubResource("OccluderPolygon2D_eei32")
 script = ExtResource("1_gj841")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_of3qe")
