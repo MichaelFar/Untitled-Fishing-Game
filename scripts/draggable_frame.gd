@@ -102,8 +102,8 @@ func _on_area_2d_body_entered(body):
 		print("body is droppable")
 		if(!body.occupied):
 			print("body not occupied")
-			#for i in slotted_in_frame.get_connections():
-				#slotted_in_frame.disconnect(i.callable)
+			for i in slotted_in_frame.get_connections():
+				slotted_in_frame.disconnect(i.callable)
 			slotted_in_frame.connect(body.set_occupied)
 			insideDropZone = true
 			body_ref = body

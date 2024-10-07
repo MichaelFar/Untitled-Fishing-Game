@@ -65,7 +65,7 @@ func animate_bubble():
 func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	
 	
-	if(event.is_action_pressed("cast")):
+	if(event.is_action_released("cast")):
 		print("Clicked bubble")
 		var bubble_instance : GPUParticles2D = bubbleParticleExplosion.instantiate()
 		

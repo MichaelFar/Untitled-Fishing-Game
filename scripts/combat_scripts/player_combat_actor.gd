@@ -108,12 +108,17 @@ func add_new_frame_to_current_battle(index : int, origin_point : Vector2 = Vecto
 		
 		print("space found for spawned frames")
 		add_child(frame_instance)
+		
 		frame_instance.global_position = origin_point
-		if(should_tween):
-			var tween = get_tree().create_tween()
-			tween.tween_property(frame_instance, "global_position", get_proper_position(frame_instance, listOfEmptyFrames), 0.5) 
+		
+		var tween = get_tree().create_tween()
+		tween.tween_property(frame_instance, "global_position", get_proper_position(frame_instance, listOfEmptyFrames), 0.5) 
+		
+		tween.finished.connect(frame_instance.set_mouse_areas.bind(true))
+		
 		listOfSpawnedFrames.append(frame_instance)
 		frame_instance.dragging_frame.connect(set_other_pickable)
+		frame_instance.set_mouse_areas(false)
 		listOfFrameIcons.append(frame_instance.texture.texture)
 	else:
 		
