@@ -119,6 +119,7 @@ func add_new_frame_to_current_battle(index : int, origin_point : Vector2 = Vecto
 		listOfSpawnedFrames.append(frame_instance)
 		frame_instance.dragging_frame.connect(set_other_pickable)
 		frame_instance.set_mouse_areas(false)
+		frame_instance.can_be_dragged_override = true
 		listOfFrameIcons.append(frame_instance.texture.texture)
 	else:
 		

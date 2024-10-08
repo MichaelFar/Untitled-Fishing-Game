@@ -35,6 +35,8 @@ func populate_track():
 		
 		frame_instance.set_mouse_areas(false)
 		
+		frame_instance.can_be_dragged_override = false
+		
 		print("Frame size of instance is " + str(frame_instance.frameSize))
 		
 		if(check_for_space(frame_instance.frameSize)):

@@ -16,6 +16,8 @@ var debugStringMessage = "I am not in a bubble"
 
 var can_be_dragged := false
 
+var can_be_dragged_override := false
+
 var insideDropZone := false
 
 var body_ref = null
@@ -37,6 +39,8 @@ func _ready():
 	frameHeight = texture.texture.get_height() * scale.x
 	wibble_the_icon()
 	mouseInteractableAreaArray[1].input_event.connect(_on_area_2d_2_input_event)
+	print("drag override is " + str(can_be_dragged_override))
+	
 func _process(delta):
 	
 	if (can_be_dragged && UiGlobal.ableToDragFrame):
@@ -47,6 +51,7 @@ func _process(delta):
 			offset = get_global_mouse_position() - global_position
 			UiGlobal.dragging_frame = true
 			slotted_in_frame.emit(false)
+			UiGlobal.bubble_can_pop = false
 			#dragging_frame.emit(self, false)
 			#bodyRefArray = []
 		if(Input.is_action_pressed("cast") && UiGlobal.dragging_frame):
@@ -86,7 +91,9 @@ func _on_area_2d_mouse_entered():
 	
 	if (!UiGlobal.dragging_frame):
 		print("Mouse entered frame")
-		can_be_dragged = true
+		
+		can_be_dragged = can_be_dragged_override
+		print("Can be dragged is " + str(can_be_dragged))
 		visualContainer.scale = Vector2(1.05, 1.05)
 		visualContainer.z_index = 1
 		
@@ -107,10 +114,7 @@ func _on_area_2d_body_entered(body):
 			
 			print("body not occupied")
 			
-			#for i in slotted_in_frame.get_connections():
-				#
-				#slotted_in_frame.disconnect(i.callable)
-				
+			
 			slotted_in_frame.connect(body.set_occupied)
 			
 			insideDropZone = true
@@ -120,6 +124,7 @@ func _on_area_2d_body_entered(body):
 			
 	
 func _on_area_2d_body_exited(body):
+	
 	if (body.is_in_group("frame_bubble")):
 		print("Bubble exited drop zone")
 		set_mouse_areas(true)
@@ -133,13 +138,12 @@ func _on_area_2d_body_exited(body):
 func run_end_of_tween():
 	
 	await get_tree().physics_frame
+	
 	UiGlobal.ableToDragFrame = true
-	#UiGlobal.dragging_frame = false
 	
 	slotted_in_frame.emit(true)
 	
-	
-	#should_be_dragged = false
+	UiGlobal.bubble_can_pop = true
 
 func get_proper_position():
 	
@@ -188,5 +192,5 @@ func wibble_the_icon():
 
 
 func _on_area_2d_2_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
-	if(!UiGlobal.dragging_frame):
+	if(!UiGlobal.dragging_frame && can_be_dragged_override):
 		can_be_dragged = true

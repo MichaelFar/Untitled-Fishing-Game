@@ -68,7 +68,7 @@ func animate_bubble():
 func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	
 	
-	if(event.is_action_released("cast")):
+	if(event.is_action_released("cast") && UiGlobal.bubble_can_pop):
 		print("Clicked bubble")
 		var bubble_instance : GPUParticles2D = bubbleParticleExplosion.instantiate()
 		
@@ -81,21 +81,16 @@ func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 		newFrame.debugStringMessage = "I'm the bubble boy"
 		CombatGlobal.trackTimeline.hasSpawnedBubble = false
 		
-		#for i in CombatGlobal.playerObjects[0].listOfSpawnedFrames:
-		#
-			#i.set_mouse_areas(true)
-			
 		queue_free()
-
 
 func _on_area_2d_area_entered(area: Area2D) -> void:
 	if (area.owner.is_in_group("draggable")):
-		
-		ClickArea.input_pickable = false
+		if(UiGlobal.dragging_frame):
+			ClickArea.input_pickable = false
 		
 
 func _on_area_2d_area_exited(area: Area2D) -> void:
 	if (area.owner.is_in_group("draggable")):
-		
-		ClickArea.input_pickable = true
+		if(!UiGlobal.dragging_frame):
+			ClickArea.input_pickable = true
 		
