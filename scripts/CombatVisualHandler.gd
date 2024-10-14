@@ -24,9 +24,15 @@ func _ready():
 	initialize_sprite_scales()
 	initialize_wibble_effect()
 	
-	bob_the_player_sprites(1.0)
+	bob_the_player_sprites()
 	bob_the_enemy_sprites(1.0)
+
+func bob_the_player_sprites():
 	
+	for i in playerSpriteArray.size():
+		bob_the_player_sprite_at_index(1.0, i)
+
+
 func initialize_sprite_scales():
 	
 	for i in playerSpriteArray:
@@ -66,25 +72,23 @@ func wibble_the_icon(sprite, original_size : Vector2, limit : float):
 	sprite.scale.x = original_size.x + rand_obj.randf_range(-original_size.x * limit, original_size.x * limit)
 	sprite.scale.y = original_size.y + rand_obj.randf_range(-original_size.y * limit, original_size.y * limit)
 
-func bob_the_player_sprites(direction : float = 1.0):
+func bob_the_player_sprite_at_index(direction : float = 1.0, i = 0):
 	
 	var rand_obj = RandomNumberGenerator.new()
 	
 	var movement_limit = 20.0
-	
-	for i in playerSpriteArray.size():
 		
-		var sprite_object = playerSpriteArray[i]
-		var bob_location = sprite_object.global_position.y + direction * rand_obj.randf_range(1.0, movement_limit)
-		var tween = get_tree().create_tween()
-		tween.set_ease(tween.EASE_IN)
-		tween.tween_property(sprite_object, 
-			"global_position:y", 
-			clamp(sprite_object.global_position.y + direction * rand_obj.randf_range(1.0, movement_limit), 
-			-movement_limit + playerSpritePositionArray[i].y, 
-			movement_limit + playerSpritePositionArray[i].y), 
-			playerSpritePositionArray[i].y / bob_location)
-		tween.finished.connect(bob_the_player_sprites.bind(direction * -1.0)) 
+	var sprite_object = playerSpriteArray[i]
+	var bob_location = sprite_object.global_position.y + direction * rand_obj.randf_range(1.0, movement_limit)
+	var tween = get_tree().create_tween()
+	tween.set_ease(tween.EASE_IN)
+	tween.tween_property(sprite_object, 
+		"global_position:y", 
+		clamp(sprite_object.global_position.y + direction * rand_obj.randf_range(1.0, movement_limit), 
+		-movement_limit + playerSpritePositionArray[i].y, 
+		movement_limit + playerSpritePositionArray[i].y), 
+		playerSpritePositionArray[i].y / bob_location)
+	tween.finished.connect(bob_the_player_sprite_at_index.bind(direction * -1.0), i) 
 	
 func bob_the_enemy_sprites(direction : float = 1.0):
 

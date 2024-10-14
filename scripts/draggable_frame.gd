@@ -38,6 +38,7 @@ func _ready():
 	wibble_the_icon()
 	mouseInteractableAreaArray[1].input_event.connect(_on_area_2d_2_input_event)
 	print("drag override is " + str(can_be_dragged_override))
+	tree_exiting.connect(on_queue_free)
 	
 func _process(delta):
 	
@@ -193,3 +194,6 @@ func wibble_the_icon():
 func _on_area_2d_2_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if(!UiGlobal.dragging_frame):
 		can_be_dragged = can_be_dragged_override
+
+func on_queue_free():
+	CombatGlobal.playerObjects[0].listOfSpawnedFrames.pop_at(CombatGlobal.playerObjects[0].listOfSpawnedFrames.find(self))

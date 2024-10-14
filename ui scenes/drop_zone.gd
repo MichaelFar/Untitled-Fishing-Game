@@ -37,7 +37,7 @@ func _on_area_2d_area_entered(area):
 		
 func _on_area_2d_area_exited(area):
 	
-	if area.owner != null:
+	if area.owner != null:#If something is freed while inside an area, the signal will trigger for exiting, this means that we need to check null
 		
 		if area.owner.is_in_group("draggable"):
 			

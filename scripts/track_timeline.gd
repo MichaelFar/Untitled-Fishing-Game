@@ -20,7 +20,7 @@ extends Node2D
 
 @export var bubbleScene : PackedScene
 
-@export var bubbleOdds := 2 #Represents the odds that a bubble will spawn, rolled against a d10
+var bubbleOdds := 2 #Represents the odds that a bubble will spawn, rolled against a d10
 
 var hasSpawnedBubble = false
 
@@ -33,6 +33,8 @@ signal tracks_placed
 func _init() -> void:
 	
 	CombatGlobal.trackTimeline = self
+	
+	bubbleOdds = PlayerStatGlobal.bubbleOdds
 	
 func _ready():
 	

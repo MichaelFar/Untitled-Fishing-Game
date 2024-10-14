@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dbctjovlwwvvm"]
+[gd_scene load_steps=14 format=3 uid="uid://dbctjovlwwvvm"]
 
 [ext_resource type="Script" path="res://scripts/battle_scene.gd" id="1_0ywdm"]
 [ext_resource type="PackedScene" uid="uid://br5spg8ov0qin" path="res://gameLogicScenes/track_timeline.tscn" id="1_okhfq"]
@@ -12,27 +12,28 @@
 [ext_resource type="PackedScene" uid="uid://bjn3ijy73wymi" path="res://visualHandlerScenes/hit_particle.tscn" id="10_v7vv4"]
 [ext_resource type="PackedScene" uid="uid://dwolkeq3tmchj" path="res://gameLogicScenes/enemy_combat_actor.tscn" id="11_s7fqo"]
 [ext_resource type="PackedScene" uid="uid://kfrptoovnsmb" path="res://gameLogicScenes/player_combat_actor.tscn" id="12_t2w1u"]
+[ext_resource type="PackedScene" uid="uid://bmhrj3eik7u26" path="res://ui scenes/catfish_frame_eater.tscn" id="13_t7taa"]
 
-[node name="battle_scene" type="Node2D" node_paths=PackedStringArray("visualCombatActor", "cursorSprite", "visualContainerForBattle")]
+[node name="battle_scene" type="Node2D" node_paths=PackedStringArray("visualCombatActor", "cursorSprite", "battleVisualContainer")]
 script = ExtResource("1_0ywdm")
 visualCombatActor = NodePath("VisualCombatActor")
 cursorSprite = NodePath("TrackTimeline/Area2D/TimelineCursor")
-visualContainerForBattle = NodePath("VisualCombatActor")
+battleVisualContainer = NodePath("VisualCombatActor")
 
 [node name="EnemyCombatActor" parent="." node_paths=PackedStringArray("track", "visualCombatActor", "representedSprite") instance=ExtResource("11_s7fqo")]
 track = NodePath("../TrackTimeline/enemy_track")
 visualCombatActor = NodePath("../VisualCombatActor")
-representedSprite = NodePath("../EnemyFish")
+representedSprite = NodePath("../EnemySprite")
 
 [node name="PlayerCombatActor" parent="." node_paths=PackedStringArray("playerFramePool", "track", "visualCombatActor", "representedSprite") instance=ExtResource("12_t2w1u")]
 playerFramePool = NodePath("../TrackTimeline/player_frame_pool")
 track = NodePath("../TrackTimeline/player_track")
 visualCombatActor = NodePath("../VisualCombatActor")
-representedSprite = NodePath("../Goldfishforgame-pixilart")
+representedSprite = NodePath("../PlayerSprite")
 
 [node name="BlackBoard" type="Sprite2D" parent="."]
 z_index = -6
-position = Vector2(633, 369)
+position = Vector2(643, 370)
 scale = Vector2(1.00469, 1.02778)
 texture = ExtResource("2_u05n0")
 
@@ -40,15 +41,12 @@ texture = ExtResource("2_u05n0")
 position = Vector2(633, 350)
 
 [node name="BubbleParticle2" parent="BubbleParticle" instance=ExtResource("8_7ash7")]
-position = Vector2(-3, 0)
 scale = Vector2(1.00469, 1.02778)
 
 [node name="BubbleParticle3" parent="BubbleParticle" instance=ExtResource("8_7ash7")]
-position = Vector2(-3, 3)
 scale = Vector2(1.00469, 1.02778)
 
 [node name="BubbleParticle4" parent="BubbleParticle" instance=ExtResource("8_7ash7")]
-position = Vector2(-4.99988, -3)
 scale = Vector2(1.00469, 1.02778)
 
 [node name="TrackTimeline" parent="." node_paths=PackedStringArray("playerCombatActor", "enemyCombatActor") instance=ExtResource("1_okhfq")]
@@ -62,28 +60,37 @@ initialTrackFrames = 7
 initialTrackFrames = 4
 
 [node name="VisualCombatActor" parent="." node_paths=PackedStringArray("playerSpriteArray", "enemySpriteArray", "nonCombatSpriteWibbleArray") instance=ExtResource("4_o7cwc")]
-playerSpriteArray = [NodePath("../Goldfishforgame-pixilart")]
-enemySpriteArray = [NodePath("../EnemyFish")]
+playerSpriteArray = [NodePath("../PlayerSprite"), NodePath("../CatfishFrameEater/CatFishHead"), NodePath("../CatfishFrameEater/CatFishFins")]
+enemySpriteArray = [NodePath("../EnemySprite")]
 nonCombatSpriteWibbleArray = [NodePath("../TrackTimeline/Area2D/TimelineCursor"), NodePath("../TrackTimeline/PausePlay")]
 hitParticle = ExtResource("10_v7vv4")
 
-[node name="Goldfishforgame-pixilart" type="Sprite2D" parent="."]
+[node name="PlayerSprite" type="Sprite2D" parent="."]
 texture_filter = 1
 position = Vector2(355, 191)
 texture = ExtResource("5_8n2rd")
 
-[node name="BubbleParticle" parent="Goldfishforgame-pixilart" instance=ExtResource("6_ewx2w")]
+[node name="BubbleParticle" parent="PlayerSprite" instance=ExtResource("6_ewx2w")]
 position = Vector2(110, 4)
 
-[node name="EnemyFish" type="Sprite2D" parent="."]
+[node name="EnemySprite" type="Sprite2D" parent="."]
 position = Vector2(858, 196)
 rotation = 3.14159
 scale = Vector2(1, -1)
 texture = ExtResource("7_v4777")
 
-[node name="BubbleParticle" parent="EnemyFish" instance=ExtResource("6_ewx2w")]
+[node name="BubbleParticle" parent="EnemySprite" instance=ExtResource("6_ewx2w")]
 position = Vector2(116, 17)
 
 [node name="MouseCollision" parent="." instance=ExtResource("9_sqegd")]
 
+[node name="CatfishFrameEater" parent="." instance=ExtResource("13_t7taa")]
+position = Vector2(1147, 625)
+scale = Vector2(0.25, 0.25)
+
+[node name="CatFishFins" parent="CatfishFrameEater" index="0"]
+position = Vector2(-20, -40)
+scale = Vector2(0.855469, 1)
+
 [editable path="TrackTimeline"]
+[editable path="CatfishFrameEater"]

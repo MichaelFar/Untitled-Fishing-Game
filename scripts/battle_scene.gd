@@ -1,12 +1,10 @@
 extends Node2D
 
-@export var backgroundPolygon : Polygon2D
-
 @export var visualCombatActor : VisualCombatActor
 
 @export var cursorSprite : Sprite2D
 
-@export var visualContainerForBattle : Node2D
+@export var battleVisualContainer : VisualCombatActor
 
 func _ready():
 	
@@ -14,6 +12,6 @@ func _ready():
 	
 	Globals.currentLevel = self
 	
-	CombatGlobal.battleVisualContainer = visualContainerForBattle
+	CombatGlobal.battleVisualContainer = battleVisualContainer
 	
 	CombatGlobal.connect_hit_and_block_signals()

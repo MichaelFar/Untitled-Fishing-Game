@@ -14,7 +14,7 @@ class_name CombatActor
 
 @export var track : Node2D #Do not assign this in the EnemyCombatActor scene, assign in track_timeline
 
-@export var visualCombatActor : Node2D
+@export var visualCombatActor : VisualCombatActor
 
 @export var representedSprite : Sprite2D
 
