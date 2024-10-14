@@ -18,8 +18,6 @@ var can_be_dragged := false
 
 var can_be_dragged_override := false
 
-var insideDropZone := false
-
 var body_ref = null
 
 var bodyRefArray : Array
@@ -51,7 +49,7 @@ func _process(delta):
 			offset = get_global_mouse_position() - global_position
 			UiGlobal.dragging_frame = true
 			slotted_in_frame.emit(false)
-			UiGlobal.bubble_can_pop = false
+			
 			#dragging_frame.emit(self, false)
 			#bodyRefArray = []
 		if(Input.is_action_pressed("cast") && UiGlobal.dragging_frame):
@@ -75,17 +73,17 @@ func _process(delta):
 				initialPosition, 0.2).set_ease(Tween.EASE_OUT)
 				print("bodyRefArray size is not framesize and frame size is " + str(frameSize) + " while bodyRefArray is " + str(bodyRefArray.size()))
 				
-			elif(insideDropZone):
-				
-				tween.tween_property(self, "global_position", 
-				proper_position, 0.2).set_ease(Tween.EASE_OUT)
-				print("bodyRefArray size is framesize and insideDropZone is true")
-				
 			else:
 				
 				tween.tween_property(self, "global_position", 
-				initialPosition, 0.2).set_ease(Tween.EASE_OUT)
-				print("bodyRefArray size is framesize and insideDropZone is false")
+				proper_position, 0.2).set_ease(Tween.EASE_OUT)
+				print("bodyRefArray size is framesize")
+				
+			#else:
+				#
+				#tween.tween_property(self, "global_position", 
+				#initialPosition, 0.2).set_ease(Tween.EASE_OUT)
+				#print("bodyRefArray size is framesize and insideDropZone is false")
 				
 func _on_area_2d_mouse_entered():
 	
@@ -105,19 +103,22 @@ func _on_area_2d_mouse_exited():
 		visualContainer.scale = Vector2(1.0, 1.0)
 		
 func _on_area_2d_body_entered(body):
+	
 	if (body.is_in_group("frame_bubble")):
+		
 		print("Bubble entered drop zone")
 		set_mouse_areas(false)
+		
 	if body.is_in_group("droppable"):
+		
 		print("body is droppable")
+		
 		if(!body.occupied):
 			
 			print("body not occupied")
 			
-			
 			slotted_in_frame.connect(body.set_occupied)
 			
-			insideDropZone = true
 			body_ref = body
 			bodyRefArray.append(body_ref)
 			print(str(bodyRefArray) + debugStringMessage)
@@ -143,8 +144,6 @@ func run_end_of_tween():
 	
 	slotted_in_frame.emit(true)
 	
-	UiGlobal.bubble_can_pop = true
-
 func get_proper_position():
 	
 	var averaged_position : Vector2
@@ -192,5 +191,5 @@ func wibble_the_icon():
 
 
 func _on_area_2d_2_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
-	if(!UiGlobal.dragging_frame && can_be_dragged_override):
-		can_be_dragged = true
+	if(!UiGlobal.dragging_frame):
+		can_be_dragged = can_be_dragged_override

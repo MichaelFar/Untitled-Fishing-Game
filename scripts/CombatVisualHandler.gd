@@ -8,6 +8,8 @@ class_name VisualCombatActor
 
 @export var nonCombatSpriteWibbleArray : Array[Node]
 
+@export var hitParticle : PackedScene
+
 var playerSpriteSizeArray : Array[Vector2]
 
 var enemySpriteSizeArray : Array[Vector2]
@@ -26,17 +28,21 @@ func _ready():
 	bob_the_enemy_sprites(1.0)
 	
 func initialize_sprite_scales():
+	
 	for i in playerSpriteArray:
 		
 		playerSpriteSizeArray.append(i.scale)
 		playerSpritePositionArray.append(i.global_position)
+		
 	for i in enemySpriteArray:
 		
 		enemySpriteSizeArray.append(i.scale)
 		enemySpritePositionArray.append(i.global_position)
+		
 func initialize_wibble_effect():
 	
 	for i in nonCombatSpriteWibbleArray:
+		
 		wibble_the_icon(i, i.scale, 0.05)
 	
 	for i in playerSpriteArray.size():
@@ -76,7 +82,7 @@ func bob_the_player_sprites(direction : float = 1.0):
 			"global_position:y", 
 			clamp(sprite_object.global_position.y + direction * rand_obj.randf_range(1.0, movement_limit), 
 			-movement_limit + playerSpritePositionArray[i].y, 
-			movement_limit + playerSpritePositionArray[i].y) , 
+			movement_limit + playerSpritePositionArray[i].y), 
 			playerSpritePositionArray[i].y / bob_location)
 		tween.finished.connect(bob_the_player_sprites.bind(direction * -1.0)) 
 	
@@ -94,10 +100,31 @@ func bob_the_enemy_sprites(direction : float = 1.0):
 		
 		var tween = get_tree().create_tween()
 		tween.set_ease(tween.EASE_IN)
-		tween.tween_property(sprite_object, 
+		tween.tween_property(sprite_object,
 			"global_position:y", 
 			clamp(sprite_object.global_position.y + direction * rand_obj.randf_range(1.0, movement_limit), 
 			-movement_limit + enemySpritePositionArray[i].y, 
-			movement_limit + enemySpritePositionArray[i].y) , 
+			movement_limit + enemySpritePositionArray[i].y),
 			enemySpritePositionArray[i].y / bob_location)
 		tween.finished.connect(bob_the_enemy_sprites.bind(direction * -1.0)) 
+
+func instantiate_hit_particle(actor_target : CombatActor):
+	
+	print("Spawned effect")
+	var rand_obj = RandomNumberGenerator.new()
+	
+	var particle_instance = hitParticle.instantiate()
+	
+	var affected_sprite = actor_target.representedSprite
+	
+	var sprite_rect_size = affected_sprite.region_rect.size
+	
+	Globals.currentLevel.add_child(particle_instance)
+	
+	particle_instance.one_shot = true
+	
+	particle_instance.global_position = affected_sprite.global_position#Vector2(rand_obj.randi_range((sprite_rect_size.x - affected_sprite.global_position.x),
+	#(sprite_rect_size.x + affected_sprite.global_position.x))
+	#, randi_range((sprite_rect_size.y - affected_sprite.global_position.y),
+	#(sprite_rect_size.y + affected_sprite.global_position.y)))
+	

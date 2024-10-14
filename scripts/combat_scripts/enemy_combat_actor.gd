@@ -2,10 +2,6 @@ extends CombatActor
 
 class_name EnemyCombatActor
 
-var listOfEmptyFrames = []
-
-var listOfSpawnedFrames := []
-
 @export var numMovesPerRound : int
 
 func _ready():

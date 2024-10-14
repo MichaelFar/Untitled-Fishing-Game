@@ -6,7 +6,14 @@ extends Node2D
 
 @export var cursorSprite : Sprite2D
 
+@export var visualContainerForBattle : Node2D
+
 func _ready():
 	
 	visualCombatActor.wibble_the_icon(cursorSprite, cursorSprite.scale, 0.015)
+	
 	Globals.currentLevel = self
+	
+	CombatGlobal.battleVisualContainer = visualContainerForBattle
+	
+	CombatGlobal.connect_hit_and_block_signals()

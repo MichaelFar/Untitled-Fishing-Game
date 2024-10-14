@@ -20,15 +20,15 @@ func _ready():
 	var rand_obj = RandomNumberGenerator.new()
 	newFrameIconIndex = rand_obj.randi_range(0, CombatGlobal.playerObjects[0].listOfFrameResources.size() - 1)
 	bubbleDetails.texture = CombatGlobal.playerObjects[0].listOfFrameIcons[newFrameIconIndex]
-	#for i in CombatGlobal.playerObjects[0].listOfSpawnedFrames:
-		#
-		#i.set_mouse_areas(false)
+	
 	animate_bubble()
 	
 	tween_bubble_to_random_position()
 
 func _physics_process(delta: float) -> void:
+	
 	bubbleDetails.scale = (bubbleSprite.scale / 8)
+	
 	bubbleSprite.rotation_degrees += 0.25
 	
 func tween_bubble_to_random_position():
@@ -67,8 +67,7 @@ func animate_bubble():
 
 func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	
-	
-	if(event.is_action_released("cast") && UiGlobal.bubble_can_pop):
+	if(event.is_action_released("cast") && UiGlobal.ableToDragFrame):
 		print("Clicked bubble")
 		var bubble_instance : GPUParticles2D = bubbleParticleExplosion.instantiate()
 		
@@ -90,7 +89,8 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 		
 
 func _on_area_2d_area_exited(area: Area2D) -> void:
-	if (area.owner.is_in_group("draggable")):
-		if(!UiGlobal.dragging_frame):
-			ClickArea.input_pickable = true
+	if(area.owner != null):
+		if (area.owner.is_in_group("draggable")):
+			if(!UiGlobal.dragging_frame):
+				ClickArea.input_pickable = true
 		

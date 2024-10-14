@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cd7b4nehwybwd"]
+
+[ext_resource type="Script" path="res://scripts/end_of_round_effects.gd" id="1_cg7o7"]
+
+[node name="EndOfRoundEffects" type="Node2D"]
+script = ExtResource("1_cg7o7")

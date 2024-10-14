@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://cr45uci5hjcx0" path="res://textures/NinePatchRectFrame.png" id="3_n4rak"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_2feuo"]
-polygon = PackedVector2Array(-37.5045, -36.0335, 59, -58, 38.9219, 40.2751, -57, 60)
+polygon = PackedVector2Array(-21.9372, -21.9034, 40.274, -40.3362, 20.5219, 20.4903, -25.4362, 25.4755)
 
 [node name="FrameSpriteManager" type="Node2D" node_paths=PackedStringArray("sprite", "resourcePreloader")]
 script = ExtResource("1_xm1ss")

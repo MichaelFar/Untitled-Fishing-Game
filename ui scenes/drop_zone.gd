@@ -14,6 +14,8 @@ extends StaticBody2D
 
 @export var hoverColor : Color
 
+@export var bubbleParticle : PackedScene
+
 var frameHeight : int
 
 var occupied := false
@@ -36,6 +38,7 @@ func _on_area_2d_area_entered(area):
 func _on_area_2d_area_exited(area):
 	
 	if area.owner != null:
+		
 		if area.owner.is_in_group("draggable"):
 			
 			if(area.owner.slotted_in_frame.is_connected(set_occupied)):
@@ -56,8 +59,18 @@ func set_occupied(value : bool):
 		
 		colorRect.color = hoverColor
 	else:
+		spawn_bubble_particle()
 		colorRect.color = originalColor
 	
+		
+	
+	
+	
+func spawn_bubble_particle():
+	var bubble_instance = bubbleParticle.instantiate()
+	add_child(bubble_instance)
+	bubble_instance.global_position = global_position
+	bubble_instance.one_shot = true
 
 func toggle_collision_bodies():
 	

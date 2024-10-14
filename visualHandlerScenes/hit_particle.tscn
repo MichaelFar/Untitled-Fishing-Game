@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://bjn3ijy73wymi"]
+
+[ext_resource type="Texture2D" uid="uid://cvvu8dcveqyna" path="res://textures/HitParticle.png" id="1_hrc4m"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_jhay4"]
+particle_flag_rotate_y = true
+particle_flag_disable_z = true
+angle_min = -281.7
+angle_max = 219.1
+spread = 180.0
+initial_velocity_max = 1000.0
+radial_velocity_min = -2.23517e-05
+radial_velocity_max = 173.91
+gravity = Vector3(0, 98, 0)
+linear_accel_min = -50.0
+linear_accel_max = 8.15
+radial_accel_min = -48.76
+radial_accel_max = 30.43
+
+[node name="hit_particle_effect" type="GPUParticles2D"]
+texture_filter = 1
+process_material = SubResource("ParticleProcessMaterial_jhay4")
+texture = ExtResource("1_hrc4m")
+lifetime = 0.5
+explosiveness = 1.0

@@ -4,6 +4,8 @@ var enemyObjects : Array[CombatActor] #Enemies during combat
 
 var playerObjects : Array[CombatActor]#player party
 
+var battleVisualContainer : Node2D
+
 var trackTimeline = null
 
 
@@ -28,3 +30,11 @@ func round_end_cleanup():
 		
 		i.reset_armor()
 		
+func connect_hit_and_block_signals():
+	for i in enemyObjects:
+		
+		i.taken_damage.connect(battleVisualContainer.instantiate_hit_particle.bind(i))
+		
+	for i in playerObjects:
+		
+		i.taken_damage.connect(battleVisualContainer.instantiate_hit_particle.bind(i))

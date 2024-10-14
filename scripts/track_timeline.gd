@@ -73,9 +73,9 @@ func tween_cursor_to_end():
 		tween.finished.connect(emit_cursor_end)
 		
 		return tween 
+		
 	elif (timeLineCursor.global_position.x == get_farthest_last_frame()):
 		
-		#place_cursor()
 		for i in activeFrameShapes:
 		
 			i.disabled = true
@@ -86,8 +86,6 @@ func tween_cursor_to_end():
 		
 		tween.finished.connect(tween_cursor_to_end)
 		
-		
-		#return tween
 
 func emit_cursor_end():
 	
@@ -135,10 +133,6 @@ func place_cursor():
 	timeLineCursor.global_position.x = playerTrack.startPosition.x
 	activeFrameShapes[0].global_position.y = playerTrack.global_position.y
 	activeFrameShapes[1].global_position.y = enemyTrack.global_position.y
-	#cursorLine.scale.y = 3
-	#cursorLine.scale.x = 3
-	#print("Cursor line location is " + str(cursorLine.points[0]))
-	
 	
 func get_farthest_last_frame():
 	

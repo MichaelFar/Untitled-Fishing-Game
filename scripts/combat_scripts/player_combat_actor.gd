@@ -8,10 +8,6 @@ class_name PlayerCombatActor
 
 var listOfFrameResources := []
 
-var listOfEmptyFrames := []
-
-var listOfSpawnedFrames := []
-
 var listOfFrameIcons := []
 
 func _ready() -> void:
@@ -35,7 +31,6 @@ func get_proper_position(frame_instance, list_of_empty_frames, is_bubble_frame :
 		
 		averaged_position += i.global_position
 		frame_instance.slotted_in_frame.connect(i.set_occupied)
-		frame_instance.insideDropZone = true
 		frame_instance.body_ref = i
 		frame_instance.bodyRefArray.append(i)
 		
@@ -82,13 +77,13 @@ func check_for_space(frame_size : int):
 func populate_track():
 	
 	print("Populating track")
-	
-	
+
 	var rand_obj = RandomNumberGenerator.new()
 	
 	var origin_point := Vector2.ZERO
 	
 	for i in range(PlayerStatGlobal.numPlayerFrames):
+		
 		
 		var index = clamp(i, 0, listOfFrameResources.size() - 1)
 		
