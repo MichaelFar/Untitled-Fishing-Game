@@ -33,6 +33,8 @@ func populate_track():
 		
 		frame_instance.can_be_dragged_override = false
 		
+		frame_instance.combatActor = self
+		
 		print("Frame size of instance is " + str(frame_instance.frameSize))
 		
 		if(check_for_space(frame_instance.frameSize)):
@@ -44,7 +46,8 @@ func populate_track():
 			listOfSpawnedFrames.append(frame_instance)
 			
 		else:
-			
+			for j in frame_instance.tree_exiting.get_connections():
+				frame_instance.tree_exiting.disconnect(j.callable)
 			frame_instance.queue_free()
 		
 func check_for_space(frame_size : int):

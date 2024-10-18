@@ -8,14 +8,16 @@ var battleVisualContainer : Node2D
 
 var trackTimeline = null
 
-
 func _process(delta: float) -> void:
 	
 	if (Input.is_action_just_released("Debug")):
 		
 		for i in playerObjects:
+			
 			i.set_health_to_full()
+			
 		for i in enemyObjects:
+			
 			i.set_health_to_full()
 
 func round_end_cleanup():

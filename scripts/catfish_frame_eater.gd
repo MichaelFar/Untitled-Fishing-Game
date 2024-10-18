@@ -10,9 +10,19 @@ var frameIsInMouth := false
 
 var frameObject = null
 
+
+func _ready():
+	
+	CombatGlobal.playerObjects[0].out_of_frames.connect(give_player_bubbles)
+
+func give_player_bubbles():
+	
+	CombatGlobal.playerObjects[0].populate_track()
+		
 func _physics_process(delta: float) -> void:
 	
 	if(!animationPlayer.is_playing()):
+		
 		if(UiGlobal.dragging_frame):
 			
 			mouthSprite.frame = 1
@@ -21,17 +31,15 @@ func _physics_process(delta: float) -> void:
 			
 			mouthSprite.frame = 0
 	
-	if(!UiGlobal.dragging_frame && frameIsInMouth):
+	if(Input.is_action_just_released("cast") && frameIsInMouth):
 		
-		#CombatGlobal.playerObjects[0].listOfSpawnedFrames.pop_at(CombatGlobal.playerObjects[0].listOfSpawnedFrames.find(frameObject))
-		
+		frameIsInMouth = false
 		frameObject.queue_free()
 		
 		animationPlayer.play("eat")
 		animationPlayer.queue("eat")
 		animationPlayer.queue("eat")
-		frameIsInMouth = false
-		UiGlobal.ableToDragFrame = true
+		
 
 func _on_area_2d_area_entered(area: Area2D) -> void:
 	
@@ -46,3 +54,11 @@ func spawn_eat_particle():
 	add_child(particle_instance)
 	particle_instance.global_position = global_position
 	particle_instance.one_shot = true
+
+func _on_area_2d_area_exited(area: Area2D) -> void:
+	
+	if(area.owner != null):
+		if area.owner.is_in_group("draggable"):
+			
+			frameIsInMouth = false
+			frameObject = null

@@ -12,6 +12,8 @@ extends CharacterBody2D
 
 @onready var originalIconScale = texture.scale
 
+var combatActor : CombatActor
+
 var debugStringMessage = "I am not in a bubble"
 
 var can_be_dragged := false
@@ -192,8 +194,21 @@ func wibble_the_icon():
 
 
 func _on_area_2d_2_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+	
+	#viewport.push_input(event)
 	if(!UiGlobal.dragging_frame):
 		can_be_dragged = can_be_dragged_override
 
 func on_queue_free():
-	CombatGlobal.playerObjects[0].listOfSpawnedFrames.pop_at(CombatGlobal.playerObjects[0].listOfSpawnedFrames.find(self))
+	
+	if(combatActor.listOfSpawnedFrames.has(self)):
+		
+		combatActor.listOfSpawnedFrames.pop_at(combatActor.listOfSpawnedFrames.find(self))
+	
+	if(combatActor.listOfSpawnedFrames.size() == 0):
+		
+		combatActor.out_of_frames.emit()
+	
+	UiGlobal.dragging_frame = false
+	
+	UiGlobal.ableToDragFrame = true

@@ -87,7 +87,7 @@ func populate_track():
 		
 		var index = clamp(i, 0, listOfFrameResources.size() - 1)
 		
-		add_new_frame_to_current_battle(index, origin_point)
+		add_new_frame_to_current_battle.bind(index, origin_point).call_deferred()
 		
 
 func add_new_frame_to_current_battle(index : int, origin_point : Vector2 = Vector2(0,0)):
@@ -100,7 +100,6 @@ func add_new_frame_to_current_battle(index : int, origin_point : Vector2 = Vecto
 	
 	if(check_for_space(frame_instance.frameSize)):
 		
-		
 		print("space found for spawned frames")
 		add_child(frame_instance)
 		
@@ -112,12 +111,15 @@ func add_new_frame_to_current_battle(index : int, origin_point : Vector2 = Vecto
 		tween.finished.connect(frame_instance.set_mouse_areas.bind(true))
 		
 		listOfSpawnedFrames.append(frame_instance)
+		frame_instance.combatActor = self
 		frame_instance.dragging_frame.connect(set_other_pickable)
 		frame_instance.set_mouse_areas(false)
 		frame_instance.can_be_dragged_override = true
 		listOfFrameIcons.append(frame_instance.texture.texture)
-	else:
 		
+	else:
+		for j in frame_instance.tree_exiting.get_connections():
+			frame_instance.tree_exiting.disconnect(j.callable)
 		frame_instance.queue_free()
 		
 	return frame_instance

@@ -115,11 +115,11 @@ func emit_cursor_end():
 
 func spawn_bubble():
 	
-	if(!hasSpawnedBubble):
-		var bubble_instance = bubbleScene.instantiate()
-		Globals.currentLevel.add_child(bubble_instance)
-		bubble_instance.global_position = Vector2(0, -200)
-		hasSpawnedBubble = true
+	#if(!hasSpawnedBubble):
+	var bubble_instance = bubbleScene.instantiate()
+	Globals.currentLevel.add_child(bubble_instance)
+	bubble_instance.global_position = Vector2(0, -200)
+	hasSpawnedBubble = true
 
 func _on_area_2d_body_entered(body):
 	

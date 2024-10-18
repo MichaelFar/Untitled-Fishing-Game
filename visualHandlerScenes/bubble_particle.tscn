@@ -32,7 +32,7 @@ turbulence_initial_displacement_max = 8.9
 turbulence_influence_over_life = SubResource("CurveTexture_d6mq4")
 collision_mode = 1
 collision_friction = 0.0
-collision_bounce = 0.0
+collision_bounce = 1.0
 
 [node name="BubbleParticle" type="GPUParticles2D"]
 texture_filter = 1

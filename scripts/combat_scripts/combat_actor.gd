@@ -22,6 +22,8 @@ var listOfEmptyFrames = []
 
 var listOfSpawnedFrames := []
 
+signal out_of_frames
+
 @export var maxHP := 5 :
 	set(value):
 		maxHP = value

@@ -17,8 +17,11 @@ var timeToComplete := .5
 var scaleModifer := .1
 
 func _ready():
+	
 	var rand_obj = RandomNumberGenerator.new()
+	
 	newFrameIconIndex = rand_obj.randi_range(0, CombatGlobal.playerObjects[0].listOfFrameResources.size() - 1)
+	
 	bubbleDetails.texture = CombatGlobal.playerObjects[0].listOfFrameIcons[newFrameIconIndex]
 	
 	animate_bubble()

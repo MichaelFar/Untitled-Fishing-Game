@@ -6,6 +6,8 @@ extends Node2D
 
 @export var battleVisualContainer : VisualCombatActor
 
+@export var subViewPort : SubViewport
+
 func _ready():
 	
 	visualCombatActor.wibble_the_icon(cursorSprite, cursorSprite.scale, 0.015)
