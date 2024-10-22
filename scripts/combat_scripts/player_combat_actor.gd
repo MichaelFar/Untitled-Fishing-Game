@@ -63,7 +63,6 @@ func check_for_space(frame_size : int):
 			
 			listOfEmptyFrames = list_of_empty_frames
 			
-			
 			for j in listOfEmptyFrames:
 				
 				j.set_occupied(true)
@@ -118,8 +117,11 @@ func add_new_frame_to_current_battle(index : int, origin_point : Vector2 = Vecto
 		listOfFrameIcons.append(frame_instance.texture.texture)
 		
 	else:
+		
 		for j in frame_instance.tree_exiting.get_connections():
+			
 			frame_instance.tree_exiting.disconnect(j.callable)
+			
 		frame_instance.queue_free()
 		
 	return frame_instance

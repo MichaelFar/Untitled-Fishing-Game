@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://c84cc4byi8j67"]
+[gd_scene load_steps=6 format=3 uid="uid://c84cc4byi8j67"]
 
 [ext_resource type="Script" path="res://ui scenes/FrameSpriteManager.gd" id="1_xm1ss"]
 [ext_resource type="Texture2D" uid="uid://dobo3l435rbic" path="res://textures/ChalkFrame1.png" id="2_88ujp"]
@@ -7,10 +7,21 @@
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_2feuo"]
 polygon = PackedVector2Array(-21.9372, -21.9034, 40.274, -40.3362, 20.5219, 20.4903, -25.4362, 25.4755)
 
-[node name="FrameSpriteManager" type="Node2D" node_paths=PackedStringArray("sprite", "resourcePreloader")]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_27l1h"]
+bg_color = Color(0.317647, 0.384314, 0.423529, 0.239216)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+border_blend = true
+
+[node name="FrameSpriteManager" type="Node2D" node_paths=PackedStringArray("sprite", "resourcePreloader", "toolTipLabel", "toolTipContainer")]
 script = ExtResource("1_xm1ss")
 sprite = NodePath("Pixil-frame-0(2)")
 resourcePreloader = NodePath("ResourcePreloader")
+toolTipLabel = NodePath("TextureRect/PanelContainer/MarginContainer/Label")
+toolTipContainer = NodePath("TextureRect")
 
 [node name="Pixil-frame-0(2)" type="Sprite2D" parent="."]
 texture_filter = 1
@@ -22,3 +33,29 @@ resources = [PackedStringArray("NinePatchRectFrame"), [ExtResource("3_n4rak")]]
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 rotation = -0.784627
 occluder = SubResource("OccluderPolygon2D_2feuo")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+
+[node name="PanelContainer" type="PanelContainer" parent="TextureRect"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -224.0
+offset_right = 256.0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_27l1h")
+
+[node name="MarginContainer" type="MarginContainer" parent="TextureRect/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+
+[node name="Label" type="Label" parent="TextureRect/PanelContainer/MarginContainer"]
+texture_filter = 1
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "test"
+horizontal_alignment = 1
+vertical_alignment = 1

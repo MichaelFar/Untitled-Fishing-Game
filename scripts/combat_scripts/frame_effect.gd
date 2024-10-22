@@ -2,8 +2,10 @@ extends Node
 
 class_name FrameEffect
 
+var value : int
+
 func _ready():
-	execute_effect()
+	pass
 	
 func execute_effect():
 	pass

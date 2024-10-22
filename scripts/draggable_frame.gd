@@ -12,6 +12,12 @@ extends CharacterBody2D
 
 @onready var originalIconScale = texture.scale
 
+@export var frameSpriteManager : Node2D
+
+var effectObject : FrameEffect
+
+var effectValue : int
+
 var combatActor : CombatActor
 
 var debugStringMessage = "I am not in a bubble"
@@ -34,6 +40,10 @@ signal slotted_in_frame
 
 signal dragging_frame
 
+signal triggered_effect
+
+signal mouse_hover_for_tooltip
+
 func _ready():
 	
 	frameHeight = texture.texture.get_height() * scale.x
@@ -41,6 +51,14 @@ func _ready():
 	mouseInteractableAreaArray[1].input_event.connect(_on_area_2d_2_input_event)
 	print("drag override is " + str(can_be_dragged_override))
 	tree_exiting.connect(on_queue_free)
+	effectObject = create_effect()
+	
+	if(effectObject != null):
+		
+		effectValue = effectObject.value
+	
+	if(frameSpriteManager != null):
+		mouse_hover_for_tooltip.connect(frameSpriteManager.set_tooltip_visible)
 	
 func _process(delta):
 	
@@ -52,9 +70,8 @@ func _process(delta):
 			offset = get_global_mouse_position() - global_position
 			UiGlobal.dragging_frame = true
 			slotted_in_frame.emit(false)
+			mouse_hover_for_tooltip.emit(false)
 			
-			#dragging_frame.emit(self, false)
-			#bodyRefArray = []
 		if(Input.is_action_pressed("cast") && UiGlobal.dragging_frame):
 			
 			global_position = get_global_mouse_position() - offset
@@ -92,7 +109,7 @@ func _on_area_2d_mouse_entered():
 	
 	if (!UiGlobal.dragging_frame):
 		print("Mouse entered frame")
-		
+		mouse_hover_for_tooltip.emit(true)
 		can_be_dragged = can_be_dragged_override
 		print("Can be dragged is " + str(can_be_dragged))
 		visualContainer.scale = Vector2(1.05, 1.05)
@@ -102,6 +119,7 @@ func _on_area_2d_mouse_exited():
 	
 	if (!UiGlobal.dragging_frame):
 		print("Mouse exited frame")
+		mouse_hover_for_tooltip.emit(false)
 		can_be_dragged = false
 		visualContainer.scale = Vector2(1.0, 1.0)
 		
@@ -173,7 +191,11 @@ func create_effect():#Called when frame becomes active
 			
 			add_child(effect_instance)
 			
+			triggered_effect.connect(effect_instance.execute_effect)
+			
 			print(effect_instance)
+			
+			return effect_instance
 
 func set_mouse_areas(new_value : bool):
 	
@@ -191,7 +213,6 @@ func wibble_the_icon():
 	
 	texture.scale.x = originalIconScale.x + rand_obj.randf_range(-originalIconScale.x * .05, originalIconScale.x * .05)
 	texture.scale.y = originalIconScale.y + rand_obj.randf_range(-originalIconScale.y * .05, originalIconScale.y * .05)
-
 
 func _on_area_2d_2_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	

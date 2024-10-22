@@ -126,8 +126,8 @@ func _on_area_2d_body_entered(body):
 	print("Body entered")
 	
 	if(body.is_in_group("draggable")):
-		
-		body.create_effect()
+		print("Emitting triggered effect")
+		body.triggered_effect.emit()
 		
 func place_cursor():
 	

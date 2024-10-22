@@ -18,7 +18,6 @@ var playerSpritePositionArray : Array[Vector2]
 
 var enemySpritePositionArray : Array[Vector2]
 
-
 func _ready():
 	
 	initialize_sprite_scales()
