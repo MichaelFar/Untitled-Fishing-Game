@@ -9,7 +9,6 @@
 script = ExtResource("1_x4bw6")
 emptyFrameResources = NodePath("EmptyFrameResources")
 PatchRect = NodePath("NinePatchRect")
-initialTrackFrames = 6
 
 [node name="EmptyFrameResources" type="ResourcePreloader" parent="."]
 resources = [PackedStringArray("drop_zone"), [ExtResource("2_2byhu")]]

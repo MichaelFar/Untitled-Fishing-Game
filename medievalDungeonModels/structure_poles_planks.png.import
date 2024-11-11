@@ -2,14 +2,11 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://x6ynpxqwnik8"
+uid="uid://5yw8t11lemy8"
 path.s3tc="res://.godot/imported/structure_poles_planks.png-6fe758974373ced61e39d1b50d34f766.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
-}
-generator_parameters={
-"md5": "ce6c643a6c315d90fcc778209226e31d"
 }
 
 [deps]

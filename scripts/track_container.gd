@@ -7,9 +7,19 @@ extends Node2D
 @export var initialTrackFrames : int :
 	
 	set(value):
-		
-		initialTrackFrames = value
-		
+
+		if(initialTrackFrames == 0):
+			
+			await ready
+			initialTrackFrames = value
+			spawn_track_frames()
+			set_nine_patch_size(initialTrackFrames)
+			
+		else:
+			initialTrackFrames = value
+			spawn_track_frames()
+			set_nine_patch_size(initialTrackFrames)
+
 var listOfFrames : Array
 
 var previousTrackFrame = null
@@ -27,18 +37,20 @@ var endPosition : Vector2
 var frameHeight : float
 
 func _ready():
+	pass
+	#spawn_track_frames()
+
+
+func spawn_track_frames():
 	
-	spawn_initial_track_frames()
-	
-func spawn_initial_track_frames():
-	
-	listOfFrames = []
-	
-	for i in range(initialTrackFrames):
+	for i in range(initialTrackFrames - listOfFrames.size()):
 		
 		listOfFrames.append(spawn_frame())
 	
-	PatchRect.size.x = (frameHeight) * initialTrackFrames
+func set_nine_patch_size(new_size : int):
+	
+	var tween = get_tree().create_tween()
+	tween.tween_property(PatchRect, "size:x", frameHeight * new_size, 0.2)
 	
 func spawn_frame():
 	
@@ -89,5 +101,7 @@ func set_start_and_end_positions():
 func disable_children():
 	
 	for i in get_children():
+		
 		if i.is_in_group("droppable"):
+			
 			i.toggle_collision_bodies()

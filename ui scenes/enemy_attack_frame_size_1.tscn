@@ -1,9 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://ok862jrlf5bx"]
+[gd_scene load_steps=8 format=3 uid="uid://hkbdhicnvf5c"]
 
-[ext_resource type="Script" path="res://scripts/draggable_frame.gd" id="1_dtbkm"]
-[ext_resource type="Texture2D" uid="uid://124ksj1bras1" path="res://textures/icons/CoatOfArms1.png" id="2_xyqj0"]
-[ext_resource type="Script" path="res://scripts/combat_scripts/player_frame_effects/prototype_effects/player_armor_effect.gd" id="3_ge601"]
-[ext_resource type="PackedScene" uid="uid://c84cc4byi8j67" path="res://ui scenes/FrameSpriteManager.tscn" id="4_36ynn"]
+[ext_resource type="Script" path="res://scripts/draggable_frame.gd" id="1_vsbu0"]
+[ext_resource type="PackedScene" uid="uid://c84cc4byi8j67" path="res://ui scenes/FrameSpriteManager.tscn" id="2_baibj"]
+[ext_resource type="Texture2D" uid="uid://kaxtrqystbch" path="res://textures/icons/Sword1.png" id="3_xxuuk"]
+[ext_resource type="Script" path="res://scripts/combat_scripts/enemy_frame_effects/enemy_damage_effect.gd" id="4_gb2u2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2yplm"]
 size = Vector2(67, 63.25)
@@ -20,20 +20,25 @@ z_as_relative = false
 scale = Vector2(0.75, 0.75)
 collision_layer = 4
 collision_mask = 0
-script = ExtResource("1_dtbkm")
+script = ExtResource("1_vsbu0")
 frameSize = 1
 visualContainer = NodePath("VisualContainer")
 texture = NodePath("VisualContainer/Icon")
 frameEffectResources = NodePath("FrameEffectResources")
 mouseInteractableAreaArray = [NodePath("Area2D"), NodePath("Area2D2")]
-frameSpriteManager = NodePath("Pixil-frame-0(2)")
+frameSpriteManager = NodePath("VisualFramesize1Scene")
+
+[node name="VisualFramesize1Scene" parent="." instance=ExtResource("2_baibj")]
+
+[node name="Label" parent="VisualFramesize1Scene/TextureRect/PanelContainer/MarginContainer" index="0"]
+text = "You take 2 damage"
 
 [node name="VisualContainer" type="Node2D" parent="."]
 
 [node name="Icon" type="Sprite2D" parent="VisualContainer"]
 z_index = 12
 scale = Vector2(0.125, 0.125)
-texture = ExtResource("2_xyqj0")
+texture = ExtResource("3_xxuuk")
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 2
@@ -47,21 +52,16 @@ shape = SubResource("RectangleShape2D_2yplm")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
 shape = SubResource("RectangleShape2D_3ox4l")
 
-[node name="FrameEffectResources" type="ResourcePreloader" parent="."]
-resources = [PackedStringArray("player_armor_effect"), [ExtResource("3_ge601")]]
-
 [node name="ActiveZone" type="CollisionShape2D" parent="."]
 position = Vector2(-46, 0)
 shape = SubResource("CircleShape2D_s12vd")
 
-[node name="Pixil-frame-0(2)" parent="." instance=ExtResource("4_36ynn")]
-
-[node name="Label" parent="Pixil-frame-0(2)/TextureRect/PanelContainer/MarginContainer" index="0"]
-text = "Gain 2 Armor"
+[node name="FrameEffectResources" type="ResourcePreloader" parent="."]
+resources = [PackedStringArray("enemy_damage_effect"), [ExtResource("4_gb2u2")]]
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
 [connection signal="mouse_entered" from="Area2D2" to="." method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D2" to="." method="_on_area_2d_mouse_exited"]
 
-[editable path="Pixil-frame-0(2)"]
+[editable path="VisualFramesize1Scene"]

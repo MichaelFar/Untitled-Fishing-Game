@@ -26,7 +26,6 @@ func _ready():
 	
 	frameHeight = colorRect.size.y
 	
-	#modulate = Color(Color.MEDIUM_PURPLE, 0.7)
 	originalColor = colorRect.color
 
 func _on_area_2d_area_entered(area):
@@ -58,15 +57,15 @@ func set_occupied(value : bool):
 	if(occupied):
 		
 		colorRect.color = hoverColor
+		
 	else:
+		
 		spawn_bubble_particle()
+		
 		colorRect.color = originalColor
 	
-		
-	
-	
-	
 func spawn_bubble_particle():
+	
 	var bubble_instance = bubbleParticle.instantiate()
 	add_child(bubble_instance)
 	bubble_instance.global_position = global_position

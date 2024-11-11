@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://cewagkbsqynf4"
-path="res://.godot/imported/Romantiques-n6r1.ttf-b269c202e127232171284f17e9e6c5b9.fontdata"
+uid="uid://qa0bpao0kv7l"
+path="res://.godot/imported/SuperScribble-pg3qr.ttf-d620b96c51a401364b5b6d53d6cd4601.fontdata"
 
 [deps]
 
-source_file="res://fonts/Romantiques-n6r1.ttf"
-dest_files=["res://.godot/imported/Romantiques-n6r1.ttf-b269c202e127232171284f17e9e6c5b9.fontdata"]
+source_file="res://fonts/SuperScribble-pg3qr.ttf"
+dest_files=["res://.godot/imported/SuperScribble-pg3qr.ttf-d620b96c51a401364b5b6d53d6cd4601.fontdata"]
 
 [params]
 

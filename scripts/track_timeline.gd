@@ -52,8 +52,14 @@ func _physics_process(delta: float) -> void:
 	
 	if(Input.is_action_just_released("Debug")):
 		
-		spawn_bubble()
+		increase_track_size(playerTrack)
 		
+
+func increase_track_size(track_object):
+	track_object.initialTrackFrames += 1
+	place_cursor()
+	
+
 func set_cursor_start(start_position : Vector2):
 
 	timeLineCursor.global_position = start_position

@@ -35,10 +35,8 @@ texture_normal = ExtResource("3_f3h3o")
 texture_disabled = ExtResource("4_lysnc")
 
 [node name="player_frame_pool" parent="." instance=ExtResource("1_j71xg")]
-initialTrackFrames = 10
 
 [node name="player_track" parent="." instance=ExtResource("1_j71xg")]
-initialTrackFrames = 3
 
 [node name="enemy_track" parent="." instance=ExtResource("1_j71xg")]
 initialTrackFrames = 4
@@ -48,7 +46,7 @@ collision_layer = 4
 collision_mask = 4
 
 [node name="TimelineCursor" type="Sprite2D" parent="Area2D"]
-z_index = 3
+z_index = 20
 texture_filter = 1
 material = SubResource("ShaderMaterial_tcdmg")
 texture = ExtResource("7_wjkab")

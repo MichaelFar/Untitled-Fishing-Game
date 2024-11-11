@@ -2,7 +2,6 @@ extends FrameEffect
 
 class_name EnemyDamageEffect
 
-
 func _ready():
 	print("Enemy attack effect has entered the tree")
 	value = 2

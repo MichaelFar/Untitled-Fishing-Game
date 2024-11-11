@@ -2,14 +2,11 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cdsi0py4cqq6n"
+uid="uid://c05l1qxkglyig"
 path.s3tc="res://.godot/imported/overhang_round_planks.png-c3d6faf2bb088267e6a402f98c8d89ac.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
-}
-generator_parameters={
-"md5": "ce6c643a6c315d90fcc778209226e31d"
 }
 
 [deps]

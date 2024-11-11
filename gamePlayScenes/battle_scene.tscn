@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://dl1g8obaqlp4y" path="res://textures/BlackBoard.png" id="2_u05n0"]
 [ext_resource type="Texture2D" uid="uid://b1tocs14pqyyk" path="res://textures/ChalkTexture.png" id="3_b0eoa"]
 [ext_resource type="Shader" path="res://shaders/cut_out.gdshader" id="4_cge7x"]
-[ext_resource type="PackedScene" uid="uid://bt7rj6mok518s" path="res://visualHandlerScenes/combat_visual_handler.tscn" id="4_o7cwc"]
+[ext_resource type="PackedScene" uid="uid://bt7rj6mok518s" path="res://visualHandlerScenes/VisualCombatActor.tscn" id="4_o7cwc"]
 [ext_resource type="PackedScene" uid="uid://c6qstfkbln20c" path="res://ui scenes/draggable_frame_size_2.tscn" id="4_thbrk"]
 [ext_resource type="Texture2D" uid="uid://e5seeju1gbrn" path="res://textures/PlayerFish.png" id="5_8n2rd"]
 [ext_resource type="PackedScene" uid="uid://mrpbp5sdthi2" path="res://ui scenes/player_attack_frame.tscn" id="5_nfg24"]
@@ -18,8 +18,6 @@
 [ext_resource type="PackedScene" uid="uid://dwolkeq3tmchj" path="res://gameLogicScenes/enemy_combat_actor.tscn" id="11_s7fqo"]
 [ext_resource type="PackedScene" uid="uid://kfrptoovnsmb" path="res://gameLogicScenes/player_combat_actor.tscn" id="12_t2w1u"]
 [ext_resource type="PackedScene" uid="uid://bmhrj3eik7u26" path="res://ui scenes/catfish_frame_eater.tscn" id="13_t7taa"]
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_khg0n"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_cwvgc"]
 viewport_path = NodePath("ChalkTexture/SubViewport")
@@ -37,6 +35,8 @@ shader_parameter/invert_mask = true
 shader_parameter/use_different_texture = true
 shader_parameter/mask_texture = SubResource("ViewportTexture_cwvgc")
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_khg0n"]
+
 [node name="battle_scene" type="Node2D" node_paths=PackedStringArray("visualCombatActor", "cursorSprite", "battleVisualContainer", "subViewPort")]
 script = ExtResource("1_0ywdm")
 visualCombatActor = NodePath("VisualCombatActor")
@@ -44,16 +44,46 @@ cursorSprite = NodePath("TrackTimeline/Area2D/TimelineCursor")
 battleVisualContainer = NodePath("VisualCombatActor")
 subViewPort = NodePath("ChalkTexture/SubViewport")
 
+[node name="EnemySprite" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(936, 191)
+rotation = 3.14159
+scale = Vector2(1, -1)
+texture = ExtResource("7_v4777")
+
+[node name="BubbleParticle" parent="EnemySprite" instance=ExtResource("6_ewx2w")]
+position = Vector2(116, 17)
+
+[node name="PlayerSprite" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(355, 191)
+texture = ExtResource("5_8n2rd")
+
+[node name="BubbleParticle" parent="PlayerSprite" instance=ExtResource("6_ewx2w")]
+position = Vector2(110, 4)
+
+[node name="ChalkTexture" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_6n5sc")
+scale = Vector2(1.00469, 1.02778)
+texture = ExtResource("3_b0eoa")
+offset = Vector2(630, 360)
+region_rect = Rect2(360, 80, 336, 328)
+
+[node name="SubViewport" type="SubViewport" parent="ChalkTexture"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1260, 720)
+
 [node name="EnemyCombatActor" parent="." node_paths=PackedStringArray("track", "visualCombatActor", "representedSprite") instance=ExtResource("11_s7fqo")]
 track = NodePath("../TrackTimeline/enemy_track")
 visualCombatActor = NodePath("../VisualCombatActor")
-representedSprite = NodePath("../ChalkTexture/SubViewport/EnemySprite")
+representedSprite = NodePath("../EnemySprite")
 
 [node name="PlayerCombatActor" parent="." node_paths=PackedStringArray("playerFramePool", "track", "visualCombatActor", "representedSprite") instance=ExtResource("12_t2w1u")]
 playerFramePool = NodePath("../TrackTimeline/player_frame_pool")
 track = NodePath("../TrackTimeline/player_track")
 visualCombatActor = NodePath("../VisualCombatActor")
-representedSprite = NodePath("../ChalkTexture/SubViewport/PlayerSprite")
+representedSprite = NodePath("../PlayerSprite")
 
 [node name="FrameResources" parent="PlayerCombatActor" index="0"]
 resources = [PackedStringArray("draggable_frame_size_2", "player_attack_frame", "player_attack_frame 2", "player_defense_frame", "player_defense_frame 2"), [ExtResource("4_thbrk"), ExtResource("5_nfg24"), ExtResource("5_nfg24"), ExtResource("6_3if5a"), ExtResource("6_3if5a")]]
@@ -83,51 +113,26 @@ playerCombatActor = NodePath("../PlayerCombatActor")
 enemyCombatActor = NodePath("../EnemyCombatActor")
 
 [node name="player_frame_pool" parent="TrackTimeline" index="1"]
-initialTrackFrames = 7
+initialTrackFrames = 6
 
 [node name="player_track" parent="TrackTimeline" index="2"]
 initialTrackFrames = 4
 
 [node name="VisualCombatActor" parent="." node_paths=PackedStringArray("playerSpriteArray", "enemySpriteArray", "nonCombatSpriteWibbleArray") instance=ExtResource("4_o7cwc")]
-playerSpriteArray = [NodePath("../ChalkTexture/SubViewport/PlayerSprite"), NodePath("../CatfishFrameEater/CatFishHead")]
-enemySpriteArray = [NodePath("../ChalkTexture/SubViewport/EnemySprite")]
+playerSpriteArray = [NodePath("../PlayerSprite"), NodePath("../CatfishFrameEater/CatFishHead")]
+enemySpriteArray = [NodePath("../EnemySprite")]
 nonCombatSpriteWibbleArray = [NodePath("../TrackTimeline/Area2D/TimelineCursor"), NodePath("../TrackTimeline/PausePlay"), NodePath("../CatfishFrameEater/CatFishHead/CatFishFins")]
 hitParticle = ExtResource("10_v7vv4")
 
 [node name="MouseCollision" parent="." instance=ExtResource("9_sqegd")]
 
 [node name="CatfishFrameEater" parent="." instance=ExtResource("13_t7taa")]
-position = Vector2(1147, 625)
-scale = Vector2(0.25, 0.25)
+position = Vector2(154, 340)
+scale = Vector2(-0.25, 0.25)
+metadata/_edit_group_ = true
 
-[node name="ChalkTexture" type="Sprite2D" parent="."]
-material = SubResource("ShaderMaterial_6n5sc")
-scale = Vector2(1.00469, 1.02778)
-texture = ExtResource("3_b0eoa")
-offset = Vector2(630, 360)
-region_rect = Rect2(360, 80, 336, 328)
-
-[node name="SubViewport" type="SubViewport" parent="ChalkTexture"]
-transparent_bg = true
-handle_input_locally = false
-size = Vector2i(1260, 720)
-
-[node name="PlayerSprite" type="Sprite2D" parent="ChalkTexture/SubViewport"]
-position = Vector2(355, 191)
-texture = ExtResource("5_8n2rd")
-
-[node name="BubbleParticle" parent="ChalkTexture/SubViewport/PlayerSprite" instance=ExtResource("6_ewx2w")]
-position = Vector2(110, 4)
-
-[node name="EnemySprite" type="Sprite2D" parent="ChalkTexture/SubViewport"]
-position = Vector2(936, 191)
-rotation = 3.14159
-scale = Vector2(1, -1)
-texture = ExtResource("7_v4777")
-
-[node name="BubbleParticle" parent="ChalkTexture/SubViewport/EnemySprite" instance=ExtResource("6_ewx2w")]
-position = Vector2(116, 17)
-
+[editable path="EnemyCombatActor"]
+[editable path="EnemyCombatActor/HealthBar"]
 [editable path="PlayerCombatActor"]
 [editable path="PlayerCombatActor/HealthBar"]
 [editable path="TrackTimeline"]

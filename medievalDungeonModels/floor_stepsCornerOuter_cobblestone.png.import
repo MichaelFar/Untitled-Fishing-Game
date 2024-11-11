@@ -2,14 +2,11 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dhveyvbtstluq"
+uid="uid://b4d7km3hox5jf"
 path.s3tc="res://.godot/imported/floor_stepsCornerOuter_cobblestone.png-3893a5df15c8fe9fb38918960d4a9adf.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
-}
-generator_parameters={
-"md5": "f4e54582c87315425197df07ed6bd67e"
 }
 
 [deps]

@@ -10,7 +10,7 @@ uniform vec2 mask_scale_pivot = vec2(0.5, 0.5);
 
 uniform bool invert_mask = false;
 uniform bool use_different_texture = false;
-uniform sampler2D mask_texture : filter_nearest;
+uniform sampler2D mask_texture : filter_linear;
 
 vec2 rotate_degrees(vec2 uv, vec2 pivot, float deg){
 	float rad = radians(deg + 90.0);

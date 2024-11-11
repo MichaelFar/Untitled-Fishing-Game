@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dksehm115xwht"
-path="res://.godot/imported/pixil-frame-0(7).png-b781476551f13593d6d77088fdef79c0.ctex"
+uid="uid://bvfbd48qocl4b"
+path="res://.godot/imported/NinePatchRectFrameFilled.png-e1f1e83b1b3905a490cabdf72e085fcc.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/pixil-frame-0(7).png"
-dest_files=["res://.godot/imported/pixil-frame-0(7).png-b781476551f13593d6d77088fdef79c0.ctex"]
+source_file="res://textures/NinePatchRectFrameFilled.png"
+dest_files=["res://.godot/imported/NinePatchRectFrameFilled.png-e1f1e83b1b3905a490cabdf72e085fcc.ctex"]
 
 [params]
 

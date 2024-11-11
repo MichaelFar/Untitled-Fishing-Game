@@ -1,20 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://c84cc4byi8j67"]
+[gd_scene load_steps=9 format=3 uid="uid://c84cc4byi8j67"]
 
 [ext_resource type="Script" path="res://ui scenes/FrameSpriteManager.gd" id="1_xm1ss"]
 [ext_resource type="Texture2D" uid="uid://dobo3l435rbic" path="res://textures/ChalkFrame1.png" id="2_88ujp"]
-[ext_resource type="Texture2D" uid="uid://cr45uci5hjcx0" path="res://textures/NinePatchRectFrame.png" id="3_n4rak"]
+[ext_resource type="FontFile" uid="uid://qa0bpao0kv7l" path="res://fonts/SuperScribble-pg3qr.ttf" id="4_nhttw"]
+[ext_resource type="Texture2D" uid="uid://fbpsw0whmtm1" path="res://textures/NinePatchRectFrameFill.png" id="5_o0wm7"]
+[ext_resource type="PackedScene" uid="uid://hhog7beh2wt0" path="res://ui scenes/nine_patch_rect.tscn" id="6_bykne"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_2feuo"]
 polygon = PackedVector2Array(-21.9372, -21.9034, 40.274, -40.3362, 20.5219, 20.4903, -25.4362, 25.4755)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_27l1h"]
-bg_color = Color(0.317647, 0.384314, 0.423529, 0.239216)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(1, 1, 1, 1)
-border_blend = true
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6bdu2"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_sua6l"]
 
 [node name="FrameSpriteManager" type="Node2D" node_paths=PackedStringArray("sprite", "resourcePreloader", "toolTipLabel", "toolTipContainer")]
 script = ExtResource("1_xm1ss")
@@ -24,38 +21,59 @@ toolTipLabel = NodePath("TextureRect/PanelContainer/MarginContainer/Label")
 toolTipContainer = NodePath("TextureRect")
 
 [node name="Pixil-frame-0(2)" type="Sprite2D" parent="."]
+z_index = 6
 texture_filter = 1
 texture = ExtResource("2_88ujp")
 
 [node name="ResourcePreloader" type="ResourcePreloader" parent="."]
-resources = [PackedStringArray("NinePatchRectFrame"), [ExtResource("3_n4rak")]]
+resources = [PackedStringArray("NinePatchRectFrameFill"), [ExtResource("5_o0wm7")]]
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 rotation = -0.784627
 occluder = SubResource("OccluderPolygon2D_2feuo")
 
 [node name="TextureRect" type="TextureRect" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -64.0
+offset_top = -130.0
+offset_right = 64.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 0
 
 [node name="PanelContainer" type="PanelContainer" parent="TextureRect"]
+texture_filter = 1
 layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -224.0
-offset_right = 256.0
-grow_vertical = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_27l1h")
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -56.0
+offset_right = 56.0
+offset_bottom = 79.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_6bdu2")
+
+[node name="NinePatchRect" parent="TextureRect/PanelContainer" instance=ExtResource("6_bykne")]
+z_index = 10
+material = SubResource("CanvasItemMaterial_sua6l")
+layout_mode = 2
+texture = ExtResource("5_o0wm7")
 
 [node name="MarginContainer" type="MarginContainer" parent="TextureRect/PanelContainer"]
 layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 20
 
 [node name="Label" type="Label" parent="TextureRect/PanelContainer/MarginContainer"]
-texture_filter = 1
+z_index = 10
 layout_mode = 2
-theme_override_font_sizes/font_size = 50
-text = "test"
+theme_override_fonts/font = ExtResource("4_nhttw")
+theme_override_font_sizes/font_size = 45
+text = "Deal 2 damage"
 horizontal_alignment = 1
 vertical_alignment = 1

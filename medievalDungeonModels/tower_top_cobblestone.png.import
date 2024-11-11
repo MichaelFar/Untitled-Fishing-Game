@@ -2,14 +2,11 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dh0nnd3qohanu"
+uid="uid://fq6ys1fdy6jy"
 path.s3tc="res://.godot/imported/tower_top_cobblestone.png-156b0a1f4f1c5e8ca2171d9316edc76f.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
-}
-generator_parameters={
-"md5": "f4e54582c87315425197df07ed6bd67e"
 }
 
 [deps]

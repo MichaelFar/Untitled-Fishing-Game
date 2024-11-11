@@ -18,6 +18,8 @@ class_name CombatActor
 
 @export var representedSprite : Sprite2D
 
+var trackSize : int
+
 var listOfEmptyFrames = []
 
 var listOfSpawnedFrames := []

@@ -2,14 +2,11 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dku51vjb8aq04"
+uid="uid://b5muhat70vc5b"
 path.s3tc="res://.godot/imported/wallPaint_gate_cobblestonePainted.png-334767fda9b9a384db25d122980a5209.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
-}
-generator_parameters={
-"md5": "0b1943e7f1f29785f144dc5806cadeda"
 }
 
 [deps]

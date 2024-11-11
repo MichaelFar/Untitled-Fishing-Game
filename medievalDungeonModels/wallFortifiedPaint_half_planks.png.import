@@ -2,14 +2,11 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bartk6slex3pj"
+uid="uid://cwg3xpbdmdmjw"
 path.s3tc="res://.godot/imported/wallFortifiedPaint_half_planks.png-331450e2574163484151d1afac70fa67.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
-}
-generator_parameters={
-"md5": "ce6c643a6c315d90fcc778209226e31d"
 }
 
 [deps]

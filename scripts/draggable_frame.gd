@@ -56,7 +56,10 @@ func _ready():
 	if(effectObject != null):
 		
 		effectValue = effectObject.value
-	
+		
+		frameSpriteManager.description = effectObject.description
+		print("Frame description is " + frameSpriteManager.description)
+		
 	if(frameSpriteManager != null):
 		mouse_hover_for_tooltip.connect(frameSpriteManager.set_tooltip_visible)
 	
@@ -98,20 +101,22 @@ func _process(delta):
 				tween.tween_property(self, "global_position", 
 				proper_position, 0.2).set_ease(Tween.EASE_OUT)
 				print("bodyRefArray size is framesize")
-				
-			#else:
-				#
-				#tween.tween_property(self, "global_position", 
-				#initialPosition, 0.2).set_ease(Tween.EASE_OUT)
-				#print("bodyRefArray size is framesize and insideDropZone is false")
+
+func create_tooltip_timer():
+	
+	var temp_lambda = func():
+		
+		mouse_hover_for_tooltip.emit(can_be_dragged && !UiGlobal.dragging_frame)
+	
+	get_tree().create_timer(0.2).timeout.connect(temp_lambda)
 				
 func _on_area_2d_mouse_entered():
 	
 	if (!UiGlobal.dragging_frame):
 		print("Mouse entered frame")
-		mouse_hover_for_tooltip.emit(true)
 		can_be_dragged = can_be_dragged_override
-		print("Can be dragged is " + str(can_be_dragged))
+		create_tooltip_timer()
+		#print("Can be dragged is " + str(can_be_dragged))
 		visualContainer.scale = Vector2(1.05, 1.05)
 		visualContainer.z_index = 1
 		
@@ -119,8 +124,8 @@ func _on_area_2d_mouse_exited():
 	
 	if (!UiGlobal.dragging_frame):
 		print("Mouse exited frame")
-		mouse_hover_for_tooltip.emit(false)
 		can_be_dragged = false
+		mouse_hover_for_tooltip.emit(can_be_dragged)
 		visualContainer.scale = Vector2(1.0, 1.0)
 		
 func _on_area_2d_body_entered(body):
@@ -150,7 +155,6 @@ func _on_area_2d_body_exited(body):
 	if (body.is_in_group("frame_bubble")):
 		print("Bubble exited drop zone")
 		set_mouse_areas(true)
-	
 	
 	if(body.is_in_group("droppable")):
 		if(!body.occupied):

@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://dwolkeq3tmchj"]
+[gd_scene load_steps=6 format=3 uid="uid://dwolkeq3tmchj"]
 
 [ext_resource type="Script" path="res://scripts/combat_scripts/enemy_combat_actor.gd" id="1_0jpo6"]
+[ext_resource type="PackedScene" uid="uid://hkbdhicnvf5c" path="res://ui scenes/enemy_attack_frame_size_1.tscn" id="3_4etrn"]
 [ext_resource type="PackedScene" uid="uid://ntihisjbsehn" path="res://ui scenes/enemy_defense_frame.tscn" id="3_af457"]
 [ext_resource type="PackedScene" uid="uid://cp3waihyxcmgf" path="res://ui scenes/health_and_armor_ui.tscn" id="4_dwgko"]
 [ext_resource type="PackedScene" uid="uid://bxaohky1mfrmx" path="res://ui scenes/enemy_attack_frame.tscn" id="4_qtkyb"]
@@ -15,7 +16,7 @@ armorLabel = NodePath("HealthBar/ArmorBar/ArmorLabel")
 framesResources = NodePath("FrameResources")
 
 [node name="FrameResources" type="ResourcePreloader" parent="."]
-resources = [PackedStringArray("enemy_attack_frame", "enemy_defense_frame"), [ExtResource("4_qtkyb"), ExtResource("3_af457")]]
+resources = [PackedStringArray("enemy_attack_frame", "enemy_attack_frame_size_1", "enemy_defense_frame"), [ExtResource("4_qtkyb"), ExtResource("3_4etrn"), ExtResource("3_af457")]]
 
 [node name="HealthBar" parent="." instance=ExtResource("4_dwgko")]
 

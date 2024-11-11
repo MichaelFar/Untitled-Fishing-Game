@@ -2,14 +2,11 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bm8qblvoeobrl"
+uid="uid://dy7fee4onmunr"
 path.s3tc="res://.godot/imported/columnPaint_cobblestoneAlternative.png-9cc899a8072164efacc3979ffaa94501.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
-}
-generator_parameters={
-"md5": "343a10de8fbbcb9b87407030bcb030bd"
 }
 
 [deps]
